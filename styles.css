@@ -677,3 +677,416 @@ p {
 .wine-card:hover .wine-image {
     animation: pulse 0.6s ease-in-out;
 }
+
+/* Wine Bar Page Styles */
+
+/* Active Navigation Link */
+.nav-link.active {
+    color: #8B0000;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Wine Bar Hero Section */
+.wine-bar-hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+    color: white;
+    text-align: center;
+    padding-top: 70px;
+    position: relative;
+    overflow: hidden;
+}
+
+.wine-bar-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.wine-bar-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.wine-bar-hero .hero-title {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.wine-bar-hero .hero-subtitle {
+    font-size: 1.3rem;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.construction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #8B0000;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.construction-badge i {
+    font-size: 1.2rem;
+}
+
+/* Construction Progress Section */
+.construction-progress {
+    padding: 5rem 0;
+    background: white;
+}
+
+.progress-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 80px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 2;
+}
+
+.timeline-item.completed .timeline-marker {
+    background: #28a745;
+}
+
+.timeline-item.in-progress .timeline-marker {
+    background: #ffc107;
+    animation: pulse 2s infinite;
+}
+
+.timeline-item.upcoming .timeline-marker {
+    background: #6c757d;
+}
+
+.timeline-content h3 {
+    color: #8B0000;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.timeline-date {
+    display: inline-block;
+    background: #f8f8f8;
+    color: #8B0000;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B0000, #A52A2A);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Wine Bar Features Section */
+.wine-bar-features {
+    padding: 5rem 0;
+    background: #f8f8f8;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, #8B0000, #A52A2A);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.feature-card h3 {
+    color: #8B0000;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Construction Gallery Section */
+.construction-gallery {
+    padding: 5rem 0;
+    background: white;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-item {
+    aspect-ratio: 4/3;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.1rem;
+}
+
+.gallery-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+/* Wine Bar Newsletter Section */
+.wine-bar-newsletter {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #8B0000, #A52A2A);
+    color: white;
+    text-align: center;
+}
+
+.wine-bar-newsletter h2 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.wine-bar-newsletter p {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.newsletter-form-large {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    background: white;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.newsletter-form-large input {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: transparent;
+}
+
+.newsletter-form-large button {
+    padding: 15px 30px;
+    border: none;
+    background: #2c2c2c;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.newsletter-form-large button:hover {
+    background: #1a1a1a;
+}
+
+.social-updates {
+    margin-top: 2rem;
+}
+
+.social-updates p {
+    margin-bottom: 1rem;
+    color: #e0e0e0;
+}
+
+.social-updates .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.social-updates .social-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.social-updates .social-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+/* Responsive Design for Wine Bar Page */
+@media (max-width: 768px) {
+    .wine-bar-hero .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .wine-bar-hero .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .timeline-item {
+        padding-left: 60px;
+    }
+
+    .timeline-marker {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .progress-timeline::before {
+        left: 25px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .newsletter-form-large {
+        flex-direction: column;
+        border-radius: 15px;
+    }
+
+    .social-updates .social-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .wine-bar-hero .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .feature-card {
+        padding: 2rem;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+    }
+
+    .timeline-marker {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .progress-timeline::before {
+        left: 20px;
+    }
+}
