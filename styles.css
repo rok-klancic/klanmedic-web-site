@@ -809,6 +809,23 @@ p {
     border: none !important;
 }
 
+/* More specific Google Search styling */
+.gcse-search .gsc-control-cse .gsc-input-box {
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 50px !important;
+    background: white !important;
+}
+
+.gcse-search .gsc-control-cse .gsc-search-button {
+    background: #8B0000 !important;
+    border-radius: 50px !important;
+    border: none !important;
+}
+
+.gcse-search .gsc-control-cse .gsc-search-button:hover {
+    background: #A52A2A !important;
+}
+
 /* Responsive Search */
 @media (max-width: 768px) {
     .google-search-container {
