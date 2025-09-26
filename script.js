@@ -236,3 +236,40 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Search Overlay Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('search-toggle');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchClose = document.getElementById('search-close');
+
+    if (searchToggle && searchOverlay && searchClose) {
+        // Open search overlay
+        searchToggle.addEventListener('click', function() {
+            searchOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        // Close search overlay
+        searchClose.addEventListener('click', function() {
+            searchOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        });
+
+        // Close search overlay when clicking outside
+        searchOverlay.addEventListener('click', function(e) {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close search overlay with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                searchOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+});

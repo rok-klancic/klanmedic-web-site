@@ -24,6 +24,9 @@
                 <a href="#wines" class="nav-link">Wines</a>
                 <a href="wine-bar.html" class="nav-link">Wine Bar</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <button class="search-icon" id="search-toggle">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
             <div class="nav-toggle" id="nav-toggle">
                 <span class="bar"></span>
@@ -45,18 +48,21 @@
         </div>
     </section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-        <div class="container">
-            <div class="search-header">
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+        <div class="search-overlay-content">
+            <button class="search-close" id="search-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-overlay-header">
                 <h2>Search Our Website</h2>
                 <p>Find wines, information, and more</p>
             </div>
-            <div class="google-search-container">
+            <div class="search-overlay-container">
                 <div class="gcse-search" data-gname="wine-search"></div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- About Section -->
     <section id="about" class="about">

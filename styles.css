@@ -678,10 +678,93 @@ p {
     animation: pulse 0.6s ease-in-out;
 }
 
-/* Google Search Styles */
-.search-section {
-    padding: 3rem 0;
+/* Search Icon in Navigation */
+.search-icon {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.search-icon:hover {
     background: #f8f8f8;
+    color: #8B0000;
+}
+
+/* Search Overlay */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.search-overlay.active {
+    display: flex;
+}
+
+.search-overlay-content {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.search-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.search-close:hover {
+    background: #f8f8f8;
+    color: #8B0000;
+}
+
+.search-overlay-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.search-overlay-header h2 {
+    color: #8B0000;
+    margin-bottom: 0.5rem;
+}
+
+.search-overlay-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.search-overlay-container {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .search-header {
