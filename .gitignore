@@ -54,3 +54,8 @@ node_modules/
 # Temporary folders
 tmp/
 temp/
+
+# Other
+/ilovepdf_pages-to-jpg
+*zip
+/inspiration

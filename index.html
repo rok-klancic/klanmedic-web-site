@@ -3,207 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vineyard Elegance - Premium Wine Collection</title>
+    <meta name="description" content="LAEM - Premium paper cups, bowls, and plates manufacturer. Quality disposable food service products.">
+    <title>LAEM - Premium Paper Products Manufacturer</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Custom Search -->
-    <script async src="https://cse.google.com/cse.js?cx=57ac6ddb6b6c547ca"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-wine-glass-alt"></i>
-                <span>Vineyard Elegance</span>
-            </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#wines" class="nav-link">Wines</a>
-                <a href="wine-bar.html" class="nav-link">Wine Bar</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <button class="search-icon" id="search-toggle">
-                    <i class="fas fa-search"></i>
+    <!-- Header/Navigation -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <span>LAEM</span>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#products" class="nav-link">Products</a></li>
+                    <li><a href="#about" class="nav-link">About Us</a></li>
+                    <li><a href="#certificates" class="nav-link">Certificates</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="#location" class="nav-link">Location</a></li>
+                </ul>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </button>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Discover the Art of Fine Wine</h1>
-            <p class="hero-subtitle">Experience the perfect blend of tradition and innovation in every bottle</p>
-            <a href="#wines" class="cta-button">Explore Our Collection</a>
-        </div>
-        <div class="hero-image">
-            <div class="wine-glass"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">LAEM</h1>
+                <p class="hero-tagline">Premium Paper Products for Every Occasion</p>
+                <p class="hero-description">Manufacturing high-quality paper cups, bowls, and plates with a commitment to sustainability and excellence. Trusted by businesses worldwide.</p>
+                <a href="#contact" class="cta-button hero-cta">Contact Sales</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=1200&h=800&fit=crop" alt="Paper products manufacturing showcase" class="hero-img">
+            </div>
         </div>
     </section>
 
-    <!-- Search Overlay -->
-    <div class="search-overlay" id="search-overlay">
-        <div class="search-overlay-content">
-            <button class="search-close" id="search-close">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="search-overlay-header">
-                <h2>Search Our Website</h2>
-                <p>Find wines, information, and more</p>
+    <!-- Products Overview Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Products</h2>
+                <p class="section-subtitle">Discover our comprehensive range of premium paper products</p>
             </div>
-            <div class="search-overlay-container">
-                <div class="gcse-search" data-gname="wine-search"></div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=600&h=400&fit=crop" alt="Paper Cups" class="product-img">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Paper Cups</h3>
+                        <p class="product-description">High-quality disposable paper cups available in various sizes. Perfect for hot and cold beverages. Customizable printing options available.</p>
+                        <ul class="product-specs">
+                            <li>Available sizes: 8oz, 12oz, 16oz, 20oz</li>
+                            <li>Hot and cold beverage options</li>
+                            <li>Custom branding available</li>
+                            <li>Eco-friendly materials</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=600&h=400&fit=crop" alt="Paper Bowls" class="product-img">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Paper Bowls</h3>
+                        <p class="product-description">Durable paper bowls ideal for soups, salads, and snacks. Leak-resistant design with excellent structural integrity.</p>
+                        <ul class="product-specs">
+                            <li>Available sizes: 12oz, 16oz, 24oz, 32oz</li>
+                            <li>Leak-resistant construction</li>
+                            <li>Microwave-safe options</li>
+                            <li>Compostable materials</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=600&h=400&fit=crop" alt="Paper Plates" class="product-img">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Paper Plates</h3>
+                        <p class="product-description">Sturdy paper plates perfect for events, catering, and daily use. Available in multiple sizes and designs.</p>
+                        <ul class="product-specs">
+                            <li>Available sizes: 6", 7", 9", 10"</li>
+                            <li>Compartment plates available</li>
+                            <li>Heavy-duty options</li>
+                            <li>Elegant designs</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- About Section -->
+    <!-- About Us Section -->
     <section id="about" class="about">
         <div class="container">
-            <div class="section-header">
-                <h2>Our Story</h2>
-                <p>Passion for excellence since 1985</p>
-            </div>
             <div class="about-content">
                 <div class="about-text">
-                    <h3>Heritage & Innovation</h3>
-                    <p>For over three decades, we have been crafting exceptional wines that capture the essence of our terroir. Our family-owned vineyard combines traditional winemaking techniques with modern innovation to create wines of unparalleled quality and character.</p>
-                    <p>Each bottle tells a story of dedication, passion, and the perfect harmony between nature and craftsmanship. From the careful selection of grapes to the meticulous aging process, every step is designed to bring you an unforgettable wine experience.</p>
+                    <h2 class="section-title">About Us</h2>
+                    <div class="about-section">
+                        <h3>Our Story</h3>
+                        <p>Founded in 2010, LAEM has been at the forefront of paper product manufacturing, combining innovation with sustainability. What started as a small family business has grown into a trusted partner for businesses across the globe.</p>
+                    </div>
+                    <div class="about-section">
+                        <h3>Our Mission</h3>
+                        <p>To provide high-quality, sustainable paper products that meet the diverse needs of our customers while maintaining our commitment to environmental responsibility and manufacturing excellence.</p>
+                    </div>
+                    <div class="about-section">
+                        <h3>Our Values</h3>
+                        <ul class="values-list">
+                            <li><strong>Quality:</strong> We never compromise on the quality of our products</li>
+                            <li><strong>Sustainability:</strong> Environmental responsibility is at the core of everything we do</li>
+                            <li><strong>Innovation:</strong> Continuously improving our products and processes</li>
+                            <li><strong>Customer Focus:</strong> Your success is our success</li>
+                        </ul>
+                    </div>
+                    <div class="about-section">
+                        <h3>Manufacturing Capabilities</h3>
+                        <p>Our state-of-the-art manufacturing facility spans over 50,000 square feet, equipped with the latest technology and machinery. We have the capacity to produce millions of units monthly while maintaining strict quality control standards.</p>
+                    </div>
+                    <div class="about-section">
+                        <h3>Our Team</h3>
+                        <p>Our dedicated team of over 200 professionals brings decades of combined experience in manufacturing, quality assurance, and customer service. We're committed to delivering excellence in every product we create.</p>
+                    </div>
                 </div>
-                <div class="about-stats">
-                    <div class="stat">
-                        <h4>35+</h4>
-                        <p>Years of Excellence</p>
-                    </div>
-                    <div class="stat">
-                        <h4>50+</h4>
-                        <p>Wine Varieties</p>
-                    </div>
-                    <div class="stat">
-                        <h4>1000+</h4>
-                        <p>Happy Customers</p>
-                    </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=1000&fit=crop" alt="Manufacturing facility" class="about-img">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Wines Section -->
-    <section id="wines" class="wines">
+    <!-- Certificates Section -->
+    <section id="certificates" class="certificates">
         <div class="container">
             <div class="section-header">
-                <h2>Our Wine Collection</h2>
-                <p>Carefully curated selection of premium wines</p>
+                <h2 class="section-title">Certifications & Quality Standards</h2>
+                <p class="section-subtitle">Committed to the highest standards of quality and environmental responsibility</p>
             </div>
-            <div class="wines-grid">
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+            <div class="certificates-grid">
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=ISO+9001" alt="ISO 9001 Certification" class="certificate-img">
                     </div>
-                    <h3>Cabernet Sauvignon</h3>
-                    <p class="wine-year">2020</p>
-                    <p class="wine-description">A bold and full-bodied red wine with rich dark fruit flavors and elegant tannins.</p>
-                    <div class="wine-price">$45</div>
+                    <div class="certificate-content">
+                        <h3>ISO 9001:2015</h3>
+                        <p>Quality Management System certification ensuring consistent quality in all our manufacturing processes.</p>
+                    </div>
                 </div>
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=FSC" alt="FSC Certification" class="certificate-img">
                     </div>
-                    <h3>Chardonnay</h3>
-                    <p class="wine-year">2021</p>
-                    <p class="wine-description">Crisp and refreshing white wine with notes of citrus and tropical fruits.</p>
-                    <div class="wine-price">$32</div>
+                    <div class="certificate-content">
+                        <h3>FSC Certified</h3>
+                        <p>Forest Stewardship Council certification guaranteeing our paper comes from responsibly managed forests.</p>
+                    </div>
                 </div>
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=Compostable" alt="Compostable Certification" class="certificate-img">
                     </div>
-                    <h3>Pinot Noir</h3>
-                    <p class="wine-year">2020</p>
-                    <p class="wine-description">Elegant and silky red wine with delicate berry flavors and smooth finish.</p>
-                    <div class="wine-price">$38</div>
+                    <div class="certificate-content">
+                        <h3>Compostable Certified</h3>
+                        <p>Our products meet ASTM D6400 standards for compostability, ensuring they break down naturally.</p>
+                    </div>
                 </div>
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=Food+Safe" alt="Food Safety Certification" class="certificate-img">
                     </div>
-                    <h3>Riesling</h3>
-                    <p class="wine-year">2021</p>
-                    <p class="wine-description">Aromatic white wine with floral notes and perfect balance of sweetness and acidity.</p>
-                    <div class="wine-price">$28</div>
+                    <div class="certificate-content">
+                        <h3>Food Safety Certified</h3>
+                        <p>FDA approved and BRC certified, ensuring all products meet the highest food safety standards.</p>
+                    </div>
                 </div>
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=ISO+14001" alt="ISO 14001 Certification" class="certificate-img">
                     </div>
-                    <h3>Merlot</h3>
-                    <p class="wine-year">2019</p>
-                    <p class="wine-description">Soft and approachable red wine with plum and cherry flavors.</p>
-                    <div class="wine-price">$35</div>
+                    <div class="certificate-content">
+                        <h3>ISO 14001:2015</h3>
+                        <p>Environmental Management System certification demonstrating our commitment to sustainable practices.</p>
+                    </div>
                 </div>
-                <div class="wine-card">
-                    <div class="wine-image">
-                        <i class="fas fa-wine-bottle"></i>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="https://via.placeholder.com/200x200/8B4513/FFFFFF?text=HACCP" alt="HACCP Certification" class="certificate-img">
                     </div>
-                    <h3>Sauvignon Blanc</h3>
-                    <p class="wine-year">2022</p>
-                    <p class="wine-description">Fresh and zesty white wine with herbaceous notes and bright acidity.</p>
-                    <div class="wine-price">$30</div>
+                    <div class="certificate-content">
+                        <h3>HACCP Certified</h3>
+                        <p>Hazard Analysis Critical Control Point certification ensuring food safety throughout production.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Get in Touch with Our Sales Team</h2>
+                <p class="cta-description">Ready to discuss your paper product needs? Our experienced sales team is here to help you find the perfect solution for your business.</p>
+                <a href="#contact" class="cta-button cta-button-large">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
     <section id="contact" class="contact">
         <div class="container">
             <div class="section-header">
-                <h2>Get In Touch</h2>
-                <p>We'd love to hear from you</p>
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">Fill out the form below and we'll get back to you as soon as possible</p>
             </div>
-            <div class="contact-content">
+            <div class="contact-wrapper">
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-interest">Product Interest *</label>
+                        <select id="product-interest" name="product-interest" required>
+                            <option value="">Select a product</option>
+                            <option value="cups">Paper Cups</option>
+                            <option value="bowls">Paper Bowls</option>
+                            <option value="plates">Paper Plates</option>
+                            <option value="all">All Products</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity/Volume</label>
+                        <input type="text" id="quantity" name="quantity" placeholder="e.g., 10,000 units/month">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message/Requirements *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
                 <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Visit Us</h4>
-                            <p>123 Vineyard Lane<br>Napa Valley, CA 94558</p>
-                        </div>
+                    <h3>Contact Information</h3>
+                    <div class="info-item">
+                        <strong>Email:</strong>
+                        <a href="mailto:sales@laem.com">sales@laem.com</a>
                     </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Call Us</h4>
-                            <p>+1 (555) 123-4567</p>
-                        </div>
+                    <div class="info-item">
+                        <strong>Phone:</strong>
+                        <a href="tel:+15550123456">+1 (555) 012-3456</a>
                     </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email Us</h4>
-                            <p>info@vineyardelegance.com</p>
-                        </div>
+                    <div class="info-item">
+                        <strong>Business Hours:</strong>
+                        <p>Monday - Friday: 8:00 AM - 6:00 PM EST<br>Saturday: 9:00 AM - 2:00 PM EST</p>
                     </div>
                 </div>
-                <form class="contact-form">
-                    <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="location">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Location</h2>
+                <p class="section-subtitle">Visit us at our manufacturing facility</p>
+            </div>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>LAEM Manufacturing Facility</h3>
+                    <address>
+                        1234 Industrial Boulevard<br>
+                        Manufacturing District<br>
+                        City, State 12345<br>
+                        United States
+                    </address>
+                    <div class="location-details">
+                        <p><strong>Directions:</strong> Located in the heart of the industrial district, easily accessible via Highway 95. Free parking available on-site.</p>
+                        <p><strong>Visits:</strong> Factory tours available by appointment. Please contact our sales team to schedule a visit.</p>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
+                </div>
+                <div class="location-map">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.184133712123!2d-74.00594138459418!3d40.71277597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a258c4b5c5f%3A0x8b4e5b5b5b5b5b5b!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="LAEM Manufacturing Facility Location">
+                    </iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -212,46 +326,47 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Vineyard Elegance</h3>
-                    <p>Crafting exceptional wines with passion and precision since 1985.</p>
+                <div class="footer-main">
+                    <div class="footer-logo">
+                        <span>LAEM</span>
+                    </div>
+                    <p class="footer-description">Premium paper products manufacturer committed to quality, sustainability, and customer satisfaction.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="Facebook" class="social-link">Facebook</a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">LinkedIn</a>
+                        <a href="#" aria-label="Twitter" class="social-link">Twitter</a>
+                        <a href="#" aria-label="Instagram" class="social-link">Instagram</a>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#wines">Wines</a></li>
-                        <li><a href="wine-bar.html">Wine Bar</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Wine Categories</h4>
-                    <ul>
-                        <li><a href="#">Red Wines</a></li>
-                        <li><a href="#">White Wines</a></li>
-                        <li><a href="#">Rosé Wines</a></li>
-                        <li><a href="#">Sparkling Wines</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Newsletter</h4>
-                    <p>Subscribe to our newsletter for wine tips and special offers.</p>
-                    <div class="newsletter-form">
-                        <input type="email" placeholder="Your email">
-                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#products">Paper Cups</a></li>
+                            <li><a href="#products">Paper Bowls</a></li>
+                            <li><a href="#products">Paper Plates</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#certificates">Certificates</a></li>
+                            <li><a href="#location">Location</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="#contact">Contact Form</a></li>
+                            <li><a href="mailto:sales@laem.com">sales@laem.com</a></li>
+                            <li><a href="tel:+15550123456">+1 (555) 012-3456</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Vineyard Elegance. All rights reserved.</p>
+                <p>&copy; 2025 LAEM. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
