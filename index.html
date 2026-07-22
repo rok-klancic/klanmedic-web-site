@@ -4,73 +4,219 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Klanmedic</title>
-    <meta name="description" content="Klanmedic — spletna stran." />
+    <meta name="description" content="Klanmedic — zasebna klinika." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="./src/css/output.css" />
   </head>
-  <body class="min-h-screen bg-white font-sans text-slate-900 antialiased">
+  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
     <header
-      class="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur"
+      class="sticky top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
       x-data="{ open: false }"
     >
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <a href="#" class="text-xl font-bold tracking-tight">Klanmedic</a>
-
-        <button
-          type="button"
-          class="inline-flex items-center justify-center rounded-md p-2 text-slate-700 hover:bg-slate-100 md:hidden"
-          @click="open = !open"
-          :aria-expanded="open"
-          aria-label="Toggle navigation"
+      <nav
+        class="mx-auto flex max-w-[80rem] items-center justify-between gap-6 px-6 py-5"
+      >
+        <a
+          href="#home"
+          class="font-fraunces text-2xl text-forest sm:text-[28px]"
+          >Klanmedic</a
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
+
+        <ul class="hidden items-center gap-8 md:flex">
+          <li>
+            <a
+              href="#home"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Domov</a
+            >
+          </li>
+          <li>
+            <a
+              href="#services"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Storitve</a
+            >
+          </li>
+          <li>
+            <a
+              href="#narocanje"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Naročanje</a
+            >
+          </li>
+          <li>
+            <a
+              href="#urnik"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Urnik</a
+            >
+          </li>
+          <li>
+            <a
+              href="#cenik"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Cenik</a
+            >
+          </li>
+        </ul>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a
+            href="#narocanje"
+            class="inline-flex items-center rounded-md bg-forest px-4 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-surface hover:text-forest hover:ring-1 hover:ring-forest sm:px-5 sm:text-[15px]"
+            >Naročite se</a
           >
-            <path
+
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60"
+            aria-label="Iskanje"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
 
-        <ul class="hidden items-center gap-6 md:flex">
-          <li><a href="#home" class="hover:text-blue-600">Domov</a></li>
-          <li><a href="#services" class="hover:text-blue-600">Storitve</a></li>
-          <li><a href="#contact" class="hover:text-blue-600">Kontakt</a></li>
-        </ul>
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 md:hidden"
+            @click="open = !open"
+            :aria-expanded="open"
+            aria-controls="mobile-menu"
+            aria-label="Meni"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </nav>
 
       <ul
-        class="space-y-2 border-t border-slate-200 px-4 pb-4 md:hidden"
+        id="mobile-menu"
+        class="space-y-1 border-t border-hairline px-6 pb-6 pt-4 md:hidden"
         x-show="open"
-        x-transition
+        x-transition.opacity
         x-cloak
       >
-        <li><a href="#home" class="block py-2">Domov</a></li>
-        <li><a href="#services" class="block py-2">Storitve</a></li>
-        <li><a href="#contact" class="block py-2">Kontakt</a></li>
+        <li>
+          <a
+            href="#home"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Domov</a
+          >
+        </li>
+        <li>
+          <a
+            href="#services"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Storitve</a
+          >
+        </li>
+        <li>
+          <a
+            href="#narocanje"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Naročanje</a
+          >
+        </li>
+        <li>
+          <a
+            href="#urnik"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Urnik</a
+          >
+        </li>
+        <li>
+          <a
+            href="#cenik"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Cenik</a
+          >
+        </li>
       </ul>
     </header>
 
     <main>
-      <section id="home" class="mx-auto max-w-6xl px-4 py-20 text-center">
-        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
-          Klanmedic
-        </h1>
-        <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-          Hitro, enostavno in zanesljivo. Začnite z ogledom naših storitev.
-        </p>
-        <a
-          href="#services"
-          class="mt-8 inline-block rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow hover:bg-blue-700"
+      <section id="home" class="bg-sage relative">
+        <div
+          class="mx-auto grid max-w-[80rem] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:gap-10 md:py-28"
         >
-          Preberi več
-        </a>
+          <div class="md:col-span-7 md:pr-6">
+            <p
+              class="font-sans text-sm font-medium uppercase tracking-wide text-muted"
+            >
+              Sprejemamo nove paciente
+            </p>
+
+            <h1
+              class="mt-5 font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-forest text-balance signature-rule sm:text-6xl md:mt-6 md:text-7xl lg:text-[88px]"
+            >
+              Pozornost, ki jo zaslužite.
+            </h1>
+
+            <p
+              class="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-muted md:mt-12"
+            >
+              Klanmedic je zasebna klinika v [mesto], kjer združujemo splošno
+              medicino, specialistične preglede in estetsko oskrbo. Sprejemamo
+              nove paciente — za nujne primere smo dosegljivi isti dan.
+            </p>
+
+            <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
+              <a
+                href="#narocanje"
+                class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface transition-colors hover:bg-surface hover:text-forest hover:ring-1 hover:ring-forest"
+                >Naročite se na pregled</a
+              >
+              <a
+                href="tel:+38612345678"
+                class="text-[15px] text-muted transition-colors hover:text-forest"
+                >ali pokličite <span class="whitespace-nowrap">01 234 5678</span></a
+              >
+            </div>
+          </div>
+
+          <div class="md:col-span-5 md:pl-2">
+            <img
+              src="./src/images/hero_image_v5.png"
+              alt=""
+              width="1200"
+              height="800"
+              class="block h-auto w-full md:absolute md:right-0 md:top-28 md:h-auto md:w-[min(900px,60%)]"
+            />
+          </div>
+        </div>
       </section>
 
       <section
@@ -91,7 +237,10 @@
           >
             −
           </button>
-          <span class="min-w-[3ch] text-center text-2xl font-semibold" x-text="count"></span>
+          <span
+            class="min-w-[3ch] text-center text-2xl font-semibold"
+            x-text="count"
+          ></span>
           <button
             type="button"
             @click="count++"
@@ -121,6 +270,9 @@
     </style>
 
     <script src="./src/js/main.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
   </body>
 </html>
