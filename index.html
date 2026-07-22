@@ -15,13 +15,14 @@
 
     <link rel="stylesheet" href="./src/css/output.css" />
   </head>
-  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
-    <header
-      class="sticky top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
-      x-data="{ open: false }"
-    >
+  <body
+    class="min-h-screen bg-sage font-sans text-forest antialiased"
+    x-data="heroIntro"
+  >
+    <header class="sticky top-0 z-50" x-data="{ open: false }">
       <nav
-        class="mx-auto flex max-w-[80rem] items-center justify-between gap-6 px-6 py-5"
+        :class="navVisible ? 'opacity-100' : 'pointer-events-none opacity-0'"
+        class="mx-auto flex max-w-[80rem] items-center justify-between gap-6 border-b border-hairline bg-sage/80 px-6 py-5 backdrop-blur transition-opacity duration-500"
       >
         <a
           href="#home"
@@ -124,7 +125,7 @@
 
       <ul
         id="mobile-menu"
-        class="space-y-1 border-t border-hairline px-6 pb-6 pt-4 md:hidden"
+        class="space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur md:hidden"
         x-show="open"
         x-transition.opacity
         x-cloak
@@ -168,53 +169,96 @@
     </header>
 
     <main>
-      <section id="home" class="bg-sage relative">
+      <section
+        id="home"
+        x-ref="heroSection"
+        class="bg-sage relative"
+        style="height: 200vh;"
+      >
         <div
-          class="mx-auto grid max-w-[80rem] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:gap-10 md:py-28"
+          class="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden"
         >
-          <div class="md:col-span-7 md:pr-6">
-            <p
-              class="font-sans text-sm font-medium uppercase tracking-wide text-muted"
-            >
-              Sprejemamo nove paciente
-            </p>
-
+          <!-- Intro layer: big Klanmedic text + hero image (visible at scroll=0) -->
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 md:flex-row md:justify-between md:gap-12 md:px-12 lg:px-20"
+            :style="introLayerStyle"
+          >
             <h1
-              class="mt-5 font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-forest text-balance signature-rule sm:text-6xl md:mt-6 md:text-7xl lg:text-[88px]"
+              x-ref="bigText"
+              class="font-fraunces text-forest"
+              style="font-size: clamp(3.5rem, 14vw, 10rem); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500;"
+              :style="bigTextStyle"
             >
-              Pozornost, ki jo zaslužite.
+              Klanmedic
             </h1>
 
-            <p
-              class="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-muted md:mt-12"
-            >
-              Klanmedic je zasebna klinika v [mesto], kjer združujemo splošno
-              medicino, specialistične preglede in estetsko oskrbo. Sprejemamo
-              nove paciente — za nujne primere smo dosegljivi isti dan.
-            </p>
-
-            <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
-              <a
-                href="#narocanje"
-                class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface transition-colors hover:bg-surface hover:text-forest hover:ring-1 hover:ring-forest"
-                >Naročite se na pregled</a
-              >
-              <a
-                href="tel:+38612345678"
-                class="text-[15px] text-muted transition-colors hover:text-forest"
-                >ali pokličite <span class="whitespace-nowrap">01 234 5678</span></a
-              >
-            </div>
-          </div>
-
-          <div class="md:col-span-5 md:pl-2">
             <img
               src="./src/images/hero_image_v5.png"
               alt=""
-              width="1200"
-              height="800"
-              class="block h-auto w-full md:absolute md:right-0 md:top-28 md:h-auto md:w-[min(900px,60%)]"
+              width="1500"
+              height="1000"
+              class="block h-auto w-auto shrink-0"
+              style="max-width: 88vw; max-height: 40vh; md:max-width: 52vw; md:max-height: 72vh;"
+              :style="introImageStyle"
             />
+          </div>
+
+          <!-- Final layer: full hero content (visible after scroll) -->
+          <div
+            class="absolute inset-0 mx-auto flex max-w-[80rem] items-center px-6 py-20 md:px-6 md:py-28"
+            :style="finalStyle"
+            x-cloak
+          >
+            <div
+              class="grid w-full grid-cols-1 gap-12 md:grid-cols-12 md:gap-10"
+            >
+              <div class="md:col-span-7 md:pr-6">
+                <p
+                  class="font-sans text-sm font-medium uppercase tracking-wide text-muted"
+                >
+                  Sprejemamo nove paciente
+                </p>
+
+                <h1
+                  class="mt-5 font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-forest text-balance signature-rule sm:text-6xl md:mt-6 md:text-7xl lg:text-[88px]"
+                >
+                  Pozornost, ki jo zaslužite.
+                </h1>
+
+                <p
+                  class="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-muted md:mt-12"
+                >
+                  Klanmedic je zasebna klinika v [mesto], kjer združujemo
+                  splošno medicino, specialistične preglede in estetsko
+                  oskrbo. Sprejemamo nove paciente — za nujne primere smo
+                  dosegljivi isti dan.
+                </p>
+
+                <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
+                  <a
+                    href="#narocanje"
+                    class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface transition-colors hover:bg-surface hover:text-forest hover:ring-1 hover:ring-forest"
+                    >Naročite se na pregled</a
+                  >
+                  <a
+                    href="tel:+38612345678"
+                    class="text-[15px] text-muted transition-colors hover:text-forest"
+                    >ali pokličite
+                    <span class="whitespace-nowrap">01 234 5678</span></a
+                  >
+                </div>
+              </div>
+
+              <div class="md:col-span-5 md:pl-2">
+                <img
+                  src="./src/images/hero_image_v5.png"
+                  alt=""
+                  width="1200"
+                  height="800"
+                  class="block h-auto w-full md:absolute md:right-0 md:top-28 md:h-auto md:w-[min(900px,60%)]"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
