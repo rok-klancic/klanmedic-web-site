@@ -55,6 +55,9 @@ Non-negotiables (full detail in `DESIGN.md`):
   hairlines in `border`, not by extra whitespace alone.
 - Sand is rationed: signature rule under the hero, plus at most two section
   titles per page. Never as a button fill, never as a badge fill.
+- Buttons are `bg-forest text-surface` resting; hover reveals a `bg-muted`
+  fill with `text-surface` text and a `ring-muted` ring. Never hover white
+  (`bg-surface`).
 
 Subpages inherit the same tokens, type scale, container, and signature
 behavior. The sand rule appears under each subpage H1, identical to the
