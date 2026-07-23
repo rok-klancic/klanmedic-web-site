@@ -8,6 +8,6 @@ Build the following section of the landing page: $ARGUMENTS
 - Mobile-first.
 
 Once built, use the webapp-testing skill to screenshot the section at 375px, 
-768px, and 1440px widths. Check it against DESIGN.md and against the content 
-given above. Fix anything inconsistent, re-screenshot, and only then tell me 
-it's done.
+768px, and 1440px widths. Make sure to delete the screenshots after taking them.
+Check it against DESIGN.md and against the content given above. 
+Fix anything inconsistent, re-screenshot, and only then tell me it's done.

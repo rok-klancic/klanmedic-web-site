@@ -8,3 +8,4 @@ Thumbs.db
 .vscode/
 .idea/
 /artifacts/
+__pycache__/
