@@ -8,7 +8,7 @@ Six tokens. Sage carries the page; warm off-white holds cards; deep forest is th
 
 | Token | Role | Hex |
 | --- | --- | --- |
-| sage | Page background | `#E8EDE6` |
+| sage | Page background | `#F1F4F0` |
 | surface | Cards, elevated surfaces (warm off-white) | `#FAFBF8` |
 | forest | Primary: text, buttons, links, primary rules | `#2F4A3A` |
 | sand | Accent — signature rule, underline accent, single hover wash only | `#D9C7A7` |
