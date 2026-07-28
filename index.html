@@ -180,34 +180,36 @@
         >
           <!-- Intro layer: big Klanmedic text + hero image (visible at scroll=0) -->
           <div
-            class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 md:flex-row md:justify-between md:gap-12 md:px-12 lg:px-20"
+            class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 md:grid md:grid-cols-12 md:gap-0 md:items-center md:px-0 lg:px-0"
             :style="introLayerStyle"
           >
-            <div class="flex flex-col items-center gap-6 -mt-[45vh] md:-mt-[65vh]">
-              <h1
-                x-ref="bigText"
-                class="font-fraunces text-forest"
-                style="font-size: clamp(3.5rem, 16vw, 16rem); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500;"
-                :style="bigTextStyle"
-              >
-                Klanmedic
-              </h1>
+            <div class="flex flex-col items-center gap-6 -mt-[45vh] md:col-span-7 md:items-start md:pb-[104px] md:pl-12 md:-mt-[65vh] lg:pl-20">
+              <div class="flex flex-col items-center gap-6 md:flex-row md:items-center md:gap-[calc(100vw/12)]">
+                <h1
+                  x-ref="bigText"
+                  class="font-fraunces text-forest"
+                  style="font-size: clamp(3.5rem, 16vw, 16rem); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500;"
+                  :style="bigTextStyle"
+                >
+                  Klanmedic
+                </h1>
 
-              <img
-                src="./src/images/logotip_klanmedic_obris.svg"
-                alt="Klanmedic"
-                class="block h-20 w-auto"
-                :style="bigTextStyle"
-              />
+                <img
+                  src="./src/images/logotip_klanmedic_obris.svg"
+                  alt="Klanmedic"
+                  class="block h-20 w-auto"
+                  :style="bigTextStyle"
+                />
+              </div>
             </div>
 
             <img
-              src="./src/images/hero_image_v5.png"
+              src="./src/images/intro_cropped.png"
               alt=""
-              width="1500"
-              height="1000"
-              class="block h-auto w-auto shrink-0"
-              style="max-width: 88vw; max-height: 40vh; md:max-width: 52vw; md:max-height: 72vh;"
+              width="810"
+              height="422"
+              class="block h-auto w-auto shrink-0 object-cover md:absolute md:right-0 md:top-[25vh] md:w-[58.333%]"
+              style="max-width: 95vw; max-height: 70vh;"
               :style="introImageStyle"
             />
           </div>
@@ -260,7 +262,7 @@
 
               <div class="md:col-span-5 md:pl-2">
                 <img
-                  src="./src/images/hero_image_v5.png"
+                  src="./src/images/hero.jpg"
                   alt=""
                   width="1200"
                   height="800"
