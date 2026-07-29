@@ -33,9 +33,10 @@
 
 .text-clinic-mask {
   background-image: url("../images/clinic.png");
-  background-size: auto;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -46,12 +47,12 @@
   letter-spacing: -0.04em;
   line-height: 0.85;
   text-transform: uppercase;
-  font-size: clamp(3rem, 16vw, 10rem);
+  font-size: 8vw;
   white-space: nowrap;
   display: block;
   text-align: center;
   width: 100%;
-  will-change: transform, opacity;
+  will-change: opacity;
 }
 
 @layer base {

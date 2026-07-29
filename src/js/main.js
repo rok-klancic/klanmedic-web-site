@@ -120,23 +120,17 @@ document.addEventListener("alpine:init", () => {
     get textStyle() {
       const p = this.progress;
       const scaleP = Math.min(1, p / 0.5);
-      const scale = 1 + scaleP * 11;
-      const opacity = p < 0.55 ? 1 : Math.max(0, 1 - (p - 0.55) / 0.25);
+      const fontSize = 8 + scaleP * 52;
+      const opacity = p < 0.65 ? 1 : Math.max(0, 1 - (p - 0.65) / 0.15);
       return {
-        position: "absolute",
-        top: "50%",
-        left: "0",
-        right: "0",
-        textAlign: "center",
-        transform: `translateY(-50%) scale(${scale})`,
+        fontSize: `${fontSize}vw`,
         opacity,
       };
     },
     get sageStyle() {
       const p = this.progress;
-      return {
-        opacity: Math.max(0, 1 - (p - 0.55) / 0.25),
-      };
+      if (p < 0.5) return { opacity: 1 };
+      return { opacity: Math.max(0, 1 - (p - 0.5) / 0.15) };
     },
     get heroStyle() {
       const p = this.progress;
