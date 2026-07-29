@@ -82,6 +82,8 @@ document.addEventListener("alpine:init", () => {
 
   Alpine.data("heroIntro2", () => ({
     progress: 0,
+    minFontSize: 0,
+    maxFontSize: 0,
     _ticking: false,
     init() {
       const reduced = window.matchMedia(
@@ -91,6 +93,7 @@ document.addEventListener("alpine:init", () => {
         this.progress = 1;
         return;
       }
+      this.computeFontSizes();
       this.onScroll();
       this._onScroll = () => {
         if (!this._ticking) {
@@ -102,7 +105,20 @@ document.addEventListener("alpine:init", () => {
         }
       };
       window.addEventListener("scroll", this._onScroll, { passive: true });
-      window.addEventListener("resize", this._onScroll, { passive: true });
+      window.addEventListener("resize", () => {
+        this.computeFontSizes();
+        this._onScroll();
+      }, { passive: true });
+    },
+    computeFontSizes() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // "Klanmedic" (9 chars) at Fraunces 700, letter-spacing -0.04em
+      // width ≈ 4.14 * fontSize; height = fontSize * 0.85
+      const forWidth = vw / 4.14;
+      const forHeight = vh / 0.85;
+      this.maxFontSize = Math.max(forWidth, forHeight) * 1.05;
+      this.minFontSize = vw * 0.08;
     },
     onScroll() {
       const section = this.$refs.hero2Section;
@@ -120,10 +136,11 @@ document.addEventListener("alpine:init", () => {
     get textStyle() {
       const p = this.progress;
       const scaleP = Math.min(1, p / 0.5);
-      const fontSize = 8 + scaleP * 52;
+      const fontSize =
+        this.minFontSize + scaleP * (this.maxFontSize - this.minFontSize);
       const opacity = p < 0.65 ? 1 : Math.max(0, 1 - (p - 0.65) / 0.15);
       return {
-        fontSize: `${fontSize}vw`,
+        fontSize: `${fontSize}px`,
         opacity,
       };
     },
