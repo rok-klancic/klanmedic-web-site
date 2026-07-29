@@ -276,6 +276,84 @@
       </section>
 
       <section
+        id="intro-2"
+        class="relative"
+        x-data="heroIntro2"
+        x-ref="hero2Section"
+        style="height: 250vh;"
+      >
+        <div
+          class="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden"
+        >
+          <!-- Underlying image (revealed by the text mask as it zooms) -->
+          <img
+            src="./src/images/clinic.png"
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover"
+            aria-hidden="true"
+          />
+
+          <!-- Sage overlay: covers the image, cut out by the text mask -->
+          <div
+            class="absolute inset-0 bg-sage"
+            :style="sageStyle"
+            aria-hidden="true"
+          ></div>
+
+          <!-- Text mask: KLANMEDIC cuts through the sage to reveal the image -->
+          <div class="absolute inset-0" aria-hidden="true">
+            <h1 class="text-clinic-mask" :style="textStyle">Klanmedic</h1>
+          </div>
+
+          <!-- Hero overlay: fades in at the end with its own scrim -->
+          <div
+            class="absolute inset-0"
+            :style="heroStyle"
+            x-cloak
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-forest/70 via-forest/40 to-forest/30"
+              aria-hidden="true"
+            ></div>
+            <div
+              class="relative mx-auto flex h-full max-w-[80rem] items-center px-6"
+            >
+              <div class="grid w-full grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
+                <div class="md:col-span-7 md:pr-6">
+                  <p
+                    class="font-sans text-sm font-medium uppercase tracking-wide text-surface/80"
+                  >
+                    Prostori
+                  </p>
+
+                  <h2
+                    class="signature-rule mt-5 font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-surface text-balance sm:text-6xl md:mt-6 md:text-7xl lg:text-[88px]"
+                  >
+                    Tiha arhitektura, topla oskrba.
+                  </h2>
+
+                  <p
+                    class="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-surface/90 md:mt-12"
+                  >
+                    Stičišče sodobne medicine in tihe narave. Za pregled, ki
+                    umirja.
+                  </p>
+
+                  <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
+                    <a
+                      href="#kontakt"
+                      class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface ring-1 ring-surface/30 transition-colors hover:bg-muted hover:text-surface hover:ring-muted"
+                      >Načrtujte obisk</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
         id="services"
         class="mx-auto max-w-6xl px-4 py-16"
         x-data="counter"

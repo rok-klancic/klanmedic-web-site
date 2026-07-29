@@ -79,5 +79,71 @@ document.addEventListener("alpine:init", () => {
       return { opacity };
     },
   }));
+
+  Alpine.data("heroIntro2", () => ({
+    progress: 0,
+    _ticking: false,
+    init() {
+      const reduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (reduced) {
+        this.progress = 1;
+        return;
+      }
+      this.onScroll();
+      this._onScroll = () => {
+        if (!this._ticking) {
+          requestAnimationFrame(() => {
+            this.onScroll();
+            this._ticking = false;
+          });
+          this._ticking = true;
+        }
+      };
+      window.addEventListener("scroll", this._onScroll, { passive: true });
+      window.addEventListener("resize", this._onScroll, { passive: true });
+    },
+    onScroll() {
+      const section = this.$refs.hero2Section;
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const sectionHeight = section.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollable = sectionHeight - viewportHeight;
+      const scrolled = -rect.top;
+      this.progress =
+        scrollable > 0
+          ? Math.max(0, Math.min(1, scrolled / scrollable))
+          : 0;
+    },
+    get textStyle() {
+      const p = this.progress;
+      const scaleP = Math.min(1, p / 0.5);
+      const scale = 1 + scaleP * 11;
+      const opacity = p < 0.55 ? 1 : Math.max(0, 1 - (p - 0.55) / 0.25);
+      return {
+        position: "absolute",
+        top: "50%",
+        left: "0",
+        right: "0",
+        textAlign: "center",
+        transform: `translateY(-50%) scale(${scale})`,
+        opacity,
+      };
+    },
+    get sageStyle() {
+      const p = this.progress;
+      return {
+        opacity: Math.max(0, 1 - (p - 0.55) / 0.25),
+      };
+    },
+    get heroStyle() {
+      const p = this.progress;
+      return {
+        opacity: Math.max(0, Math.min(1, (p - 0.7) / 0.3)),
+      };
+    },
+  }));
 });
 
