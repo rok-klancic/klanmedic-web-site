@@ -180,37 +180,36 @@
         >
           <!-- Intro layer: big Klanmedic text + hero image (visible at scroll=0) -->
           <div
-            class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 md:grid md:grid-cols-12 md:gap-0 md:items-center md:px-0 lg:px-0"
+            class="absolute inset-0 grid grid-cols-12 grid-rows-[minmax(0,1fr)_minmax(0,2fr)] items-center gap-0 px-6 md:px-0 lg:px-0"
             :style="introLayerStyle"
           >
-            <div class="flex flex-col items-center gap-6 -mt-[45vh] md:col-span-7 md:items-start md:pb-[104px] md:pl-12 md:-mt-[65vh] lg:pl-20">
-              <div class="flex flex-col items-center gap-6 md:flex-row md:items-center md:gap-[calc(100vw/12)]">
-                <h1
-                  x-ref="bigText"
-                  class="font-fraunces text-forest"
-                  style="font-size: clamp(3.5rem, 16vw, 16rem); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500;"
-                  :style="bigTextStyle"
-                >
-                  Klanmedic
-                </h1>
+            <div class="col-span-10 row-start-1 min-w-0 self-center md:pl-12 lg:pl-20">
+              <h1
+                x-ref="bigText"
+                class="font-fraunces text-forest uppercase"
+                style="font-size: clamp(2.5rem, 13vw, 16rem); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500;"
+                :style="bigTextStyle"
+              >
+                Klanmedic
+              </h1>
+            </div>
 
-                <img
-                  src="./src/images/logotip_klanmedic_obris.svg"
-                  alt="Klanmedic"
-                  class="block w-auto"
-                  style="height: calc(clamp(3.5rem, 16vw, 16rem) * 0.7)"
-                  :style="bigTextStyle"
-                />
-              </div>
+            <div
+              class="col-start-11 col-span-2 row-start-1 flex items-center justify-center self-center"
+            >
+              <img
+                src="./src/images/logotip_klanmedic_obris.svg"
+                alt="Klanmedic"
+                class="block w-auto"
+                style="height: clamp(2rem, 7vw, 10rem)"
+                :style="bigTextStyle"
+              />
             </div>
 
             <img
-              src="./src/images/intro_cropped.png"
+              src="./src/images/intro_v2.png"
               alt=""
-              width="810"
-              height="422"
-              class="block h-auto w-auto shrink-0 object-cover md:absolute md:right-0 md:top-[25vh] md:w-[58.333%]"
-              style="max-width: 95vw; max-height: 70vh;"
+              class="col-span-12 row-start-2 block h-full w-full min-h-0 min-w-0 justify-self-center self-end object-contain object-bottom"
               :style="introImageStyle"
             />
           </div>
@@ -269,87 +268,6 @@
                   height="800"
                   class="block h-auto w-full md:absolute md:right-0 md:top-28 md:h-auto md:w-[min(900px,60%)]"
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="intro-2"
-        class="relative"
-        x-data="heroIntro2"
-        x-ref="hero2Section"
-        style="height: 250vh;"
-      >
-        <div
-          class="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden"
-        >
-          <!-- Underlying image (revealed by the text mask as it zooms) -->
-          <img
-            src="./src/images/clinic.png"
-            alt=""
-            class="absolute inset-0 h-full w-full object-cover"
-            aria-hidden="true"
-          />
-
-          <!-- Sage overlay: covers the image, cut out by the text mask -->
-          <div
-            class="absolute inset-0 bg-sage"
-            :style="sageStyle"
-            aria-hidden="true"
-          ></div>
-
-          <!-- Text mask: KLANMEDIC cuts through the sage to reveal the image -->
-          <h1
-            class="text-clinic-mask absolute inset-0 flex items-center justify-center text-center"
-            :style="textStyle"
-          >
-            <span>Klanmedic</span>
-          </h1>
-
-          <!-- Hero overlay: fades in at the end with its own scrim -->
-          <div
-            class="absolute inset-0"
-            :style="heroStyle"
-            x-cloak
-          >
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-forest/70 via-forest/40 to-forest/30"
-              aria-hidden="true"
-            ></div>
-            <div
-              class="relative mx-auto flex h-full max-w-[80rem] items-center px-6"
-            >
-              <div class="grid w-full grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
-                <div class="md:col-span-7 md:pr-6">
-                  <p
-                    class="font-sans text-sm font-medium uppercase tracking-wide text-surface/80"
-                  >
-                    Prostori
-                  </p>
-
-                  <h2
-                    class="signature-rule mt-5 font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-surface text-balance sm:text-6xl md:mt-6 md:text-7xl lg:text-[88px]"
-                  >
-                    Tiha arhitektura, topla oskrba.
-                  </h2>
-
-                  <p
-                    class="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-surface/90 md:mt-12"
-                  >
-                    Stičišče sodobne medicine in tihe narave. Za pregled, ki
-                    umirja.
-                  </p>
-
-                  <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
-                    <a
-                      href="#kontakt"
-                      class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface ring-1 ring-surface/30 transition-colors hover:bg-muted hover:text-surface hover:ring-muted"
-                      >Načrtujte obisk</a
-                    >
-                  </div>
-                </div>
               </div>
             </div>
           </div>
