@@ -53,6 +53,42 @@
   will-change: opacity;
 }
 
+.intro-texture {
+  background-image:
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg"),
+    url("../images/leaf.svg");
+  background-position: 8% 22%, 88% 18%, 74% 86%, 38% 76%, 56% 12%, 18% 68%, 92% 72%;
+  background-repeat: no-repeat;
+  background-size: 18rem, 13rem, 22rem, 10rem, 8rem, 12rem, 9rem;
+  filter: opacity(0.045);
+}
+
+.intro-texture::before,
+.intro-texture::after {
+  position: absolute;
+  width: 15rem;
+  height: 15rem;
+  background: url("../images/leaf.svg") center / contain no-repeat;
+  content: "";
+}
+
+.intro-texture::before {
+  top: 38%;
+  right: 18%;
+  transform: scaleX(-1) rotate(14deg);
+}
+
+.intro-texture::after {
+  bottom: 8%;
+  left: 4%;
+  transform: scaleX(-1) rotate(-18deg);
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
