@@ -8,6 +8,8 @@ document.addEventListener("alpine:init", () => {
 
   Alpine.data("heroIntro", () => ({
     progress: 0,
+    clicked: false,
+    entered: false,
     navVisible: false,
     bigTextSize: 160,
     _ticking: false,
@@ -17,6 +19,7 @@ document.addEventListener("alpine:init", () => {
       ).matches;
       if (reduced) {
         this.progress = 1;
+        this.entered = true;
         this.navVisible = true;
         return;
       }
@@ -40,6 +43,7 @@ document.addEventListener("alpine:init", () => {
       this.bigTextSize = parseFloat(getComputedStyle(el).fontSize);
     },
     onScroll() {
+      if (this.entered) return;
       this.measureBigText();
       const section = this.$refs.heroSection;
       if (!section) return;
@@ -52,31 +56,37 @@ document.addEventListener("alpine:init", () => {
         scrollable > 0
           ? Math.max(0, Math.min(1, scrolled / scrollable))
           : 0;
-      this.navVisible = this.progress > 0.28;
+      this.navVisible = this.progress >= 0.82;
+      if (this.progress >= 0.98) this.enterIntro(false);
+    },
+    enterIntro(clicked = true) {
+      this.entered = true;
+      this.clicked = clicked;
+      this.progress = 1;
+      this.navVisible = clicked || this.progress >= 0.82;
     },
     get bigTextStyle() {
-      const p = this.progress;
-      const travelFrac = Math.min(1, p / 0.35);
-      const targetScale = 28 / this.bigTextSize;
-      const scale = 1 - travelFrac * (1 - targetScale);
-      const tx = -43 * travelFrac;
-      const ty = -47 * travelFrac;
+      return { opacity: 1 };
+    },
+    get introLayerStyle() {
       return {
-        transform: `translate(${tx}vw, ${ty}vh) scale(${scale})`,
-        opacity: p < 0.35 ? 1 : Math.max(0, 1 - (p - 0.35) / 0.15),
+        opacity: this.entered
+          ? 0
+          : Math.max(0, 1 - Math.max(0, this.progress - 0.55) / 0.2),
       };
     },
     get introImageStyle() {
-      const p = this.progress;
-      return {
-        opacity: Math.max(0, 1 - p * 2.5),
-        transform: `scale(${1 - p * 0.08})`,
-      };
+      return { opacity: 1 };
     },
     get finalStyle() {
-      const p = this.progress;
-      const opacity = Math.max(0, Math.min(1, (p - 0.5) / 0.3));
-      return { opacity };
+      if (this.clicked) {
+        return { opacity: 1 };
+      }
+      return {
+        opacity: this.entered
+          ? 1
+          : Math.max(0, Math.min(1, (this.progress - 0.82) / 0.16)),
+      };
     },
   }));
 
