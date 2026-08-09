@@ -1,4 +1,9 @@
 document.addEventListener("alpine:init", () => {
+  Alpine.store("intro", {
+    entered: false,
+    ready: false,
+  });
+
   Alpine.data("counter", () => ({
     count: 0,
     init() {
@@ -20,11 +25,16 @@ document.addEventListener("alpine:init", () => {
       if (reduced) {
         this.progress = 1;
         this.entered = true;
+        this.$store.intro.entered = true;
+        this.$store.intro.ready = true;
         this.navVisible = true;
         return;
       }
       this.measureBigText();
       this.onScroll();
+      this._onWheel = () => this.enterIntro(true);
+      window.addEventListener("wheel", this._onWheel, { passive: true });
+      window.addEventListener("touchmove", this._onWheel, { passive: true });
       this._onScroll = () => {
         if (!this._ticking) {
           requestAnimationFrame(() => {
@@ -67,7 +77,13 @@ document.addEventListener("alpine:init", () => {
       if (this.progress >= 0.98) this.enterIntro(true);
     },
     enterIntro(clicked = true) {
+      if (this.entered) return;
       this.entered = true;
+      this.$store.intro.entered = true;
+      window.setTimeout(() => {
+        this.$store.intro.ready = true;
+        document.documentElement.classList.remove("overflow-hidden");
+      }, 1200);
       this.clicked = clicked;
       this.progress = 1;
       this.navVisible = clicked || this.progress >= 0.82;

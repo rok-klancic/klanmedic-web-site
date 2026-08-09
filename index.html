@@ -18,8 +18,14 @@
   <body
     class="min-h-screen bg-sage font-sans text-forest antialiased"
     x-data="heroIntro"
+    :class="$store.intro.ready ? '' : 'overflow-hidden'"
   >
-    <header class="sticky top-0 z-50" x-data="{ open: false }">
+    <header
+      class="sticky top-0 z-50"
+      x-data="{ open: false }"
+      x-show="$store.intro.ready"
+      x-cloak
+    >
       <nav
         :class="[navVisible ? 'opacity-100' : 'pointer-events-none opacity-0', clicked ? 'delay-[1200ms] duration-[1200ms]' : 'duration-0']"
         class="mx-auto flex max-w-[80rem] items-center justify-between gap-6 border-b border-hairline bg-sage/80 px-6 py-5 backdrop-blur transition-opacity"
@@ -173,10 +179,10 @@
         id="home"
         x-ref="heroSection"
         class="bg-sage relative"
-        style="height: 200vh;"
+        style="height: 100vh;"
       >
         <div
-          class="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden"
+          class="relative flex h-screen w-full items-center justify-center overflow-hidden"
           @click="enterIntro(true)"
         >
           <div
@@ -302,6 +308,8 @@
         id="services"
         class="mx-auto max-w-6xl px-4 py-16"
         x-data="counter"
+        x-show="$store.intro.ready"
+        x-cloak
       >
         <h2 class="text-2xl font-semibold">Demo Alpine komponente</h2>
         <p class="mt-2 text-slate-600">
@@ -330,13 +338,22 @@
         </div>
       </section>
 
-      <section id="contact" class="mx-auto max-w-6xl px-4 py-16">
+      <section
+        id="contact"
+        class="mx-auto max-w-6xl px-4 py-16"
+        x-show="$store.intro.ready"
+        x-cloak
+      >
         <h2 class="text-2xl font-semibold">Kontakt</h2>
         <p class="mt-2 text-slate-600">Pišite nam na info@klanmedic.si.</p>
       </section>
     </main>
 
-    <footer class="border-t border-slate-200 py-8">
+    <footer
+      class="border-t border-slate-200 py-8"
+      x-show="$store.intro.ready"
+      x-cloak
+    >
       <div class="mx-auto max-w-6xl px-4 text-sm text-slate-500">
         © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic
       </div>
