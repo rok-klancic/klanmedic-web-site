@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sage: #F1F4F0;
-  --color-surface: #fafbf8;
-  --color-forest: #2f4a3a;
-  --color-sand: #d9c7a7;
-  --color-hairline: #d4dcd0;
-  --color-muted: #5c6b61;
+  --color-sage: #F4F1EA;
+  --color-surface: #FAFAF7;
+  --color-forest: #3F4543;
+  --color-sand: #B58A62;
+  --color-hairline: #B9B5AA;
+  --color-muted: #756F65;
 
   --font-fraunces: "Fraunces", ui-serif, Georgia, serif;
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
