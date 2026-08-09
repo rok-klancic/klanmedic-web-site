@@ -8,12 +8,12 @@ Six tokens. Sage carries the page; warm off-white holds cards; deep forest is th
 
 | Token | Role | Hex |
 | --- | --- | --- |
-| sage | Page background | `#F1F4F0` |
-| surface | Cards, elevated surfaces (warm off-white) | `#FAFBF8` |
-| forest | Primary: text, buttons, links, primary rules | `#2F4A3A` |
-| sand | Accent — signature rule, underline accent, single hover wash only | `#D9C7A7` |
-| border | Hairline dividers, card borders | `#D4DCD0` |
-| muted | Captions, meta, secondary text | `#5C6B61` |
+| sage | Page background | `#F4F1EA` |
+| surface | Cards, elevated surfaces (warm off-white) | `#FAFAF7` |
+| forest | Primary: text, buttons, links, primary rules | `#3F4543` |
+| sand | Accent — signature rule, underline accent, single hover wash only | `#B58A62` |
+| border | Hairline dividers, card borders | `#B9B5AA` |
+| muted | Captions, meta, secondary text | `#756F65` |
 
 Rules:
 - Buttons are always forest. Never sand.
@@ -56,7 +56,7 @@ Rules:
 A single 2px `sand` rule beneath the hero headline, overshooting the last word by 10–15% of the line's total width.
 
 - **Weight:** 2px. (Heavier than section dividers on purpose — the 1px borders separate, this one anchors.)
-- **Color:** `sand` (`#D9C7A7`).
+- **Color:** `sand` (`#B58A62`).
 - **Length:** 100% of the headline line width + 10–15% overshoot, on the right.
 - **Position:** 4–8px below the baseline of the last headline line.
 - **Reuse:** the same overshoot treatment is allowed under at most two section titles per page. Not under body text, not under buttons, not as a generic underline for links. The sand is rationed.

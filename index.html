@@ -318,55 +318,79 @@
 
       <section
         id="services"
-        class="mx-auto max-w-6xl px-4 py-16"
-        x-data="counter"
+        class="mx-auto max-w-[80rem] border-t border-hairline px-6 py-20 md:px-8 md:py-24"
         x-show="$store.intro.ready"
         x-cloak
       >
-        <h2 class="text-2xl font-semibold">Demo Alpine komponente</h2>
-        <p class="mt-2 text-slate-600">
-          Klikni gumb — števec je vezan na Alpine.js.
-        </p>
-
-        <div class="mt-6 flex items-center gap-4">
-          <button
-            type="button"
-            @click="count--"
-            class="rounded-md border border-slate-300 px-4 py-2 hover:bg-slate-100"
-          >
-            −
-          </button>
-          <span
-            class="min-w-[3ch] text-center text-2xl font-semibold"
-            x-text="count"
-          ></span>
-          <button
-            type="button"
-            @click="count++"
-            class="rounded-md border border-slate-300 px-4 py-2 hover:bg-slate-100"
-          >
-            +
-          </button>
+        <div class="mb-10 flex items-end justify-between gap-6 md:mb-12">
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Področja obravnave
+            </p>
+            <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+              Izberite svojo pot do dobrega počutja.
+            </h2>
+          </div>
+          <span class="hidden max-w-[24ch] text-right text-[15px] leading-relaxed text-muted md:block">
+            Strokovna obravnava, prilagojena vašim potrebam.
+          </span>
         </div>
-      </section>
 
-      <section
-        id="contact"
-        class="mx-auto max-w-6xl px-4 py-16"
-        x-show="$store.intro.ready"
-        x-cloak
-      >
-        <h2 class="text-2xl font-semibold">Kontakt</h2>
-        <p class="mt-2 text-slate-600">Pišite nam na info@klanmedic.si.</p>
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 md:gap-6">
+          <a
+            href="#narocanje"
+            class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+          >
+            <img
+              src="./src/images/zobo.jpg"
+              alt=""
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50"></div>
+            <h3 class="absolute inset-x-6 bottom-6 font-fraunces text-3xl leading-tight text-surface sm:text-2xl lg:text-3xl">
+              Zobozdravstvo
+            </h3>
+          </a>
+
+          <a
+            href="#narocanje"
+            class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+          >
+            <img
+              src="./src/images/gastro.png"
+              alt=""
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50"></div>
+            <h3 class="absolute inset-x-6 bottom-6 font-fraunces text-3xl leading-tight text-surface sm:text-2xl lg:text-3xl">
+              Interna medicina
+            </h3>
+          </a>
+
+          <a
+            href="#narocanje"
+            class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+          >
+            <img
+              src="./src/images/estetika.png"
+              alt=""
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50"></div>
+            <h3 class="absolute inset-x-6 bottom-6 font-fraunces text-3xl leading-tight text-surface sm:text-2xl lg:text-3xl">
+              Estetika
+            </h3>
+          </a>
+        </div>
       </section>
     </main>
 
     <footer
-      class="border-t border-slate-200 py-8"
+      class="border-t border-hairline py-8"
       x-show="$store.intro.ready"
       x-cloak
     >
-      <div class="mx-auto max-w-6xl px-4 text-sm text-slate-500">
+      <div class="mx-auto max-w-[80rem] px-6 text-sm text-muted md:px-8">
         © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic
       </div>
     </footer>

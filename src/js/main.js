@@ -5,13 +5,6 @@ document.addEventListener("alpine:init", () => {
     compact: false,
   });
 
-  Alpine.data("counter", () => ({
-    count: 0,
-    init() {
-      console.log("Klanmedic site ready");
-    },
-  }));
-
   Alpine.data("heroIntro", () => ({
     progress: 0,
     clicked: false,

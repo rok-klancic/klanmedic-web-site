@@ -48,7 +48,7 @@ Treat it as the source of truth; do not re-derive decisions from defaults.
 
 Non-negotiables (full detail in `DESIGN.md`):
 - Palette is the six sage/forest/sand tokens. No `blue-600`, no `slate-*`, no
-  pure `#FFFFFF` surfaces — use `#FAFBF8` for cards.
+  pure `#FFFFFF` surfaces — use `#FAFAF7` for cards.
 - Type is Fraunces (display) + Manrope (body). No Inter, no system fallbacks
   as the visible choice.
 - Container is `max-w-[80rem]`; hero is a 7/5 split; sections separated by 1px
