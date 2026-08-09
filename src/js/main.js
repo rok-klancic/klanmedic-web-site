@@ -52,12 +52,19 @@ document.addEventListener("alpine:init", () => {
       const viewportHeight = window.innerHeight;
       const scrollable = sectionHeight - viewportHeight;
       const scrolled = -rect.top;
+
+      // Any scroll gesture enters the hero using the same transition as a click.
+      if (scrolled > 0) {
+        this.enterIntro(true);
+        return;
+      }
+
       this.progress =
         scrollable > 0
           ? Math.max(0, Math.min(1, scrolled / scrollable))
           : 0;
       this.navVisible = this.progress >= 0.82;
-      if (this.progress >= 0.98) this.enterIntro(false);
+      if (this.progress >= 0.98) this.enterIntro(true);
     },
     enterIntro(clicked = true) {
       this.entered = true;
