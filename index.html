@@ -34,11 +34,16 @@
           href="#home"
           class="flex items-center gap-2 font-fraunces text-2xl text-forest sm:text-[28px]"
         >
-          <span class="uppercase">KLANMEDIC</span>
+          <span
+            class="overflow-hidden whitespace-nowrap uppercase opacity-100 transition-all duration-[900ms]"
+            :style="{ maxWidth: $store.intro.compact ? '0px' : '12rem', opacity: $store.intro.compact ? 0 : 1 }"
+            >KLANMEDIC</span
+          >
           <img
             src="./src/images/logotip_klanmedic_obris.svg"
             alt=""
-            class="block h-[0.72em] w-auto"
+            class="block h-[0.72em] w-auto transition-transform duration-[900ms]"
+            :class="$store.intro.compact ? '-translate-x-2 scale-125' : 'scale-100'"
           />
         </a
         >

@@ -2,6 +2,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.store("intro", {
     entered: false,
     ready: false,
+    compact: false,
   });
 
   Alpine.data("counter", () => ({
@@ -32,7 +33,13 @@ document.addEventListener("alpine:init", () => {
       }
       this.measureBigText();
       this.onScroll();
-      this._onWheel = () => this.enterIntro(true);
+      this._onWheel = () => {
+        if (this.$store.intro.ready) {
+          this.$store.intro.compact = true;
+        } else {
+          this.enterIntro(true);
+        }
+      };
       window.addEventListener("wheel", this._onWheel, { passive: true });
       window.addEventListener("touchmove", this._onWheel, { passive: true });
       this._onScroll = () => {
@@ -53,7 +60,12 @@ document.addEventListener("alpine:init", () => {
       this.bigTextSize = parseFloat(getComputedStyle(el).fontSize);
     },
     onScroll() {
-      if (this.entered) return;
+      if (this.entered) {
+        if (this.$store.intro.ready && window.scrollY > 0) {
+          this.$store.intro.compact = true;
+        }
+        return;
+      }
       this.measureBigText();
       const section = this.$refs.heroSection;
       if (!section) return;
