@@ -33,9 +33,9 @@ document.addEventListener("alpine:init", () => {
       }
       this.measureBigText();
       this.onScroll();
-      this._onWheel = () => {
+      this._onWheel = (event) => {
         if (this.$store.intro.ready) {
-          this.$store.intro.compact = true;
+          if (event.deltaY > 0) this.$store.intro.compact = true;
         } else {
           this.enterIntro(true);
         }
@@ -61,8 +61,8 @@ document.addEventListener("alpine:init", () => {
     },
     onScroll() {
       if (this.entered) {
-        if (this.$store.intro.ready && window.scrollY > 0) {
-          this.$store.intro.compact = true;
+        if (this.$store.intro.ready) {
+          this.$store.intro.compact = window.scrollY > 0;
         }
         return;
       }
