@@ -1,5 +1,5 @@
 node_modules/
-src/css/output.css
+# src/css/output.css
 .DS_Store
 Thumbs.db
 .env
