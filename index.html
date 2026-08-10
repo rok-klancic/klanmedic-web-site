@@ -403,7 +403,7 @@
           </h2>
         </div>
 
-        <div class="mx-auto mt-10 max-w-5xl rounded-2xl bg-surface px-6 py-8 md:mt-12 md:px-12 md:py-10">
+        <div class="mx-auto mt-10 max-w-5xl rounded-2xl px-6 py-8 md:mt-12 md:px-12 md:py-10">
           <div class="grid gap-8 md:grid-cols-3 md:gap-10">
             <div>
               <h3 class="font-fraunces text-2xl leading-tight text-forest">
@@ -455,19 +455,12 @@
           </div>
         </div>
 
-        <div class="mt-10 grid gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_14rem] md:items-end md:gap-10">
+        <div class="mt-10 md:mt-12">
           <div class="relative overflow-hidden rounded-2xl" @mouseleave="hovered = null">
             <img
-              src="./src/images/meet_the_team.png"
+              :src="displayedImage"
               alt="Ekipa Klanmedic"
               class="block aspect-[16/9] h-auto w-full object-cover"
-              :class="activePerson ? 'opacity-0' : 'opacity-100'"
-            />
-            <img
-              :src="activeImage"
-              :alt="activePerson ? `${activePerson.name}, ${activePerson.role}` : ''"
-              class="absolute inset-0 block aspect-[16/9] h-full w-full object-cover"
-              :class="activePerson ? 'opacity-100' : 'opacity-0'"
               aria-live="polite"
             />
 
@@ -483,23 +476,20 @@
                 @click="select(person)"
                 :aria-label="`Spoznajte ${person.name}`"
                 :aria-pressed="selected === person.id"
-              >
-                <span
-                  class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-forest/90 px-3 py-1.5 text-xs font-medium text-surface opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-                >Spoznaj me</span>
-              </button>
+              ></button>
             </template>
           </div>
 
-          <div class="border-t border-hairline pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0">
+          <div class="relative mt-8 border-t border-hairline pt-5 md:h-36 md:pt-5">
             <p class="text-xs font-medium uppercase tracking-[0.16em] text-muted">
               Izberite člana ekipe
             </p>
-            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-3 md:flex-col md:gap-3">
+            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-3 md:mt-0 md:block">
               <template x-for="person in people" :key="`${person.id}-control`">
                 <button
                   type="button"
-                  class="group flex items-baseline gap-2 text-left text-forest transition-colors hover:text-muted focus:outline-none focus-visible:text-muted"
+                  class="group relative flex items-baseline gap-2 text-left text-forest transition-colors hover:text-muted focus:outline-none focus-visible:text-muted md:absolute md:top-5"
+                  :class="person.id === 'ak' ? 'md:left-[51%] md:-translate-x-1/2' : 'md:left-[87%] md:-translate-x-1/2'"
                   @mouseenter="hovered = person.id"
                   @mouseleave="hovered = null"
                   @focus="hovered = person.id"
@@ -507,7 +497,7 @@
                   @click="select(person)"
                   :aria-pressed="selected === person.id"
                 >
-                  <span class="h-px w-0 bg-sand transition-all group-hover:w-4 group-focus-visible:w-4" :class="selected === person.id ? 'w-4' : ''"></span>
+                  <span class="pointer-events-none absolute bottom-full left-1/2 hidden h-[3.25rem] w-px -translate-x-1/2 bg-hairline md:block"></span>
                   <span>
                     <span class="block font-fraunces text-xl leading-tight" x-text="person.name"></span>
                     <span class="mt-0.5 block text-sm text-muted" x-text="person.role"></span>

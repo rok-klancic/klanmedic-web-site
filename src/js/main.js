@@ -198,20 +198,22 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("teamShowcase", () => ({
     selected: null,
     hovered: null,
+    displayedImage: "./src/images/meet_the_team.png",
+    transitionTimer: null,
     people: [
       {
         id: "ak",
         name: "Killy Aman",
         role: "Zdravnica",
         image: "./src/images/meet_the_team_ak.png",
-        hotspot: "left-[39%] top-[34%] h-[50%] w-[15%]",
+        hotspot: "left-[43.5%] top-[34%] h-[50%] w-[15%]",
       },
       {
         id: "marko",
         name: "Dr. Anakhona",
         role: "Zdravnik",
         image: "./src/images/meet_the_team_marko.png",
-        hotspot: "right-[2%] top-[20%] h-[70%] w-[22%]",
+        hotspot: "right-[5.5%] top-[20%] h-[70%] w-[15%]",
       },
     ],
     get activePerson() {
@@ -219,6 +221,22 @@ document.addEventListener("alpine:init", () => {
     },
     get activeImage() {
       return this.activePerson ? this.activePerson.image : "./src/images/meet_the_team.png";
+    },
+    init() {
+      this.$watch("activeImage", (image) => {
+        if (image === this.displayedImage) return;
+
+        window.clearTimeout(this.transitionTimer);
+
+        const intermediate = this.activePerson
+          ? this.activePerson.image.replace(".png", "_2.png")
+          : "./src/images/meet_the_team.png";
+
+        this.displayedImage = intermediate;
+        this.transitionTimer = window.setTimeout(() => {
+          this.displayedImage = image;
+        }, 400);
+      });
     },
     select(person) {
       this.selected = this.selected === person.id ? null : person.id;
