@@ -194,5 +194,35 @@ document.addEventListener("alpine:init", () => {
       };
     },
   }));
+
+  Alpine.data("teamShowcase", () => ({
+    selected: null,
+    hovered: null,
+    people: [
+      {
+        id: "ak",
+        name: "Killy Aman",
+        role: "Zdravnica",
+        image: "./src/images/meet_the_team_ak.png",
+        hotspot: "left-[39%] top-[34%] h-[50%] w-[15%]",
+      },
+      {
+        id: "marko",
+        name: "Dr. Anakhona",
+        role: "Zdravnik",
+        image: "./src/images/meet_the_team_marko.png",
+        hotspot: "right-[2%] top-[20%] h-[70%] w-[22%]",
+      },
+    ],
+    get activePerson() {
+      return this.people.find((person) => person.id === (this.hovered || this.selected));
+    },
+    get activeImage() {
+      return this.activePerson ? this.activePerson.image : "./src/images/meet_the_team.png";
+    },
+    select(person) {
+      this.selected = this.selected === person.id ? null : person.id;
+    },
+  }));
 });
 

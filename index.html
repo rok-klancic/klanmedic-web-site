@@ -315,9 +315,13 @@
         </div>
       </section>
 
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
       <section
         id="services"
-        class="mx-auto max-w-[80rem] border-t border-hairline px-6 py-20 md:px-8 md:py-24"
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
         x-show="$store.intro.ready"
         x-cloak
       >
@@ -380,9 +384,13 @@
         </div>
       </section>
 
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
       <section
         id="why-us"
-        class="mx-auto max-w-[80rem] border-t border-hairline px-6 py-20 md:px-8 md:py-24"
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
         x-show="$store.intro.ready"
         x-cloak
       >
@@ -420,6 +428,95 @@
               <p class="mt-3 text-[17px] leading-relaxed text-muted">
                 Za nujne primere smo dosegljivi isti dan, brez nepotrebnega čakanja.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <section
+        id="team"
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
+        x-data="teamShowcase"
+        x-show="$store.intro.ready"
+        x-cloak
+      >
+        <div class="grid items-end gap-8 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Spoznajte ekipo
+            </p>
+            <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+              Ljudje, ki skrbijo za vas.
+            </h2>
+          </div>
+          <p class="max-w-[60ch] text-[17px] leading-relaxed text-muted">
+            Za dobro obravnavo je pomemben tudi človek na drugi strani. Izberite člana ekipe in ga spoznajte od blizu.
+          </p>
+        </div>
+
+        <div class="mt-10 grid gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_14rem] md:items-end md:gap-10">
+          <div class="relative overflow-hidden rounded-2xl bg-surface" @mouseleave="hovered = null">
+            <img
+              src="./src/images/meet_the_team.png"
+              alt="Ekipa Klanmedic"
+              class="block aspect-[16/9] h-auto w-full object-cover"
+              :class="activePerson ? 'opacity-0' : 'opacity-100'"
+            />
+            <img
+              :src="activeImage"
+              :alt="activePerson ? `${activePerson.name}, ${activePerson.role}` : ''"
+              class="absolute inset-0 block aspect-[16/9] h-full w-full object-cover transition-opacity duration-300 ease-out"
+              :class="activePerson ? 'opacity-100' : 'opacity-0'"
+              aria-live="polite"
+            />
+
+            <template x-for="person in people" :key="person.id">
+              <button
+                type="button"
+                class="group absolute rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-surface focus-visible:ring-offset-2 focus-visible:ring-offset-forest"
+                :class="person.hotspot"
+                @mouseenter="hovered = person.id"
+                @mouseleave="hovered = null"
+                @focus="hovered = person.id"
+                @blur="hovered = null"
+                @click="select(person)"
+                :aria-label="`Spoznajte ${person.name}`"
+                :aria-pressed="selected === person.id"
+              >
+                <span
+                  class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-forest/90 px-3 py-1.5 text-xs font-medium text-surface opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                >Spoznaj me</span>
+              </button>
+            </template>
+          </div>
+
+          <div class="border-t border-hairline pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0">
+            <p class="text-xs font-medium uppercase tracking-[0.16em] text-muted">
+              Izberite člana ekipe
+            </p>
+            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-3 md:flex-col md:gap-3">
+              <template x-for="person in people" :key="`${person.id}-control`">
+                <button
+                  type="button"
+                  class="group flex items-baseline gap-2 text-left text-forest transition-colors hover:text-muted focus:outline-none focus-visible:text-muted"
+                  @mouseenter="hovered = person.id"
+                  @mouseleave="hovered = null"
+                  @focus="hovered = person.id"
+                  @blur="hovered = null"
+                  @click="select(person)"
+                  :aria-pressed="selected === person.id"
+                >
+                  <span class="h-px w-0 bg-sand transition-all group-hover:w-4 group-focus-visible:w-4" :class="selected === person.id ? 'w-4' : ''"></span>
+                  <span>
+                    <span class="block font-fraunces text-xl leading-tight" x-text="person.name"></span>
+                    <span class="mt-0.5 block text-sm text-muted" x-text="person.role"></span>
+                  </span>
+                </button>
+              </template>
             </div>
           </div>
         </div>
