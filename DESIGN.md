@@ -45,7 +45,7 @@ Rules:
 
 - **Max width:** `80rem` (1280px). Content is centered in this container.
 - **Grid:** 12-col, mobile-first; collapses to fewer cols below `md`.
-- **Hero:** 7/5 split — Fraunces headline, subhead, and primary CTA on the left 7 cols; image on the right 5 cols. At `md` and below, stack: text first, image second.
+- **Hero:** 7/5 split — Fraunces headline, subhead, and primary CTA on the left 7 cols; image on the right 5 cols. At `md` and below, the portrait is anchored to the bottom edge of the hero at full width, fading into `sage` via a top mask; the crisp side image is desktop-only.
 - **Sections:** centered within the 80rem container, with hairline rules (1px `border`) between major sections rather than relying on whitespace alone.
 - **Vertical rhythm:** `py-24` (6rem) between sections, `py-12` (3rem) within a section.
 - **Body measure:** paragraphs sit in a 60–72ch column, even on wide screens.
