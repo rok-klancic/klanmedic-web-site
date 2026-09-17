@@ -146,6 +146,7 @@
         class="space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
         x-show="open"
         x-transition.opacity
+        @click="open = false"
         x-cloak
       >
         <li>
@@ -256,7 +257,7 @@
 
           <!-- Final layer: full hero content (visible after scroll) -->
           <div
-            class="relative mx-auto flex min-h-screen w-full max-w-[80rem] items-start px-6 py-20 md:items-center md:px-6 md:py-28"
+            class="relative mx-auto flex min-h-dvh w-full max-w-[80rem] items-start px-6 pt-28 pb-20 md:items-center md:px-6 md:py-28"
             :class="clicked ? 'transition-opacity delay-[1200ms] duration-[1200ms] ease-in-out' : ''"
             :style="finalStyle"
             x-cloak
@@ -268,7 +269,7 @@
               <img
                 src="./src/images/hero.png"
                 alt=""
-                class="absolute bottom-0 left-0 w-full [mask-image:linear-gradient(to_bottom,transparent,black_35%)]"
+                class="absolute bottom-0 left-0 w-full [mask-image:linear-gradient(to_bottom,transparent,black_35%,black_82%,transparent)]"
               />
             </div>
 
@@ -326,7 +327,7 @@
         </div>
       </section>
 
-      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+      <div class="mx-auto hidden max-w-[80rem] justify-center px-6 md:flex md:px-8" aria-hidden="true">
         <span class="h-px w-24 bg-hairline"></span>
       </div>
 
@@ -415,8 +416,8 @@
         </div>
 
         <div class="mx-auto mt-10 max-w-5xl rounded-2xl px-6 py-8 md:mt-12 md:px-12 md:py-10">
-          <div class="grid gap-8 md:grid-cols-3 md:gap-10">
-            <div>
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:gap-10">
+            <div class="col-span-2 sm:col-span-1">
               <h3 class="font-fraunces text-2xl leading-tight text-forest">
                 Celostna obravnava
               </h3>
@@ -519,15 +520,168 @@
           </div>
         </div>
       </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <section
+        id="o-kliniki"
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
+        x-show="$store.intro.ready"
+        x-cloak
+      >
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="text-sm font-medium uppercase tracking-wide text-muted">
+            O Klanmedicu
+          </p>
+          <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+            Praktične informacije.
+          </h2>
+        </div>
+
+        <div class="mx-auto mt-10 max-w-[72ch] md:mt-12">
+          <p class="text-[17px] leading-relaxed text-forest">
+            Smo manjši center, v katerem skrbimo za vaše fizično zdravje in
+            splošno dobro počutje. Izvajamo zobozdravstveno in
+            gastroenterološko dejavnost na koncesijo in samoplačniško.
+            Samoplačniško izvajamo fizioterapijo, zdravljenje debelosti,
+            terapije z magnetnim poljem (inkontinenca, prostatitis),
+            oblikovanje postave, pomlajevanje kože, medicinsko nego kože,
+            medicinsko hipnozo, vodene vadbe, laserske terapije in hiperbarične
+            kisikove terapije. Gastroenterološko in fizioterapevtsko obravnavo
+            izvajamo tudi za Zavarovalnico Triglav, Zavarovalnico Generali in
+            Zavarovalnico Vzajemna.
+          </p>
+          <p class="mt-6 text-[17px] leading-relaxed text-muted">
+            Vse terapije in programi iz programov Estetike, Fizioterapije,
+            Magnetne terapije in Ambulante za zdravljenje debelosti so
+            prilagojeni posameznikovim željam, potrebam in zmožnostim. Izvaja
+            jih medicinsko izobraženo osebje z vrhunskimi aparati Iskra
+            Medical, Dermapen, OxyHelp Industry in Fotona, ki so CE
+            certificirani, kar zagotavlja maksimalno varnost in učinkovitost
+            za uporabnika.
+          </p>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <section
+        id="narocanje-cta"
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
+        x-show="$store.intro.ready"
+        x-cloak
+      >
+        <div
+          class="mx-auto max-w-3xl rounded-2xl bg-surface px-6 py-12 text-center md:px-12 md:py-16"
+        >
+          <p class="text-sm font-medium uppercase tracking-wide text-muted">
+            Naročanje
+          </p>
+          <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+            Pripravljeni za prvi korak?
+          </h2>
+          <p class="mx-auto mt-5 max-w-[60ch] text-[17px] leading-relaxed text-muted">
+            Pokličite nas ali oddajte zahtevo — za nujne primere smo
+            dosegljivi isti dan.
+          </p>
+          <div class="mt-10 flex flex-col items-center gap-4">
+            <a
+              href="#narocanje"
+              class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted"
+              >Naročite se na pregled</a
+            >
+            <a
+              href="tel:+38612345678"
+              class="text-[15px] text-muted transition-colors hover:text-forest"
+              >ali pokličite
+              <span class="whitespace-nowrap">01 234 5678</span></a
+            >
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer
-      class="border-t border-hairline py-8"
+      class="border-t border-hairline"
       x-show="$store.intro.ready"
       x-cloak
     >
-      <div class="mx-auto max-w-[80rem] px-6 text-sm text-muted md:px-8">
-        © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic
+      <div class="mx-auto max-w-[80rem] px-6 py-12 md:px-8 md:py-16">
+        <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div>
+            <a
+              href="#home"
+              class="flex items-center gap-2 font-fraunces text-xl text-forest"
+            >
+              <img
+                src="./src/images/logotip_klanmedic_obris.svg"
+                alt=""
+                class="block h-7 w-auto"
+              />
+              <span class="uppercase">Klanmedic</span>
+            </a>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">
+              Zasebna klinika v [mesto] — splošna medicina, specialistični
+              pregledi in estetska oskrba.
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Navigacija
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li><a href="#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
+              <li><a href="#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
+              <li><a href="#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
+              <li><a href="#narocanje" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Kontakt
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li class="text-muted">[mesto], Slovenija</li>
+              <li>
+                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                >
+              </li>
+              <li>
+                <a href="mailto:info@klanmedic.si" class="text-forest transition-colors hover:text-muted"
+                  >info@klanmedic.si</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Urnik
+            </p>
+            <dl class="mt-4 space-y-2.5 text-[15px]">
+              <div class="flex justify-between gap-6">
+                <dt class="text-muted">Pon–Pet</dt>
+                <dd class="text-forest">8:00–16:00</dd>
+              </div>
+              <div class="flex justify-between gap-6">
+                <dt class="text-muted">Sob–Ned</dt>
+                <dd class="text-muted">zaprto</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="mt-12 border-t border-hairline pt-6 text-sm text-muted">
+          © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic.
+          Vse pravice pridržane.
+        </div>
       </div>
     </footer>
 

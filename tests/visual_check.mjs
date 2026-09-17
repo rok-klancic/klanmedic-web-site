@@ -164,7 +164,12 @@ async function runWidth(browser, width, port) {
     if (!(await page.locator("#mobile-menu").isVisible()))
       rec.problems.push("mobile menu did not open");
     await page.screenshot({ path: resolve(SHOTS, `${width}-menu.png`) });
-    await page.click("button[aria-label='Meni']");
+
+    // tapping a nav link inside the menu must close it
+    await page.click("#mobile-menu a[href='#services']");
+    await page.waitForTimeout(500);
+    if (await page.locator("#mobile-menu").isVisible())
+      rec.problems.push("mobile menu did not close after link tap");
   }
 
   // services screenshot

@@ -94,6 +94,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-padding-top: 6rem;
   }
   body {
     font-family: var(--font-sans);
