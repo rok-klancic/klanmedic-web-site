@@ -9,3 +9,4 @@ Thumbs.db
 .idea/
 /artifacts/
 __pycache__/
+tests/screenshots/

@@ -2,13 +2,17 @@
 
 Klanmedic static marketing site (Slovenian, `lang="sl"`). Single-page HTML using
 Tailwind CSS v4 and Alpine.js, both loaded as plain assets. No framework, no
-bundler, no test suite, no linter, no typecheck, no CI.
+bundler, no linter, no typecheck, no CI. A single Playwright visual smoke test
+lives in `tests/`.
 
 ## Commands
 
-- `npm install` — install dev deps (only Tailwind v4 + its CLI).
+- `npm install` — install dev deps (Tailwind v4 + its CLI, Playwright).
 - `npm run build` — one-shot Tailwind compile: `src/css/input.css` -> `src/css/output.css`, minified.
 - `npm run watch` — same pipeline, watching for changes.
+- `npm run test:visual` — Playwright smoke test at 5 viewport widths; run after
+  layout/markup changes. One-time browser setup: `npx playwright install
+  chromium`. See `tests/README.md`.
 
 There is no dev server, build orchestrator, or preview script in `package.json`.
 Open `index.html` directly in a browser, or serve the repo root with any static
@@ -75,7 +79,9 @@ implementation to match the spec — not the other way around.
 - Keep markup in `index.html`; only factor out into separate files if a second
   page is added (the previous `wine-bar.html` was removed in the current
   rewrite).
-- No tests exist. Do not add a test framework for this repo unless asked.
+- `tests/visual_check.mjs` is the only test; keep it a single plain Playwright
+  script (no test framework). When a page that anchors point to is added,
+  remove it from `EXPECTED_DEAD_ANCHORS` in that file.
 
 ## Working tree
 

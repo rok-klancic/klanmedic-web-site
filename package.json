@@ -5,10 +5,12 @@
   "description": "Klanmedic website (HTML + Tailwind CSS + Alpine.js)",
   "scripts": {
     "build": "tailwindcss -i ./src/css/input.css -o ./src/css/output.css --minify",
-    "watch": "tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch"
+    "watch": "tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
+    "test:visual": "node tests/visual_check.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.13",
+    "playwright": "^1.63.0",
     "tailwindcss": "^4.1.13"
   }
 }
