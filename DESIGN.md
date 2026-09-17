@@ -30,15 +30,15 @@ Two faces. **Fraunces** for display (hero, section titles). **Manrope** for body
 | --- | --- | --- | --- | --- |
 | Hero | 72 / 80 / 96 | `text-7xl` / `text-8xl` | Fraunces 500, *soft* axis on, *wonk* off | Optical sizing on |
 | Section title | 36 / 40 | `text-4xl` | Fraunces 500 | |
-| Subheading | 20 / 24 | `text-xl` / `text-2xl` | Manrope 500 | |
-| Body | 17 | `text-[17px]` | Manrope 400 | Slightly larger than default for i18n length buffer |
+| Subheading | 20 / 24 | `text-xl` / `text-2xl` | Manrope 500 | Fraunces headings (tiles, "Zakaj Klanmedic") take the 20px step below `sm` |
+| Body | 15 / 17 | `text-[15px] sm:text-[17px]` | Manrope 400 | 17px from `sm` keeps the i18n length buffer; 15px below `sm` for phone fit |
 | Caption / meta | 14 | `text-sm` | Manrope 500, uppercase, `tracking-wide` | Eyebrows, service labels |
 
 Rules:
-- Fraunces is never used below 24px — its high contrast thins out at body sizes and reads as a different register.
+- Fraunces is never used below 20px — `text-xl` is the phone step for Fraunces sub-headings; below 20px its high contrast thins out and reads as a different register.
 - Body measure is **60–72ch**, not the full container width, even on wide screens.
 - Both faces ship Latin Extended — diacritics (š, č, ž, ù, à, é, …) are first-class for sl / it / en.
-- Body at 17px (not 16) is a deliberate buffer for Slovenian and Italian copy, which run 15–25% longer than English.
+- Body at 17px (not 16) is a deliberate buffer for Slovenian and Italian copy, which run 15–25% longer than English. Below `sm`, all body copy steps down to 15px for phone fit.
 - Pairing rationale, since the combo will be questioned: Fraunces gives editorial warmth and the *soft* axis a human register (matters when the clinic includes aesthetic medicine); Manrope is geometric, calm, and distinctively *not* Inter. Cormorant Garamond + Inter was considered and rejected as the most-paired serif-and-grotesque combo of the last five years.
 
 ## Layout
