@@ -575,9 +575,7 @@
         x-show="$store.intro.ready"
         x-cloak
       >
-        <div
-          class="mx-auto max-w-3xl rounded-2xl bg-surface px-6 py-12 text-center md:px-12 md:py-16"
-        >
+        <div class="mx-auto max-w-3xl text-center">
           <p class="text-sm font-medium uppercase tracking-wide text-muted">
             Naročanje
           </p>
@@ -611,18 +609,18 @@
       x-cloak
     >
       <div class="mx-auto max-w-[80rem] px-6 py-12 md:px-8 md:py-16">
-        <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          <div>
+        <div class="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
+          <div class="col-span-2 sm:col-span-1">
             <a
               href="#home"
               class="flex items-center gap-2 font-fraunces text-xl text-forest"
             >
+              <span class="uppercase">Klanmedic</span>
               <img
                 src="./src/images/logotip_klanmedic_obris.svg"
                 alt=""
-                class="block h-7 w-auto"
+                class="block h-[0.72em] w-auto"
               />
-              <span class="uppercase">Klanmedic</span>
             </a>
             <p class="mt-4 text-[15px] leading-relaxed text-muted">
               Zasebna klinika v [mesto] — splošna medicina, specialistični
@@ -661,7 +659,7 @@
             </ul>
           </div>
 
-          <div>
+          <div class="col-span-2 sm:col-span-1">
             <p class="text-sm font-medium uppercase tracking-wide text-muted">
               Urnik
             </p>
