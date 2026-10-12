@@ -72,7 +72,7 @@
  */
 [data-card] .card-face {
   opacity: 1;
-  transition: opacity 240ms ease;
+  transition: opacity 320ms ease;
 }
 
 [data-card].is-open .card-face {
@@ -82,13 +82,24 @@
 
 [data-card] .panel-inner {
   opacity: 0;
-  transition: opacity 260ms ease-out;
 }
 
 [data-card].is-open .panel-inner {
   opacity: 1;
-  /* Fade in near the end of the 620ms flight. */
-  transition: opacity 280ms ease-out 320ms;
+  /* A transition would not start on an element that just left
+     display:none, so the fade-in is an animation. The 450ms delay puts
+     the reveal near the end of the 880ms flight and `backwards` holds
+     the content invisible until it starts. */
+  animation: panel-reveal 360ms ease-out 450ms backwards;
+}
+
+@keyframes panel-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /*
@@ -116,6 +127,7 @@
   [data-card] .card-face,
   [data-card] .panel-inner {
     transition: none;
+    animation: none;
   }
 }
 

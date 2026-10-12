@@ -340,7 +340,7 @@ document.addEventListener("alpine:init", () => {
       const startY = window.scrollY;
       const delta = target - startY;
       if (Math.abs(delta) < 1) return;
-      const duration = 800;
+      const duration = 1000;
       const started = performance.now();
       const ease = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
       const step = (now) => {
@@ -419,11 +419,11 @@ document.addEventListener("alpine:init", () => {
         window.requestAnimationFrame(() => {
           if (gen !== this._gen) return;
           if (shell) {
-            shell.style.transition = `transform 620ms ${ease}`;
+            shell.style.transition = `transform 880ms ${ease}`;
             shell.style.transform = "";
           }
           siblings.forEach((card) => {
-            card.style.transition = `transform 620ms ${ease}`;
+            card.style.transition = `transform 880ms ${ease}`;
             card.style.transform = "";
           });
         });
@@ -431,7 +431,7 @@ document.addEventListener("alpine:init", () => {
         this._settleTimer = window.setTimeout(() => {
           if (gen !== this._gen) return;
           clear();
-        }, 720);
+        }, 1000);
       };
     },
     select(index) {

@@ -270,19 +270,6 @@ async function runSubpage(browser, width, port, path) {
   if (cardCount !== SUBPAGE_CARD_COUNT)
     rec.problems.push(`expected ${SUBPAGE_CARD_COUNT} subservice cards, got ${cardCount}`);
 
-  // grid columns: 2 on phones, 3 on sm/md, 4 on lg and up
-  const expectedColumns = width >= 1024 ? 4 : width >= 640 ? 3 : 2;
-  const columns = await page.evaluate(() => {
-    const rows = new Map();
-    [...document.querySelectorAll("[data-card]")].forEach((card) => {
-      const top = Math.round(card.getBoundingClientRect().top);
-      rows.set(top, (rows.get(top) ?? 0) + 1);
-    });
-    return Math.max(...rows.values());
-  });
-  if (columns !== expectedColumns)
-    rec.problems.push(`grid has ${columns} columns (expected ${expectedColumns})`);
-
   // cards reveal once scrolled into view
   await page.locator("[data-card]").first().scrollIntoViewIfNeeded();
   await page
@@ -300,11 +287,26 @@ async function runSubpage(browser, width, port, path) {
   );
   if (!revealed) rec.problems.push("cards still hidden after reveal");
 
+  // grid columns: 2 on phones, 3 on sm/md, 4 on lg and up. Measured after
+  // the reveal, since the entrance transform's stagger delays otherwise
+  // break rows into single-card groups mid-flight.
+  const expectedColumns = width >= 1024 ? 4 : width >= 640 ? 3 : 2;
+  const columns = await page.evaluate(() => {
+    const rows = new Map();
+    [...document.querySelectorAll("[data-card]")].forEach((card) => {
+      const top = Math.round(card.getBoundingClientRect().top);
+      rows.set(top, (rows.get(top) ?? 0) + 1);
+    });
+    return Math.max(...rows.values());
+  });
+  if (columns !== expectedColumns)
+    rec.problems.push(`grid has ${columns} columns (expected ${expectedColumns})`);
+
   // clicking a card expands it into a full-width inline panel
   await page.locator("[data-card] > button:visible").first().click();
   await page.waitForTimeout(400);
   await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-flight.png`) });
-  await page.waitForTimeout(1100);
+  await page.waitForTimeout(1500);
   let open = await page.locator(".sub-panel:visible").count();
   if (open !== 1) rec.problems.push(`card did not expand (${open} visible panels)`);
 
