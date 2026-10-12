@@ -257,26 +257,17 @@
 
           <!-- Final layer: full hero content (visible after scroll) -->
           <div
-            class="relative mx-auto flex min-h-dvh w-full max-w-[80rem] items-start px-6 pt-28 pb-20 md:items-center md:px-6 md:py-28"
+            class="relative mx-auto flex min-h-dvh w-full max-w-[80rem] items-center px-6 py-28"
             :class="clicked ? 'transition-opacity delay-[1200ms] duration-[1200ms] ease-in-out' : ''"
             :style="finalStyle"
             x-cloak
           >
             <div
-              class="pointer-events-none absolute inset-0 z-0 overflow-hidden md:hidden"
-              aria-hidden="true"
+              class="relative grid w-full grid-cols-1 items-center sm:grid-cols-12 sm:gap-x-6 md:gap-x-10"
             >
-              <img
-                src="./src/images/hero.png"
-                alt=""
-                class="absolute bottom-0 left-0 w-full [mask-image:linear-gradient(to_bottom,transparent,black_35%,black_82%,transparent)]"
-              />
-            </div>
-
-            <div
-              class="relative grid w-full grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-10"
-            >
-              <div class="md:col-span-5 md:pr-6">
+              <div
+                class="sm:col-span-12 lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:pr-6"
+              >
                 <p
                   class="font-sans text-sm font-medium uppercase tracking-wide text-muted"
                 >
@@ -288,7 +279,9 @@
                 >
                   Pozornost, ki jo zaslužite.
                 </h1>
+              </div>
 
+              <div class="sm:col-start-1 sm:col-span-5 sm:row-start-2">
                 <p
                   class="mt-10 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px] md:mt-12"
                 >
@@ -313,12 +306,12 @@
                 </div>
               </div>
 
-              <div class="hidden md:col-start-6 md:col-span-7 md:block md:pl-2">
+              <div class="hidden sm:col-start-6 sm:col-span-7 sm:row-start-2 sm:block sm:pl-2 lg:row-start-1 lg:row-span-2">
                 <img
                   src="./src/images/hero.png"
                   alt=""
-                  width="1200"
-                  height="800"
+                  width="767"
+                  height="768"
                   class="block h-auto w-full rounded-2xl"
                 />
               </div>
@@ -350,7 +343,7 @@
 
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:gap-6">
           <a
-            href="#narocanje"
+            href="./storitve/zobozdravstvo.html"
             class="group relative col-span-2 aspect-[16/9] overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage sm:col-span-1 sm:aspect-square"
           >
             <img
@@ -365,7 +358,7 @@
           </a>
 
           <a
-            href="#narocanje"
+            href="./storitve/interna-medicina.html"
             class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
             <img
@@ -380,7 +373,7 @@
           </a>
 
           <a
-            href="#narocanje"
+            href="./storitve/estetika.html"
             class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
             <img
@@ -416,8 +409,8 @@
         </div>
 
         <div class="mx-auto mt-10 max-w-5xl rounded-2xl px-6 py-8 md:mt-12 md:px-12 md:py-10">
-          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:gap-10">
-            <div class="col-span-2 sm:col-span-1">
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-5 md:gap-10">
+            <div>
               <h3 class="font-fraunces text-xl leading-tight text-forest sm:text-2xl">
                 Celostna obravnava
               </h3>
@@ -467,8 +460,8 @@
           </div>
         </div>
 
-        <div class="mt-10 md:mt-12">
-          <div class="relative overflow-hidden rounded-2xl" @mouseleave="hovered = null">
+        <div class="mt-10 md:mt-12 md:grid md:grid-cols-12 md:items-center md:gap-x-8">
+          <div class="relative overflow-hidden rounded-2xl md:col-span-7" @mouseleave="hovered = null">
             <img
               :src="displayedImage"
               alt="Ekipa Klanmedic"
@@ -477,41 +470,46 @@
             />
 
             <template x-for="person in people" :key="person.id">
-              <button
-                type="button"
-                class="group absolute rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-surface focus-visible:ring-offset-2 focus-visible:ring-offset-forest"
-                :class="person.hotspot"
-                @mouseenter="hovered = person.id"
-                @mouseleave="hovered = null"
-                @focus="hovered = person.id"
-                @blur="hovered = null"
-                @click="select(person)"
-                :aria-label="`Spoznajte ${person.name}`"
-                :aria-pressed="selected === person.id"
-              ></button>
+              <template x-if="person.hotspot">
+                <button
+                  type="button"
+                  class="group absolute hidden rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-surface focus-visible:ring-offset-2 focus-visible:ring-offset-forest md:block"
+                  :class="person.hotspot"
+                  @mouseenter="preview(person.id)"
+                  @mouseleave="cancelPreview()"
+                  @focus="hovered = person.id"
+                  @blur="cancelPreview()"
+                  @click="select(person)"
+                  :aria-label="`Spoznajte ${person.name}`"
+                  :aria-pressed="selected === person.id"
+                ></button>
+              </template>
             </template>
           </div>
 
-          <div class="relative mt-8 border-t border-hairline pt-5 md:h-36 md:pt-5">
+          <div class="relative mt-8 border-t border-hairline pt-5 md:col-span-5 md:mt-0">
             <p class="text-xs font-medium uppercase tracking-[0.16em] text-muted">
-              Izberite člana ekipe
+              Kliknite na ime
             </p>
-            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-3 md:mt-0 md:block">
-              <template x-for="person in people" :key="`${person.id}-control`">
+            <div class="mt-4 flex flex-col gap-5 md:mt-0" x-ref="nameRow">
+              <template x-for="(person, index) in people" :key="`${person.id}-control`">
                 <button
                   type="button"
-                  class="group relative flex items-baseline gap-2 text-left text-forest transition-colors hover:text-muted focus:outline-none focus-visible:text-muted md:absolute md:top-5"
-                  :class="person.id === 'ak' ? 'md:left-[51%] md:-translate-x-1/2' : 'md:left-[87%] md:-translate-x-1/2'"
-                  @mouseenter="hovered = person.id"
-                  @mouseleave="hovered = null"
+                  class="group relative flex items-baseline gap-2 text-left text-forest transition-colors hover:text-muted focus:outline-none focus-visible:text-muted"
+                  :class="pulsing ? 'animate-row-rise' : ''"
+                  :style="{ animationDelay: (index * 0.15) + 's' }"
+                  @mouseenter="preview(person.id)"
+                  @mouseleave="cancelPreview()"
                   @focus="hovered = person.id"
-                  @blur="hovered = null"
+                  @blur="cancelPreview()"
                   @click="select(person)"
                   :aria-pressed="selected === person.id"
                 >
-                  <span class="pointer-events-none absolute bottom-full left-1/2 hidden h-[3.25rem] w-px -translate-x-1/2 bg-hairline md:block"></span>
                   <span>
-                    <span class="block font-fraunces text-xl leading-tight" x-text="person.name"></span>
+                    <span
+                      class="relative block font-fraunces text-xl leading-tight after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 group-focus-visible:after:scale-x-100 group-aria-pressed:after:scale-x-100"
+                      x-text="person.name"
+                    ></span>
                     <span class="mt-0.5 block text-sm text-muted" x-text="person.role"></span>
                   </span>
                 </button>
@@ -663,15 +661,11 @@
             <p class="text-sm font-medium uppercase tracking-wide text-muted">
               Urnik
             </p>
-            <dl class="mt-4 space-y-2.5 text-[15px]">
-              <div class="flex justify-between gap-6">
-                <dt class="text-muted">Pon–Pet</dt>
-                <dd class="text-forest">8:00–16:00</dd>
-              </div>
-              <div class="flex justify-between gap-6">
-                <dt class="text-muted">Sob–Ned</dt>
-                <dd class="text-muted">zaprto</dd>
-              </div>
+            <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
+              <dt class="text-muted">Pon–Pet</dt>
+              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Sob–Ned</dt>
+              <dd class="text-muted">zaprto</dd>
             </dl>
           </div>
         </div>

@@ -198,8 +198,11 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("teamShowcase", () => ({
     selected: null,
     hovered: null,
+    pulsing: false,
     displayedImage: "./src/images/meet_the_team.png",
     transitionTimer: null,
+    _dwell: null,
+    _observer: null,
     people: [
       {
         id: "ak",
@@ -215,12 +218,27 @@ document.addEventListener("alpine:init", () => {
         image: "./src/images/meet_the_team_marko.png",
         hotspot: "right-[5.5%] top-[20%] h-[70%] w-[15%]",
       },
+      {
+        id: "maja",
+        name: "Maja Kovač",
+        role: "Medicinska sestra",
+      },
+      {
+        id: "jure",
+        name: "Dr. Jure Novak",
+        role: "Zobozdravnik",
+      },
+      {
+        id: "ana",
+        name: "Ana Horvat",
+        role: "Fizioterapevtka",
+      },
     ],
     get activePerson() {
       return this.people.find((person) => person.id === (this.hovered || this.selected));
     },
     get activeImage() {
-      return this.activePerson ? this.activePerson.image : "./src/images/meet_the_team.png";
+      return this.activePerson?.image || "./src/images/meet_the_team.png";
     },
     init() {
       this.$watch("activeImage", (image) => {
@@ -228,7 +246,7 @@ document.addEventListener("alpine:init", () => {
 
         window.clearTimeout(this.transitionTimer);
 
-        const intermediate = this.activePerson
+        const intermediate = this.activePerson?.image
           ? this.activePerson.image.replace(".png", "_2.png")
           : "./src/images/meet_the_team.png";
 
@@ -237,9 +255,223 @@ document.addEventListener("alpine:init", () => {
           this.displayedImage = image;
         }, 400);
       });
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        this._observer = new IntersectionObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this._observer.disconnect();
+            this.pulsing = true;
+            window.setTimeout(() => {
+              this.pulsing = false;
+            }, 1500);
+          }
+        }, { threshold: 0.5 });
+        this._observer.observe(this.$refs.nameRow);
+      }
+    },
+    preview(id) {
+      window.clearTimeout(this._dwell);
+      this._dwell = window.setTimeout(() => {
+        this.hovered = id;
+      }, 500);
+    },
+    cancelPreview() {
+      window.clearTimeout(this._dwell);
+      this.hovered = null;
     },
     select(person) {
       this.selected = this.selected === person.id ? null : person.id;
+    },
+  }));
+
+  // Expandable subservice card grid used on storitve/*.html pages.
+  // Items are passed inline from each page: x-data="subservices([...])".
+  //
+  // Interaction model: the selected card expands in place (it keeps its
+  // row and becomes full-width) and the sibling cards glide out of the
+  // way; the expanded panel then sits top-aligned just below the fixed
+  // header. The card's own opacity is never cross-faded by Alpine
+  // x-transition directives (the double fade caused the ghosting
+  // flashes) — faces fade through CSS classes instead, and the layout
+  // change is FLIP-animated in JS.
+  //
+  // NOTE: $el inside event handlers is the element the handler is on (a
+  // card button), so the component root (the grid) is captured at init.
+  Alpine.data("subservices", (items) => ({
+    items,
+    selected: null,
+    shown: false,
+    reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    _root: null,
+    _returnFocus: null,
+    _scrollRaf: 0,
+    _gen: 0,
+    _animating: false,
+    _settleTimer: 0,
+    init() {
+      this._root = this.$el;
+      if (this.reduced) {
+        this.shown = true;
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.shown = true;
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(this.$el);
+    },
+    isOpen(index) {
+      return this.selected === index;
+    },
+    cards() {
+      return Array.from(this._root.querySelectorAll("[data-card]"));
+    },
+    glideScroll(targetY) {
+      const target = Math.max(0, targetY);
+      window.cancelAnimationFrame(this._scrollRaf);
+      if (this.reduced) {
+        window.scrollTo(0, target);
+        return;
+      }
+      const startY = window.scrollY;
+      const delta = target - startY;
+      if (Math.abs(delta) < 1) return;
+      const duration = 800;
+      const started = performance.now();
+      const ease = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
+      const step = (now) => {
+        const p = Math.min(1, (now - started) / duration);
+        window.scrollTo(0, startY + delta * ease(p));
+        if (p < 1) this._scrollRaf = window.requestAnimationFrame(step);
+      };
+      this._scrollRaf = window.requestAnimationFrame(step);
+    },
+    // FLIP the grid reflow: every card's viewport rect is captured
+    // before the state change; the returned callback runs in $nextTick —
+    // after Alpine has applied the new layout, still before the next
+    // paint. There:
+    //   - sibling cards are inverted with translate(x, y) only, so they
+    //     glide to their new slots on both axes (the old version saved
+    //     just `.top`, which made horizontal moves jump);
+    //   - the guard (the card being expanded/collapsed) flies from its
+    //     old rect to the new one with translate+scale, pivoting on its
+    //     top-left corner, above the siblings.
+    // The inversions are applied synchronously before the next paint, so
+    // the morphing card never flashes at full size. A short settle
+    // window ignores new clicks, so quick selections cannot race the
+    // flight, and stale flights are aborted through the generation
+    // counter. Card content crossfades are CSS-only (`.card-face` /
+    // `.panel-inner` keyed off the `.is-open` class).
+    planFlip(guard) {
+      if (this.reduced || !this._root || !guard) return null;
+      const gen = (this._gen += 1);
+      const rects = new Map(
+        this.cards().map((card) => [card, card.getBoundingClientRect()])
+      );
+      const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+      const clear = () => {
+        this.cards().forEach((card) => {
+          card.style.transform = "";
+          card.style.transition = "";
+          card.style.transformOrigin = "";
+          card.style.zIndex = "";
+        });
+        this._root.classList.remove("is-animating");
+        this._animating = false;
+      };
+      return () => {
+        if (gen !== this._gen) return;
+        this._root.classList.add("is-animating");
+        this._animating = true;
+        const siblings = [];
+        let shell = null;
+        this.cards().forEach((card) => {
+          const from = rects.get(card);
+          const to = card.getBoundingClientRect();
+          const dx = from.left - to.left;
+          const dy = from.top - to.top;
+          if (card === guard) {
+            const sx = from.width / to.width;
+            const sy = from.height / to.height;
+            if (
+              Math.abs(dx) + Math.abs(dy) < 1 &&
+              Math.abs(1 - sx) < 0.01 &&
+              Math.abs(1 - sy) < 0.01
+            )
+              return;
+            shell = card;
+            card.style.transformOrigin = "top left";
+            card.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+            // Fly over the siblings (DOM paint order would otherwise put
+            // the first card underneath the rest).
+            card.style.zIndex = "30";
+          } else {
+            if (Math.abs(dx) + Math.abs(dy) < 1) return;
+            siblings.push(card);
+            card.style.transform = `translate(${dx}px, ${dy}px)`;
+          }
+        });
+        void this._root.offsetWidth; // commit the inversions
+        window.requestAnimationFrame(() => {
+          if (gen !== this._gen) return;
+          if (shell) {
+            shell.style.transition = `transform 620ms ${ease}`;
+            shell.style.transform = "";
+          }
+          siblings.forEach((card) => {
+            card.style.transition = `transform 620ms ${ease}`;
+            card.style.transform = "";
+          });
+        });
+        window.clearTimeout(this._settleTimer);
+        this._settleTimer = window.setTimeout(() => {
+          if (gen !== this._gen) return;
+          clear();
+        }, 720);
+      };
+    },
+    select(index) {
+      if (this.isOpen(index) || this._animating) return;
+      const card = this.cards()[index];
+      if (!card) return;
+      if (this.selected === null) this._returnFocus = document.activeElement;
+      const finishFlip = this.planFlip(card);
+      this.selected = index;
+      this.$nextTick(() => {
+        if (this.selected !== index) return;
+        const panel = card.querySelector(".sub-panel");
+        if (!panel) return;
+        panel.focus({ preventScroll: true });
+        // Document-space target measured before the flight: transforms
+        // and scroll never change layout coordinates, so the flight and
+        // the glide can run together and still land top-aligned with the
+        // viewport, just below the fixed header.
+        const target =
+          panel.getBoundingClientRect().top + window.scrollY - 88;
+        finishFlip?.();
+        this.glideScroll(target);
+      });
+    },
+    close() {
+      if (this.selected === null || this._animating) return;
+      const card = this.cards()[this.selected];
+      const finishFlip = this.planFlip(card);
+      this.selected = null;
+      const el = this._returnFocus;
+      this._returnFocus = null;
+      this.$nextTick(() => {
+        finishFlip?.();
+        if (el && document.contains(el)) el.focus({ preventScroll: true });
+        if (this._root) {
+          this.glideScroll(
+            window.scrollY + this._root.getBoundingClientRect().top - 88
+          );
+        }
+      });
     },
   }));
 });

@@ -10,6 +10,19 @@
 
   --font-fraunces: "Fraunces", ui-serif, Georgia, serif;
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-row-rise: row-rise 0.6s ease-out 1 backwards;
+
+  @keyframes row-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 .font-fraunces {
@@ -29,6 +42,81 @@
   height: 2px;
   bottom: -0.5rem;
   background-color: var(--color-sand);
+}
+
+.card-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cards-in .card-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* Entrance stagger for the cards (replaces the old inline
+   transition-delay binding, which polluted the FLIP animations). */
+.cards-in .card-reveal:nth-child(2) { transition-delay: 100ms; }
+.cards-in .card-reveal:nth-child(3) { transition-delay: 200ms; }
+.cards-in .card-reveal:nth-child(4) { transition-delay: 300ms; }
+.cards-in .card-reveal:nth-child(5) { transition-delay: 400ms; }
+
+/*
+ * Subservice expandable cards: content crossfades are CSS-only, keyed
+ * off the `.is-open` class — no Alpine x-transition on the card or the
+ * panel (their delayed double fade produced ghost flashes while the
+ * FLIP flight was running).
+ */
+[data-card] .card-face {
+  opacity: 1;
+  transition: opacity 240ms ease;
+}
+
+[data-card].is-open .card-face {
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-card] .panel-inner {
+  opacity: 0;
+  transition: opacity 260ms ease-out;
+}
+
+[data-card].is-open .panel-inner {
+  opacity: 1;
+  /* Fade in near the end of the 620ms flight. */
+  transition: opacity 280ms ease-out 320ms;
+}
+
+/*
+ * Flight chrome: while the FLIP is running the grid ignores pointer
+ * events (quick clicks cannot race the flight), reveal/hover
+ * transitions on the cards are frozen, and the moving cards get a
+ * compositor hint.
+ */
+.sub-grid.is-animating {
+  pointer-events: none;
+}
+
+.sub-grid.is-animating [data-card] {
+  transition: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .cards-in .card-reveal { transition-delay: 0ms; }
+  [data-card] .card-face,
+  [data-card] .panel-inner {
+    transition: none;
+  }
 }
 
 .text-clinic-mask {

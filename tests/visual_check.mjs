@@ -14,6 +14,10 @@
 //   - Fraunces/Manrope fonts actually load
 //   - no console errors/warnings, no failed (>=400) requests
 //   - dead anchors match EXPECTED_DEAD_ANCHORS (see below)
+//   - service subpages (storitve/*.html): full-bleed hero image, cards
+//     reveal on scroll, card expands into a full-width inline panel
+//     top-aligned with the viewport, other cards stay clickable, close
+//     button returns to the grid
 // Screenshots for manual review are (over)written to tests/screenshots/.
 //
 // Requires internet (Google Fonts + Alpine CDN). Exit code 1 on any failure.
@@ -37,6 +41,16 @@ const WIDTHS = [375, 640, 768, 1024, 1440];
 // (#narocanje, #urnik, #cenik). When you add those pages, this test will
 // start FAILING — remove the now-live anchors from this list.
 const EXPECTED_DEAD_ANCHORS = ["#narocanje", "#urnik", "#cenik"].sort();
+
+// Service subpages expandable-card checks. Items per page must match the
+// x-data="subservices([...])" array in each file.
+const SUBPAGES = [
+  "storitve/zobozdravstvo.html",
+  "storitve/interna-medicina.html",
+  "storitve/estetika.html",
+];
+const SUBPAGE_WIDTHS = [375, 1440];
+const SUBPAGE_CARD_COUNT = 5;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -177,14 +191,16 @@ async function runWidth(browser, width, port) {
   await page.waitForTimeout(400);
   await page.locator("#services").screenshot({ path: resolve(SHOTS, `${width}-services.png`) });
 
-  // team hotspot swaps the image
-  await page.locator("#team").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
-  const srcBefore = await page.evaluate(() => document.querySelector("#team img").getAttribute("src"));
-  await page.locator("button[aria-label^='Spoznajte']").nth(1).click();
-  await page.waitForTimeout(1100);
-  const srcAfter = await page.evaluate(() => document.querySelector("#team img").getAttribute("src"));
-  if (!srcAfter.includes("meet_the_team_marko")) rec.problems.push(`team image swap failed (${srcBefore} -> ${srcAfter})`);
+  // team hotspot swaps the image (hotspots only exist at md+)
+  if (width >= 768) {
+    await page.locator("#team").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    const srcBefore = await page.evaluate(() => document.querySelector("#team img").getAttribute("src"));
+    await page.locator("button[aria-label^='Spoznajte']").nth(1).click();
+    await page.waitForTimeout(1100);
+    const srcAfter = await page.evaluate(() => document.querySelector("#team img").getAttribute("src"));
+    if (!srcAfter.includes("meet_the_team_marko")) rec.problems.push(`team image swap failed (${srcBefore} -> ${srcAfter})`);
+  }
 
   // overflow after full scroll
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -208,6 +224,144 @@ async function runWidth(browser, width, port) {
   return rec;
 }
 
+async function runSubpage(browser, width, port, path) {
+  const height = width < 800 ? 812 : 900;
+  const context = await browser.newContext({ viewport: { width, height } });
+  const page = await context.newPage();
+  const name = path.replace("storitve/", "").replace(".html", "");
+  const rec = { width, subpage: name, problems: [] };
+
+  page.on("console", (m) => {
+    if (m.type() === "error" || m.type() === "warning")
+      rec.problems.push(`console ${m.type()}: ${m.text().slice(0, 150)}`);
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) rec.problems.push(`http ${r.status()}: ${r.url().slice(-90)}`);
+  });
+  page.on("requestfailed", (r) => rec.problems.push(`request failed: ${r.url().slice(-90)}`));
+
+  await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: "networkidle" });
+  await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-hero.png`) });
+
+  // overflow at top
+  let st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at top: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  // hero image is full-bleed and actually loaded
+  const hero = await page.evaluate(() => {
+    const img = document.querySelector("main section img");
+    const box = img?.getBoundingClientRect();
+    return {
+      loaded: !!img && img.complete && img.naturalWidth > 0,
+      width: box ? Math.round(box.width) : 0,
+    };
+  });
+  if (!hero.loaded) rec.problems.push("hero image not loaded");
+  if (hero.width !== width) rec.problems.push(`hero image not full-bleed (width=${hero.width})`);
+
+  // fonts
+  const fonts = await page.evaluate(JS.fonts);
+  if (!fonts.fraunces || !fonts.manrope)
+    rec.problems.push(`fonts not loaded: ${JSON.stringify(fonts)}`);
+
+  // card grid renders the expected number of cards
+  const cardCount = await page.locator("[data-card]").count();
+  if (cardCount !== SUBPAGE_CARD_COUNT)
+    rec.problems.push(`expected ${SUBPAGE_CARD_COUNT} subservice cards, got ${cardCount}`);
+
+  // grid columns: 2 on phones, 3 on sm/md, 4 on lg and up
+  const expectedColumns = width >= 1024 ? 4 : width >= 640 ? 3 : 2;
+  const columns = await page.evaluate(() => {
+    const rows = new Map();
+    [...document.querySelectorAll("[data-card]")].forEach((card) => {
+      const top = Math.round(card.getBoundingClientRect().top);
+      rows.set(top, (rows.get(top) ?? 0) + 1);
+    });
+    return Math.max(...rows.values());
+  });
+  if (columns !== expectedColumns)
+    rec.problems.push(`grid has ${columns} columns (expected ${expectedColumns})`);
+
+  // cards reveal once scrolled into view
+  await page.locator("[data-card]").first().scrollIntoViewIfNeeded();
+  await page
+    .waitForFunction(
+      () => document.querySelector(".sub-grid")?.classList.contains("cards-in"),
+      undefined,
+      { timeout: 5000 }
+    )
+    .catch(() => rec.problems.push("cards never revealed (cards-in missing)"));
+  await page.waitForTimeout(1800);
+  const revealed = await page.evaluate(() =>
+    [...document.querySelectorAll("[data-card]")].every(
+      (c) => Number(getComputedStyle(c).opacity) > 0.95
+    )
+  );
+  if (!revealed) rec.problems.push("cards still hidden after reveal");
+
+  // clicking a card expands it into a full-width inline panel
+  await page.locator("[data-card] > button:visible").first().click();
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-flight.png`) });
+  await page.waitForTimeout(1100);
+  let open = await page.locator(".sub-panel:visible").count();
+  if (open !== 1) rec.problems.push(`card did not expand (${open} visible panels)`);
+
+  // the expanded panel spans the whole grid width
+  const widths = await page.evaluate(() => {
+    const grid = document.querySelector(".sub-grid");
+    const openCard = [...grid.querySelectorAll("[data-card]")].find((c) => {
+      const panel = c.querySelector(".sub-panel");
+      return panel && getComputedStyle(panel).display !== "none";
+    });
+    return {
+      grid: grid.clientWidth,
+      card: openCard ? Math.round(openCard.getBoundingClientRect().width) : 0,
+    };
+  });
+  if (widths.card && Math.abs(widths.card - widths.grid) > 3)
+    rec.problems.push(`expanded card is not full width (${widths.card} vs ${widths.grid})`);
+
+  // the expanded panel must be top-aligned with the viewport, sitting
+  // just below the fixed header (offset ≈ 88px)
+  const topAligned = await page.evaluate(() => {
+    const panel = [...document.querySelectorAll(".sub-panel")].find(
+      (p) => getComputedStyle(p).display !== "none"
+    );
+    const rect = panel?.getBoundingClientRect();
+    if (!rect) return "panel not found for top-alignment check";
+    return rect.top < 40 || rect.top > 150
+      ? `expanded panel not top-aligned below header (top=${Math.round(rect.top)}px)`
+      : null;
+  });
+  if (topAligned) rec.problems.push(topAligned);
+
+  await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-expanded.png`) });
+
+  // other cards stay clickable while one is expanded
+  await page.locator("[data-card] > button:visible").nth(1).click();
+  await page.waitForTimeout(1500);
+  open = await page.locator(".sub-panel:visible").count();
+  if (open !== 1) rec.problems.push(`switching to another card failed (${open} visible panels)`);
+
+  // clear button returns to the normal card view
+  await page.getByRole("button", { name: "Nazaj na vse storitve" }).click();
+  await page.waitForTimeout(1500);
+  open = await page.locator(".sub-panel:visible").count();
+  if (open !== 0) rec.problems.push(`panel did not close (${open} visible panels)`);
+
+  // overflow at bottom
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(500);
+  st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  await context.close();
+  return rec;
+}
+
 async function main() {
   mkdirSync(SHOTS, { recursive: true });
   const { server, port } = await startServer();
@@ -215,8 +369,14 @@ async function main() {
   const results = [];
   try {
     for (const width of WIDTHS) {
-      process.stdout.write(`--- ${width}px ---\n`);
+      process.stdout.write(`--- landing ${width}px ---\n`);
       results.push(await runWidth(browser, width, port));
+    }
+    for (const path of SUBPAGES) {
+      for (const width of SUBPAGE_WIDTHS) {
+        process.stdout.write(`--- ${path} ${width}px ---\n`);
+        results.push(await runSubpage(browser, width, port, path));
+      }
     }
   } finally {
     await browser.close();
@@ -227,12 +387,13 @@ async function main() {
   console.log("\n================ VERDICT ================");
   let failed = 0;
   for (const rec of results) {
+    const label = rec.subpage ? `${rec.width}px ${rec.subpage}` : `${rec.width}px landing`;
     if (rec.problems.length) {
       failed++;
-      console.log(`[${rec.width}px] FAIL`);
+      console.log(`[${label}] FAIL`);
       for (const p of rec.problems) console.log(`    - ${p}`);
     } else {
-      console.log(`[${rec.width}px] PASS`);
+      console.log(`[${label}] PASS`);
     }
   }
   console.log(`\n${results.length - failed}/${results.length} widths pass`);

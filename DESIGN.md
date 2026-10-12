@@ -45,11 +45,12 @@ Rules:
 
 - **Max width:** `80rem` (1280px). Content is centered in this container.
 - **Grid:** 12-col, mobile-first; collapses to fewer cols below `md`.
-- **Hero:** 7/5 split — Fraunces headline, subhead, and primary CTA on the left 7 cols; image on the right 5 cols. At `md` and below, the portrait is anchored to the bottom edge of the hero at full width, fading into `sage` via masks on both edges; the crisp side image is desktop-only, as is the centered hairline dash between hero and services.
+- **Hero:** 5/7 split — Fraunces headline, subhead, and primary CTA in the left 5 cols; image in the right 7 cols. Below `sm` (< 640px), the hero image is omitted entirely — it would cover the headline — and the hero copy is vertically centered in the viewport; on `sm`–`md` tablets (640–1023px), the eyebrow and headline sit full-width on their own row while the copy/CTA (left 5 cols) and image (right 7 cols) share the row below, with a 24px gutter at `sm` widening to 40px at `md`; laptop and up return to the side-by-side split. The centered hairline dash between hero and services is desktop-only.
 - **Sections:** centered within the 80rem container, with hairline rules (1px `border`) between major sections rather than relying on whitespace alone.
 - **Vertical rhythm:** `py-24` (6rem) between sections, `py-12` (3rem) within a section.
 - **Body measure:** paragraphs sit in a 60–72ch column, even on wide screens.
 - **Subpages:** the same 80rem container, 12-col grid, hairline rules, and type scale apply to per-speciality pages. No page-specific layouts unless content demands it.
+- **Team section:** the member list sits beside the group photo at `md`+ (photo 7 cols, names 5 cols) so both are visible together; below `md` the list stacks under the photo. Names are the primary control: hover or keyboard focus draws a hairline underline, and the selected person keeps it. Photo hotspots are pointer-only extras at `md`+ with a 500ms hover-intent delay (gliding over must not swap the photo) and exist only for members with a face target; members without a photo keep the group image. On first view the names rise into place once, staggered by 150ms, skipped under `prefers-reduced-motion`.
 
 ## Signature element
 

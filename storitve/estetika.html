@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="sl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estetika | Klanmedic</title>
+    <meta
+      name="description"
+      content="Estetske storitve v Klanmedicu — nega kože, pomlajevanje, laserske terapije, oblikovanje postave in hiperbarična kisikova terapija."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../src/css/output.css" />
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
+    <header
+      class="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
+      x-data="{ open: false }"
+    >
+      <nav
+        class="mx-auto flex max-w-[80rem] items-center justify-between gap-3 px-6 py-5 sm:gap-6"
+      >
+        <a
+          href="../index.html#home"
+          class="flex shrink-0 items-center gap-2 font-fraunces text-xl text-forest sm:text-[28px]"
+        >
+          <span class="overflow-hidden whitespace-nowrap uppercase"
+            >KLANMEDIC</span
+          >
+          <img
+            src="../src/images/logotip_klanmedic_obris.svg"
+            alt=""
+            class="block h-[0.72em] w-auto"
+          />
+        </a
+        >
+
+        <ul class="hidden items-center gap-8 lg:flex">
+          <li>
+            <a
+              href="../index.html#home"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Domov</a
+            >
+          </li>
+          <li>
+            <a
+              href="../index.html#services"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Storitve</a
+            >
+          </li>
+          <li>
+            <a
+              href="../index.html#narocanje"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Naročanje</a
+            >
+          </li>
+          <li>
+            <a
+              href="../index.html#urnik"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Urnik</a
+            >
+          </li>
+          <li>
+            <a
+              href="../index.html#cenik"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Cenik</a
+            >
+          </li>
+        </ul>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a
+            href="../index.html#narocanje-cta"
+            class="inline-flex whitespace-nowrap items-center rounded-md bg-forest px-3 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted sm:px-5 sm:text-[15px]"
+            >Naročite se</a
+          >
+
+          <button
+            type="button"
+            class="hidden sm:inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60"
+            aria-label="Iskanje"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
+            @click="open = !open"
+            :aria-expanded="open"
+            aria-controls="mobile-menu"
+            aria-label="Meni"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <ul
+        id="mobile-menu"
+        class="space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        x-show="open"
+        x-transition.opacity
+        @click="open = false"
+        x-cloak
+      >
+        <li>
+          <a
+            href="../index.html#home"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Domov</a
+          >
+        </li>
+        <li>
+          <a
+            href="../index.html#services"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Storitve</a
+          >
+        </li>
+        <li>
+          <a
+            href="../index.html#narocanje"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Naročanje</a
+          >
+        </li>
+        <li>
+          <a
+            href="../index.html#urnik"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Urnik</a
+          >
+        </li>
+        <li>
+          <a
+            href="../index.html#cenik"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Cenik</a
+          >
+        </li>
+      </ul>
+    </header>
+
+    <main class="overflow-x-clip">
+      <!-- Hero -->
+      <section class="relative isolate overflow-hidden bg-forest">
+        <div class="relative h-[62svh] min-h-[440px] max-h-[760px] md:h-[70svh]">
+          <img
+            src="../src/images/estetika.png"
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <div class="absolute inset-0 bg-forest/55" aria-hidden="true"></div>
+          <div
+            class="relative mx-auto flex h-full max-w-[80rem] items-center justify-center px-6 md:px-8"
+          >
+            <div class="max-w-[60ch] text-center">
+              <p class="text-sm font-medium uppercase tracking-wide text-surface/80">
+                Estetska obravnava
+              </p>
+              <h1
+                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule sm:text-5xl md:text-6xl"
+              >
+                Estetika
+              </h1>
+              <p class="mt-8 text-[15px] leading-relaxed text-surface/90 sm:text-[17px]">
+                Medicinsko vodene estetske storitve z vrhunskimi, CE certificiranimi
+                aparati — nežno, varno in učinkovito.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Breadcrumb -->
+      <div class="mx-auto max-w-[80rem] px-6 pt-8 md:px-8">
+        <nav aria-label="Pot po strani" class="text-[15px] text-muted">
+          <a href="../index.html" class="transition-colors hover:text-forest">Domov</a>
+          <span aria-hidden="true"> / </span>
+          <a href="../index.html#services" class="transition-colors hover:text-forest"
+            >Storitve</a
+          >
+          <span aria-hidden="true"> / </span>
+          <span class="text-forest" aria-current="page">Estetika</span>
+        </nav>
+      </div>
+
+      <!-- Subservices -->
+      <section
+        id="storitve"
+        class="mx-auto max-w-[80rem] px-6 pb-20 pt-8 md:px-8 md:pb-24 md:pt-10"
+      >
+        <p class="text-sm font-medium uppercase tracking-wide text-muted">Storitve</p>
+        <h2 class="mt-3 font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+          Kaj nudimo.
+        </h2>
+
+        <div
+          x-data="subservices([
+            {
+              slug: 'medicinska-nega-koze',
+              img: '../src/images/estetika.png',
+              title: 'Medicinska nega kože',
+              short: 'Globinsko čiščenje in nega, prilagojena vaši koži.',
+              long: 'Stanje kože najprej ocenimo, nato izberemo ustrezen postopek — od globinskega čiščenja do intenzivne hidratacije in zaščite. Uporabljamo dermokozmetiko in CE certificirane aparature, postopke pa izvaja medicinsko izobraženo osebje.',
+              bullets: [
+                'Ocena stanja kože pred postopkom',
+                'Globinsko čiščenje in hidratacija',
+                'Nasveti za domačo nego',
+                'Priporočila nadaljnjih tretmajev',
+              ],
+              meta: 'Trajanje: približno 60 minut',
+            },
+            {
+              slug: 'pomlajevanje-koze',
+              img: '../src/images/estetika.png',
+              title: 'Pomlajevanje kože',
+              short: 'Nežni tretmaji za sijočo in napeto kožo.',
+              long: 'Sodobne metode pomlajevanja ne zahtevajo operacije. Z mikronidlami ali lasersko tehnologijo spodbudimo naravno obnovo kolagena — rezultat je postopen, naraven in dolgotrajen.',
+              bullets: [
+                'Mikronidlanje z aparatom Dermapen',
+                'Lasersko pomlajevanje s sistemom Fotona',
+                'Spodbujanje obnove kolagena brez operacije',
+                'Individualen načrt tretmajev',
+              ],
+              meta: 'Trajanje: 45–90 minut na tretma',
+            },
+            {
+              slug: 'laserske-terapije',
+              img: '../src/images/estetika.png',
+              title: 'Laserske terapije',
+              short: 'Učinkovito zdravljenje različnih kožnih sprememb.',
+              long: 'Lasersko tehnologijo uporabljamo za obnavljanje kože in odstranjevanje neželenih sprememb. Vsak tretma je predhodno načrtovan, da je varen in učinkovit prav za vaš tip kože.',
+              bullets: [
+                'Posvet in ocena kožne spremembe',
+                'Tretmaji prilagojeni tipu kože',
+                'Kratka okrevanja po posegu',
+                'Nadzor rezultatov na kontrolah',
+              ],
+              meta: 'Trajanje: 20–60 minut na tretma',
+            },
+            {
+              slug: 'oblikovanje-postave',
+              img: '../src/images/estetika.png',
+              title: 'Oblikovanje postave',
+              short: 'Program za telesno težo in postavo pod nadzorom.',
+              long: 'Oblikovanje postave ni dieta — je program. Zdravniški nadzor, prilagojena prehrana, vadba in po potrebi aparaturno modeliranje telesa povežemo v načrt, ki prinaša dolgoročne rezultate.',
+              bullets: [
+                'Začetna merjenja in določitev ciljev',
+                'Prehranski in vadbeni načrt',
+                'Aparaturno modeliranje telesa',
+                'Redne kontrole napredka',
+              ],
+              meta: 'Program traja 8–12 tednov',
+            },
+            {
+              slug: 'hiperbaricna-terapija',
+              img: '../src/images/estetika.png',
+              title: 'Hiperbarična kisikova terapija',
+              short: 'Terapija s čistim kisikom pod povečanim tlakom.',
+              long: 'V hiperbarični komori telo sprejme več kisika, kar pospeši celjenje, zmanjša vnetje in izboljša splošno počutje. Terapijo priporočimo po posvetu, poteka pa pod nadzorom usposobljenega osebja.',
+              bullets: [
+                'Posvet in ocena primernosti',
+                'Seje v komori OxyHelp',
+                'Pospešeno celjenje in regeneracija',
+                'Strokovni nadzor med sejo',
+              ],
+              meta: 'Trajanje seje: približno 60 minut',
+            },
+          ])"
+          x-ref="grid"
+          @keydown.escape.window="selected !== null && close()"
+          class="sub-grid mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:mt-12 md:gap-6 lg:grid-cols-4"
+          :class="shown ? 'cards-in' : ''"
+        >
+          <template x-for="(item, i) in items" :key="item.slug">
+            <article
+              data-card
+              class="group card-reveal relative overflow-hidden rounded-2xl bg-surface"
+              :class="isOpen(i) ? 'col-span-full is-open' : ''"
+            >
+              <!-- Compact face: carries the card look; fades out while
+                   the card flies open (no stretch-into-view artifacts). -->
+              <div
+                class="card-face relative w-full"
+                :class="isOpen(i) ? 'absolute inset-0 z-10' : 'aspect-[3/4] lg:aspect-square'"
+              >
+                <img
+                  :src="item.img"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-forest/85 via-forest/35 to-forest/10"
+                  aria-hidden="true"
+                ></div>
+                <span class="absolute inset-x-0 bottom-0 block p-5 sm:p-6">
+                  <span
+                    class="block font-fraunces text-xl leading-tight text-surface sm:text-2xl"
+                    x-text="item.title"
+                  ></span>
+                  <span
+                    class="mt-2 block text-[15px] leading-relaxed text-surface/85 line-clamp-2 sm:line-clamp-3 sm:text-[17px]"
+                    x-text="item.short"
+                  ></span>
+                  <span
+                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-surface"
+                  >
+                    Preberi več
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="transition-transform duration-300 group-hover:translate-x-0.5"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m13 6 6 6-6 6" />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+
+              <!-- Hit area: covers the face while compact, hidden when open -->
+              <button
+                type="button"
+                x-show="!isOpen(i)"
+                class="absolute inset-0 z-20 block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+                @click="select(i)"
+                :aria-expanded="isOpen(i)"
+                :aria-label="'Preberi več: ' + item.title"
+                :aria-controls="'sub-' + item.slug"
+              ></button>
+
+              <!-- Expanded panel -->
+              <div
+                :id="'sub-' + item.slug"
+                class="sub-panel"
+                role="region"
+                :aria-label="item.title"
+                tabindex="-1"
+                x-show="isOpen(i)"
+                x-cloak
+              >
+                <div class="panel-inner">
+                  <div class="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+                    <div class="relative h-56 sm:h-72 md:h-auto">
+                      <img
+                        :src="item.img"
+                        :alt="item.title"
+                        class="absolute inset-0 h-full w-full object-cover"
+                      />
+                    </div>
+                    <div class="p-6 sm:p-8 lg:p-10">
+                      <h3
+                        class="font-fraunces text-2xl leading-tight text-forest sm:text-3xl"
+                        x-text="item.title"
+                      ></h3>
+                      <p
+                        class="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-forest sm:text-[17px]"
+                        x-text="item.long"
+                      ></p>
+                      <ul class="mt-6 space-y-3">
+                        <template x-for="bullet in item.bullets" :key="bullet">
+                          <li
+                            class="flex items-start gap-3 text-[15px] leading-relaxed text-muted sm:text-[17px]"
+                          >
+                            <span
+                              class="mt-[0.6em] block h-px w-4 shrink-0 bg-forest/40"
+                              aria-hidden="true"
+                            ></span>
+                            <span x-text="bullet"></span>
+                          </li>
+                        </template>
+                      </ul>
+                      <p class="mt-6 text-sm text-muted" x-text="item.meta"></p>
+                      <div
+                        class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-hairline pt-6"
+                      >
+                        <a
+                          href="../index.html#narocanje-cta"
+                          class="inline-flex items-center rounded-md bg-forest px-5 py-2.5 text-[15px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted"
+                          >Naročite se na pregled</a
+                        >
+                        <button
+                          type="button"
+                          class="inline-flex items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-forest"
+                          @click="close()"
+                        >
+                          <span aria-hidden="true">&larr;</span> Nazaj na vse storitve
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </template>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-hairline">
+      <div class="mx-auto max-w-[80rem] px-6 py-12 md:px-8 md:py-16">
+        <div class="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
+          <div class="col-span-2 sm:col-span-1">
+            <a
+              href="../index.html#home"
+              class="flex items-center gap-2 font-fraunces text-xl text-forest"
+            >
+              <span class="uppercase">Klanmedic</span>
+              <img
+                src="../src/images/logotip_klanmedic_obris.svg"
+                alt=""
+                class="block h-[0.72em] w-auto"
+              />
+            </a>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">
+              Zasebna klinika v [mesto] — splošna medicina, specialistični
+              pregledi in estetska oskrba.
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Navigacija
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li><a href="../index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
+              <li><a href="../index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
+              <li><a href="../index.html#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
+              <li><a href="../index.html#narocanje" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Kontakt
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li class="text-muted">[mesto], Slovenija</li>
+              <li>
+                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                >
+              </li>
+              <li>
+                <a href="mailto:info@klanmedic.si" class="text-forest transition-colors hover:text-muted"
+                  >info@klanmedic.si</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1">
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Urnik
+            </p>
+            <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
+              <dt class="text-muted">Pon–Pet</dt>
+              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Sob–Ned</dt>
+              <dd class="text-muted">zaprto</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="mt-12 border-t border-hairline pt-6 text-sm text-muted">
+          © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic.
+          Vse pravice pridržane.
+        </div>
+      </div>
+    </footer>
+
+    <script src="../src/js/main.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </body>
+</html>
