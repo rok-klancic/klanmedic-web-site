@@ -44,6 +44,12 @@
   background-color: var(--color-sand);
 }
 
+/* Centered variant (subpage heroes): the sand rule extends
+   symmetrically on both sides of the centered headline. */
+.signature-rule--center::after {
+  left: -0.3em;
+}
+
 .card-reveal {
   opacity: 0;
   transform: translateY(22px);
@@ -72,11 +78,17 @@
  */
 [data-card] .card-face {
   opacity: 1;
-  transition: opacity 320ms ease;
+  filter: blur(0);
+  /* While the compact face dissolves it defocuses — the blur also
+     masks the stretch of the FLIP scale flight. */
+  transition:
+    opacity 450ms ease,
+    filter 450ms ease;
 }
 
 [data-card].is-open .card-face {
   opacity: 0;
+  filter: blur(10px);
   pointer-events: none;
 }
 
@@ -87,18 +99,54 @@
 [data-card].is-open .panel-inner {
   opacity: 1;
   /* A transition would not start on an element that just left
-     display:none, so the fade-in is an animation. The 450ms delay puts
-     the reveal near the end of the 880ms flight and `backwards` holds
-     the content invisible until it starts. */
-  animation: panel-reveal 360ms ease-out 450ms backwards;
+     display:none, so the fade-in is an animation. The panel runs the
+     same duration and easing as the face dissolve above it, starting
+     at the same moment — a true crossfade: while the face dissolves
+     out, the panel dissolves in underneath it, so the bare surface
+     never peeks through as a white flash. */
+  animation: panel-reveal 450ms ease;
 }
 
 @keyframes panel-reveal {
   from {
     opacity: 0;
+    filter: blur(10px);
   }
   to {
     opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/*
+ * Close choreography — the mirrored twin of the open crossfade. While
+ * the card is marked .is-closing (before the FLIP runs), the face
+ * returns sharp and fully opaque *beneath* the panel, and the panel
+ * dissolves out on top of it. Only then does main.js flip the layout
+ * back and let the siblings glide home.
+ */
+[data-card].is-closing .card-face {
+  opacity: 1;
+  filter: blur(0);
+  transition: none;
+  z-index: 0;
+}
+
+[data-card].is-closing .panel-inner {
+  position: relative;
+  z-index: 20;
+  background: var(--color-surface);
+  animation: panel-hide 420ms ease forwards;
+}
+
+@keyframes panel-hide {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(10px);
   }
 }
 
@@ -129,6 +177,22 @@
     transition: none;
     animation: none;
   }
+}
+
+/*
+ * Intro skip (head-gated): an inline script in index.html adds
+ * .intro-skip to <html> before the first paint whenever the intro must
+ * be skipped (returning visit or a deep link), so the intro layer
+ * never flashes. src/js/main.js applies the same decision once Alpine
+ * starts and hands control back to the normal bindings.
+ */
+html.intro-skip .intro-layer,
+html.intro-skip .intro-texture {
+  opacity: 0 !important;
+}
+
+html.intro-skip .final-layer {
+  opacity: 1 !important;
 }
 
 .text-clinic-mask {

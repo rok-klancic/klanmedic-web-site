@@ -50,7 +50,7 @@ Rules:
 - **Vertical rhythm:** `py-24` (6rem) between sections, `py-12` (3rem) within a section.
 - **Body measure:** paragraphs sit in a 60–72ch column, even on wide screens.
 - **Subpages:** the same 80rem container, 12-col grid, hairline rules, and type scale apply to per-speciality pages. No page-specific layouts unless content demands it.
-- **Team section:** the member list sits beside the group photo at `md`+ (photo 7 cols, names 5 cols) so both are visible together; below `md` the list stacks under the photo. Names are the primary control: hover or keyboard focus draws a hairline underline, and the selected person keeps it. Photo hotspots are pointer-only extras at `md`+ with a 500ms hover-intent delay (gliding over must not swap the photo) and exist only for members with a face target; members without a photo keep the group image. On first view the names rise into place once, staggered by 150ms, skipped under `prefers-reduced-motion`.
+- **Team section:** the member list sits beside the group photo at `md`+ (photo 7 cols, names 5 cols) so both are visible together; below `md` the list sits under the photo as a horizontal snap-scrolling row of names (the photo keeps its 16/9 crop, so the section still fits roughly one viewport). Names are the primary control: hover or keyboard focus draws a hairline underline, and the selected person keeps it. Photo hotspots are pointer-only extras at `md`+ with a 500ms hover-intent delay (gliding over must not swap the photo) and exist only for members with a face target; members without a photo keep the group image. On first view the names rise into place once, staggered by 150ms, skipped under `prefers-reduced-motion`.
 
 ## Signature element
 

@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="sl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naročanje | Klanmedic</title>
+    <meta
+      name="description"
+      content="Kontakti za naročanje v Klanmedicu — gastroenterologija, zobozdravstvo in estetika."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./src/css/output.css" />
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
+    <header
+      class="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
+      x-data="{ open: false, servicesOpen: false }"
+    >
+      <nav
+        class="mx-auto flex max-w-[80rem] items-center justify-between gap-3 px-6 py-5 sm:gap-6"
+      >
+        <a
+          href="index.html#home"
+          class="flex shrink-0 items-center gap-2 font-fraunces text-xl text-forest sm:text-[28px]"
+        >
+          <span class="overflow-hidden whitespace-nowrap uppercase"
+            >KLANMEDIC</span
+          >
+          <img
+            src="./src/images/logotip_klanmedic_obris.svg"
+            alt=""
+            class="block h-[0.72em] w-auto"
+          />
+        </a
+        >
+
+        <ul class="hidden items-center gap-8 lg:flex">
+          <li>
+            <a
+              href="index.html#home"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Domov</a
+            >
+          </li>
+          <li
+            x-data="{ servicesOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); servicesOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => servicesOpen = false, 150) }"
+            @keydown.escape.window="servicesOpen = false"
+            @click.outside="servicesOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="index.html#services"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Storitve</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="servicesOpen = !servicesOpen"
+                :aria-expanded="servicesOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-services-menu"
+                aria-label="Podmeni storitev"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="servicesOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-services-menu"
+              x-show="servicesOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
+            >
+              <a
+                href="./storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Zobozdravstvo</a
+              >
+              <a
+                href="./storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Interna medicina</a
+              >
+              <a
+                href="./storitve/estetika.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Estetika</a
+              >
+            </div>
+          </li>
+          <li>
+            <a
+              href="narocanje.html"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Naročanje</a
+            >
+          </li>
+          <li>
+            <a
+              href="urnik.html"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Urnik</a
+            >
+          </li>
+          <li
+            x-data="{ cenikOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); cenikOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => cenikOpen = false, 150) }"
+            @keydown.escape.window="cenikOpen = false"
+            @click.outside="cenikOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="cenik.html"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Cenik</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="cenikOpen = !cenikOpen"
+                :aria-expanded="cenikOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-cenik-menu"
+                aria-label="Podmeni cenik"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="cenikOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-cenik-menu"
+              x-show="cenikOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
+            >
+              <a
+                href="cenik.html#oblikovanje-telesa"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Oblikovanje telesa</a
+              >
+              <a
+                href="cenik.html#vodena-vadba"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Vodena vadba</a
+              >
+              <a
+                href="cenik.html#dobro-pocutje"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Dobro počutje</a
+              >
+              <a
+                href="cenik.html#nega-obraza"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Nega obraza</a
+              >
+              <a
+                href="cenik.html#magnetne-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Magnetne terapije</a
+              >
+              <a
+                href="cenik.html#laserske-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Laserske terapije</a
+              >
+            </div>
+          </li>
+        </ul>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a
+            href="narocanje.html"
+            class="inline-flex whitespace-nowrap items-center rounded-md bg-forest px-3 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted sm:px-5 sm:text-[15px]"
+            >Naročite se</a
+          >
+
+          <button
+            type="button"
+            class="hidden sm:inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60"
+            aria-label="Iskanje"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
+            @click="open = !open; if (!open) servicesOpen = false"
+            :aria-expanded="open"
+            aria-controls="mobile-menu"
+            aria-label="Meni"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <ul
+        id="mobile-menu"
+        class="space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        x-show="open"
+        x-transition.opacity
+        @click="open = false"
+        x-cloak
+      >
+        <li>
+          <a
+            href="index.html#home"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Domov</a
+          >
+        </li>
+        <li>
+          <button
+            type="button"
+            class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            @click.stop="servicesOpen = !servicesOpen"
+            :aria-expanded="servicesOpen"
+            aria-controls="mobile-services-menu"
+          >
+            Storitve
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="transition-transform duration-200"
+              :class="servicesOpen ? 'rotate-180' : ''"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          <ul
+            id="mobile-services-menu"
+            x-show="servicesOpen"
+            x-cloak
+            class="ml-3 mt-1 space-y-1 border-l border-hairline pl-2"
+          >
+            <li>
+              <a
+                href="index.html#services"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Vse storitve</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Zobozdravstvo</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Interna medicina</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/estetika.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Estetika</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="narocanje.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Naročanje</a
+          >
+        </li>
+        <li>
+          <a
+            href="urnik.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Urnik</a
+          >
+        </li>
+        <li>
+          <a
+            href="cenik.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Cenik</a
+          >
+        </li>
+      </ul>
+    </header>
+
+    <main class="overflow-x-clip">
+      <!-- Hero -->
+      <section class="relative isolate overflow-hidden bg-forest">
+        <div class="relative h-[62svh] min-h-[440px] max-h-[760px] md:h-[70svh]">
+          <img
+            src="./src/images/hero.jpg"
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <div class="absolute inset-0 bg-forest/55" aria-hidden="true"></div>
+          <div
+            class="relative mx-auto flex h-full max-w-[80rem] items-center justify-center px-6 md:px-8"
+          >
+            <div class="max-w-[60ch] text-center">
+              <p class="text-sm font-medium uppercase tracking-wide text-surface/80">
+                Kontakti po ambulantah
+              </p>
+              <h1
+                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule signature-rule--center sm:text-5xl md:text-6xl"
+              >
+                Naročanje
+              </h1>
+              <p class="mt-8 text-[15px] leading-relaxed text-surface/90 sm:text-[17px]">
+                Poiščite pravi kontakt za vašo obravnavo — za nujne primere smo
+                dosegljivi isti dan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Breadcrumb -->
+      <div class="mx-auto max-w-[80rem] px-6 pt-8 md:px-8">
+        <nav aria-label="Pot po strani" class="text-[15px] text-muted">
+          <a href="index.html" class="transition-colors hover:text-forest">Domov</a>
+          <span aria-hidden="true"> / </span>
+          <span class="text-forest" aria-current="page">Naročanje</span>
+        </nav>
+      </div>
+
+      <!-- Kontakti po ambulantah -->
+      <section
+        id="kontakti"
+        class="mx-auto max-w-[80rem] px-6 pb-20 pt-8 md:px-8 md:pb-24 md:pt-10"
+      >
+        <p class="text-sm font-medium uppercase tracking-wide text-muted">Kontakti</p>
+        <h2 class="mt-3 font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+          Kako se naročite.
+        </h2>
+
+        <article class="mt-10 grid gap-x-10 gap-y-4 md:mt-12 lg:grid-cols-12">
+          <h3 class="font-fraunces text-2xl leading-tight text-forest sm:text-3xl lg:col-span-4">
+            Gastroenterološka ambulanta
+          </h3>
+          <div class="lg:col-span-8">
+            <ul>
+              <li class="grid gap-x-8 gap-y-1 border-b border-hairline py-4 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] sm:items-baseline">
+                <span class="text-sm font-medium uppercase tracking-wide text-muted">Naročanje z napotnico</span>
+                <span class="flex flex-wrap items-baseline gap-x-6 gap-y-1 text-[15px] sm:text-[17px]">
+                  <a
+                    href="mailto:info@klanmedic.si"
+                    class="text-forest transition-colors hover:text-muted"
+                    >info@klanmedic.si</a
+                  >
+                  <a
+                    href="tel:+38659912340"
+                    class="whitespace-nowrap tabular-nums text-forest transition-colors hover:text-muted"
+                    >05 99 12340</a
+                  >
+                </span>
+              </li>
+              <li class="grid gap-x-8 gap-y-1 border-b border-hairline py-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] sm:items-baseline">
+                <span class="text-sm font-medium uppercase tracking-wide text-muted">Naročanje za samoplačnike</span>
+                <span class="flex flex-wrap items-baseline gap-x-6 gap-y-1 text-[15px] sm:text-[17px]">
+                  <a
+                    href="mailto:info@klanmedic.si"
+                    class="text-forest transition-colors hover:text-muted"
+                    >info@klanmedic.si</a
+                  >
+                  <a
+                    href="tel:+38641442901"
+                    class="whitespace-nowrap tabular-nums text-forest transition-colors hover:text-muted"
+                    >041 442 901</a
+                  >
+                </span>
+              </li>
+            </ul>
+            <p class="mt-4 text-sm leading-relaxed text-muted">
+              Klanmedic, Cesta Prekomorskih brigad 3 b, 5290 Šempeter pri
+              Gorici (po pošti)
+            </p>
+          </div>
+        </article>
+
+        <div class="my-12 h-px bg-hairline lg:my-16" aria-hidden="true"></div>
+
+        <article class="grid gap-x-10 gap-y-4 lg:grid-cols-12">
+          <h3 class="font-fraunces text-2xl leading-tight text-forest sm:text-3xl lg:col-span-4">
+            Zobna ambulanta
+          </h3>
+          <div class="lg:col-span-8">
+            <ul>
+              <li class="grid gap-x-8 gap-y-1 border-b border-hairline py-4 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] sm:items-baseline">
+                <span class="text-sm font-medium uppercase tracking-wide text-muted">Naročanje</span>
+                <span class="flex flex-wrap items-baseline gap-x-6 gap-y-1 text-[15px] sm:text-[17px]">
+                  <a
+                    href="mailto:lucija.klancic@klanmedic.si"
+                    class="text-forest transition-colors hover:text-muted"
+                    >lucija.klancic@klanmedic.si</a
+                  >
+                  <a
+                    href="tel:+38651415868"
+                    class="whitespace-nowrap tabular-nums text-forest transition-colors hover:text-muted"
+                    >051 415 868</a
+                  >
+                </span>
+              </li>
+            </ul>
+            <p class="mt-4 text-sm leading-relaxed text-muted">
+              Klanmedic, Cesta Prekomorskih brigad 3 b, 5290 Šempeter pri
+              Gorici (po pošti)
+            </p>
+          </div>
+        </article>
+
+        <div class="my-12 h-px bg-hairline lg:my-16" aria-hidden="true"></div>
+
+        <article class="grid gap-x-10 gap-y-4 lg:grid-cols-12">
+          <h3 class="font-fraunces text-2xl leading-tight text-forest sm:text-3xl lg:col-span-4">
+            KlanMedic Estetika
+          </h3>
+          <div class="lg:col-span-8">
+            <ul>
+              <li class="grid gap-x-8 gap-y-1 border-b border-hairline py-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] sm:items-baseline">
+                <span class="text-sm font-medium uppercase tracking-wide text-muted">Naročanje</span>
+                <span class="flex flex-wrap items-baseline gap-x-6 gap-y-1 text-[15px] sm:text-[17px]">
+                  <a
+                    href="mailto:estetika@klanmedic.si"
+                    class="text-forest transition-colors hover:text-muted"
+                    >estetika@klanmedic.si</a
+                  >
+                  <a
+                    href="tel:+38631391662"
+                    class="whitespace-nowrap tabular-nums text-forest transition-colors hover:text-muted"
+                    >031 391 662</a
+                  >
+                </span>
+              </li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- CTA -->
+      <section
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
+      >
+        <div class="mx-auto max-w-3xl text-center">
+          <h2 class="font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+            Pred naročanjem.
+          </h2>
+          <p class="mx-auto mt-5 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+            Preverite delovni čas vaše ambulante in trenutne čakalne dobe.
+          </p>
+          <div class="mt-10 flex flex-col items-center gap-4">
+            <a
+              href="urnik.html"
+              class="inline-flex items-center rounded-md bg-forest px-7 py-3.5 text-[15px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted"
+              >Poglejte urnik</a
+            >
+            <a
+              href="mailto:info@klanmedic.si"
+              class="text-[15px] text-muted transition-colors hover:text-forest"
+              >ali pišite na
+              <span class="whitespace-nowrap">info@klanmedic.si</span></a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-hairline">
+      <div class="mx-auto max-w-[80rem] px-6 py-12 md:px-8 md:py-16">
+        <div class="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
+          <div class="col-span-2 sm:col-span-1">
+            <a
+              href="index.html#home"
+              class="flex items-center gap-2 font-fraunces text-xl text-forest"
+            >
+              <span class="uppercase">Klanmedic</span>
+              <img
+                src="./src/images/logotip_klanmedic_obris.svg"
+                alt=""
+                class="block h-[0.72em] w-auto"
+              />
+            </a>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">
+              Zasebna klinika v [mesto] — splošna medicina, specialistični
+              pregledi in estetska oskrba.
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Navigacija
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li><a href="index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
+              <li><a href="index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
+              <li><a href="index.html#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
+              <li><a href="narocanje.html" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+              <li><a href="urnik.html" class="text-forest transition-colors hover:text-muted">Urnik</a></li>
+              <li><a href="cenik.html" class="text-forest transition-colors hover:text-muted">Cenik</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Kontakt
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li class="text-muted">[mesto], Slovenija</li>
+              <li>
+                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                >
+              </li>
+              <li>
+                <a href="mailto:info@klanmedic.si" class="text-forest transition-colors hover:text-muted"
+                  >info@klanmedic.si</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1">
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Urnik
+            </p>
+            <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
+              <dt class="text-muted">Pon–Pet</dt>
+              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Sob–Ned</dt>
+              <dd class="text-muted">zaprto</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="mt-12 border-t border-hairline pt-6 text-sm text-muted">
+          © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic.
+          Vse pravice pridržane.
+        </div>
+      </div>
+    </footer>
+
+    <script src="./src/js/main.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </body>
+</html>

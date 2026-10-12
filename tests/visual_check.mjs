@@ -18,6 +18,8 @@
 //     reveal on scroll, card expands into a full-width inline panel
 //     top-aligned with the viewport, other cards stay clickable, close
 //     button returns to the grid
+//   - info pages (narocanje.html, urnik.html, cenik.html): light smoke —
+//     full-bleed hero image, no overflow, fonts load
 // Screenshots for manual review are (over)written to tests/screenshots/.
 //
 // Requires internet (Google Fonts + Alpine CDN). Exit code 1 on any failure.
@@ -37,10 +39,10 @@ const SHOTS = resolve(HERE, "screenshots");
 // index.html (currently sm=640, lg=1024).
 const WIDTHS = [375, 640, 768, 1024, 1440];
 
-// Anchors that intentionally point at pages that do not exist yet
-// (#narocanje, #urnik, #cenik). When you add those pages, this test will
-// start FAILING — remove the now-live anchors from this list.
-const EXPECTED_DEAD_ANCHORS = ["#narocanje", "#urnik", "#cenik"].sort();
+// Anchors that intentionally point at pages that do not exist yet.
+// Updated for the narocanje/urnik/cenik pages: all nav anchors now point
+// at real pages, so the landing page has no intentionally dead anchors.
+const EXPECTED_DEAD_ANCHORS = [].sort();
 
 // Service subpages expandable-card checks. Items per page must match the
 // x-data="subservices([...])" array in each file.
@@ -95,7 +97,7 @@ const JS = {
   state: () => ({ scrollWidth: document.documentElement.scrollWidth, innerWidth: window.innerWidth }),
   header: () => {
     const span = document.querySelector("header nav a span");
-    const cta = document.querySelector('header nav > div > a[href="#narocanje"]');
+    const cta = document.querySelector("header nav > div > a[href*='narocanje']");
     const s = span.getBoundingClientRect();
     const c = cta.getBoundingClientRect();
     return {
@@ -179,11 +181,29 @@ async function runWidth(browser, width, port) {
       rec.problems.push("mobile menu did not open");
     await page.screenshot({ path: resolve(SHOTS, `${width}-menu.png`) });
 
+    // the services group expands into its sub-links
+    await page.click("#mobile-menu button[aria-controls='mobile-services-menu']");
+    await page.waitForTimeout(300);
+    if (!(await page.locator("#mobile-services-menu").isVisible()))
+      rec.problems.push("mobile services submenu did not expand");
+    await page.screenshot({ path: resolve(SHOTS, `${width}-menu-open.png`) });
+
     // tapping a nav link inside the menu must close it
     await page.click("#mobile-menu a[href='#services']");
     await page.waitForTimeout(500);
     if (await page.locator("#mobile-menu").isVisible())
       rec.problems.push("mobile menu did not close after link tap");
+  } else {
+    // desktop services submenu opens on hover and closes when the
+    // pointer leaves (plus a short close delay)
+    await page.hover("button[aria-label='Podmeni storitev']");
+    await page.waitForTimeout(300);
+    if (!(await page.locator("#desktop-services-menu").isVisible()))
+      rec.problems.push("desktop services submenu did not open on hover");
+    await page.mouse.move(10, 400);
+    await page.waitForTimeout(400);
+    if (await page.locator("#desktop-services-menu").isVisible())
+      rec.problems.push("desktop services submenu did not close after hover leaves");
   }
 
   // services screenshot
@@ -364,6 +384,58 @@ async function runSubpage(browser, width, port, path) {
   return rec;
 }
 
+async function runInfoPage(browser, width, port, path) {
+  const height = width < 800 ? 812 : 900;
+  const context = await browser.newContext({ viewport: { width, height } });
+  const page = await context.newPage();
+  const name = path.replace(".html", "");
+  const rec = { width, subpage: name, problems: [] };
+
+  page.on("console", (m) => {
+    if (m.type() === "error" || m.type() === "warning")
+      rec.problems.push(`console ${m.type()}: ${m.text().slice(0, 150)}`);
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) rec.problems.push(`http ${r.status()}: ${r.url().slice(-90)}`);
+  });
+  page.on("requestfailed", (r) => rec.problems.push(`request failed: ${r.url().slice(-90)}`));
+
+  await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: "networkidle" });
+  await page.screenshot({ path: resolve(SHOTS, `${width}-${name}.png`) });
+
+  // overflow at top
+  let st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at top: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  // hero image is full-bleed and actually loaded
+  const hero = await page.evaluate(() => {
+    const img = document.querySelector("main section img");
+    const box = img?.getBoundingClientRect();
+    return {
+      loaded: !!img && img.complete && img.naturalWidth > 0,
+      width: box ? Math.round(box.width) : 0,
+    };
+  });
+  if (!hero.loaded) rec.problems.push("hero image not loaded");
+  if (hero.width !== width) rec.problems.push(`hero image not full-bleed (width=${hero.width})`);
+
+  // fonts
+  const fonts = await page.evaluate(JS.fonts);
+  if (!fonts.fraunces || !fonts.manrope)
+    rec.problems.push(`fonts not loaded: ${JSON.stringify(fonts)}`);
+
+  // overflow at bottom
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(500);
+  st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  await context.close();
+  return rec;
+}
+
 async function main() {
   mkdirSync(SHOTS, { recursive: true });
   const { server, port } = await startServer();
@@ -378,6 +450,13 @@ async function main() {
       for (const width of SUBPAGE_WIDTHS) {
         process.stdout.write(`--- ${path} ${width}px ---\n`);
         results.push(await runSubpage(browser, width, port, path));
+      }
+    }
+    const INFO_PAGES = ["narocanje.html", "urnik.html", "cenik.html"];
+    for (const path of INFO_PAGES) {
+      for (const width of SUBPAGE_WIDTHS) {
+        process.stdout.write(`--- ${path} ${width}px ---\n`);
+        results.push(await runInfoPage(browser, width, port, path));
       }
     }
   } finally {

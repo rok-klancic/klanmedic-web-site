@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="sl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cenik | Klanmedic</title>
+    <meta
+      name="description"
+      content="Cenik samoplačniških storitev — oblikovanje telesa, vodena vadba, dobro počutje, nega obraza, magnetne in laserske terapije."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./src/css/output.css" />
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
+    <header
+      class="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
+      x-data="{ open: false, servicesOpen: false }"
+    >
+      <nav
+        class="mx-auto flex max-w-[80rem] items-center justify-between gap-3 px-6 py-5 sm:gap-6"
+      >
+        <a
+          href="index.html#home"
+          class="flex shrink-0 items-center gap-2 font-fraunces text-xl text-forest sm:text-[28px]"
+        >
+          <span class="overflow-hidden whitespace-nowrap uppercase"
+            >KLANMEDIC</span
+          >
+          <img
+            src="./src/images/logotip_klanmedic_obris.svg"
+            alt=""
+            class="block h-[0.72em] w-auto"
+          />
+        </a
+        >
+
+        <ul class="hidden items-center gap-8 lg:flex">
+          <li>
+            <a
+              href="index.html#home"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Domov</a
+            >
+          </li>
+          <li
+            x-data="{ servicesOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); servicesOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => servicesOpen = false, 150) }"
+            @keydown.escape.window="servicesOpen = false"
+            @click.outside="servicesOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="index.html#services"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Storitve</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="servicesOpen = !servicesOpen"
+                :aria-expanded="servicesOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-services-menu"
+                aria-label="Podmeni storitev"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="servicesOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-services-menu"
+              x-show="servicesOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
+            >
+              <a
+                href="./storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Zobozdravstvo</a
+              >
+              <a
+                href="./storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Interna medicina</a
+              >
+              <a
+                href="./storitve/estetika.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Estetika</a
+              >
+            </div>
+          </li>
+          <li>
+            <a
+              href="narocanje.html"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Naročanje</a
+            >
+          </li>
+          <li>
+            <a
+              href="urnik.html"
+              class="text-[15px] text-forest transition-colors hover:text-muted"
+              >Urnik</a
+            >
+          </li>
+          <li
+            x-data="{ cenikOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); cenikOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => cenikOpen = false, 150) }"
+            @keydown.escape.window="cenikOpen = false"
+            @click.outside="cenikOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="cenik.html"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Cenik</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="cenikOpen = !cenikOpen"
+                :aria-expanded="cenikOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-cenik-menu"
+                aria-label="Podmeni cenik"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="cenikOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-cenik-menu"
+              x-show="cenikOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
+            >
+              <a
+                href="#oblikovanje-telesa"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Oblikovanje telesa</a
+              >
+              <a
+                href="#vodena-vadba"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Vodena vadba</a
+              >
+              <a
+                href="#dobro-pocutje"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Dobro počutje</a
+              >
+              <a
+                href="#nega-obraza"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Nega obraza</a
+              >
+              <a
+                href="#magnetne-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Magnetne terapije</a
+              >
+              <a
+                href="#laserske-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Laserske terapije</a
+              >
+            </div>
+          </li>
+        </ul>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a
+            href="narocanje.html"
+            class="inline-flex whitespace-nowrap items-center rounded-md bg-forest px-3 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted sm:px-5 sm:text-[15px]"
+            >Naročite se</a
+          >
+
+          <button
+            type="button"
+            class="hidden sm:inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60"
+            aria-label="Iskanje"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
+            @click="open = !open; if (!open) servicesOpen = false"
+            :aria-expanded="open"
+            aria-controls="mobile-menu"
+            aria-label="Meni"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <ul
+        id="mobile-menu"
+        class="space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        x-show="open"
+        x-transition.opacity
+        @click="open = false"
+        x-cloak
+      >
+        <li>
+          <a
+            href="index.html#home"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Domov</a
+          >
+        </li>
+        <li>
+          <button
+            type="button"
+            class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            @click.stop="servicesOpen = !servicesOpen"
+            :aria-expanded="servicesOpen"
+            aria-controls="mobile-services-menu"
+          >
+            Storitve
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="transition-transform duration-200"
+              :class="servicesOpen ? 'rotate-180' : ''"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          <ul
+            id="mobile-services-menu"
+            x-show="servicesOpen"
+            x-cloak
+            class="ml-3 mt-1 space-y-1 border-l border-hairline pl-2"
+          >
+            <li>
+              <a
+                href="index.html#services"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Vse storitve</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Zobozdravstvo</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Interna medicina</a
+              >
+            </li>
+            <li>
+              <a
+                href="./storitve/estetika.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Estetika</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="narocanje.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Naročanje</a
+          >
+        </li>
+        <li>
+          <a
+            href="urnik.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Urnik</a
+          >
+        </li>
+        <li>
+          <a
+            href="cenik.html"
+            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            >Cenik</a
+          >
+        </li>
+      </ul>
+    </header>
+
+    <main class="overflow-x-clip">
+      <!-- Hero -->
+      <section class="relative isolate overflow-hidden bg-forest">
+        <div class="relative h-[62svh] min-h-[440px] max-h-[760px] md:h-[70svh]">
+          <img
+            src="./src/images/estetika.png"
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <div class="absolute inset-0 bg-forest/55" aria-hidden="true"></div>
+          <div
+            class="relative mx-auto flex h-full max-w-[80rem] items-center justify-center px-6 md:px-8"
+          >
+            <div class="max-w-[60ch] text-center">
+              <p class="text-sm font-medium uppercase tracking-wide text-surface/80">
+                Samoplačniške storitve
+              </p>
+              <h1
+                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule signature-rule--center sm:text-5xl md:text-6xl"
+              >
+                Cenik
+              </h1>
+              <p class="mt-8 text-[15px] leading-relaxed text-surface/90 sm:text-[17px]">
+                Cene izbranih storitev. Poln cenik je na voljo v ambulanti.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Breadcrumb -->
+      <div class="mx-auto max-w-[80rem] px-6 pt-8 md:px-8">
+        <nav aria-label="Pot po strani" class="text-[15px] text-muted">
+          <a href="index.html" class="transition-colors hover:text-forest">Domov</a>
+          <span aria-hidden="true"> / </span>
+          <span class="text-forest" aria-current="page">Cenik</span>
+        </nav>
+      </div>
+
+      <!-- Pregled skupin (lepljiv pod headerjem) -->
+      <div
+        id="pregled"
+        class="sticky top-20 z-40 border-b border-hairline bg-sage/90 backdrop-blur"
+      >
+        <nav
+          aria-label="Skoki po ceniku"
+          class="mx-auto flex max-w-[80rem] gap-x-6 gap-y-2 overflow-x-auto whitespace-nowrap px-6 py-3 text-[15px] md:px-8"
+        >
+          <a href="#oblikovanje-telesa" class="text-muted transition-colors hover:text-forest">Oblikovanje telesa</a>
+          <a href="#vodena-vadba" class="text-muted transition-colors hover:text-forest">Vodena vadba</a>
+          <a href="#dobro-pocutje" class="text-muted transition-colors hover:text-forest">Dobro počutje</a>
+          <a href="#nega-obraza" class="text-muted transition-colors hover:text-forest">Nega obraza</a>
+          <a href="#magnetne-terapije" class="text-muted transition-colors hover:text-forest">Magnetne terapije</a>
+          <a href="#laserske-terapije" class="text-muted transition-colors hover:text-forest">Laserske terapije</a>
+        </nav>
+      </div>
+
+      <!-- Oblikovanje telesa -->
+      <section
+        id="oblikovanje-telesa"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Oblikovanje telesa
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Oblikovanje postave — analiza telesne sestave s Tanita MC-980 MA
+              in estetsko 3D fotografijo, personalizirana kombinacija RDT, CPT,
+              FMS, neinvazivne liposukcije Iskra Medical in laserskih terapij
+              Fotona.
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Analiza telesne sestave</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">15 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Posvet pri specialistu</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">30 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Funkcionalna magnetna stimulacija mišic — FMS (10 terapij na predel)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">420 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Neinvazivna liposukcija (CPT/RDT) + FMS (10 terapij)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">1.000 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">FIT paket (6-mesečni program oblikovanja telesa)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">3.000 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Fit extreme — posvet pri specialistu, analiza telesne sestave in gastroskopija</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">200 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">FIT EXTREME paket (vstavitev želodčnega balona, nadzor telesne teže in svetovanje)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">3.200 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Laserska terapija tightsculpting Fotona (1 terapija, na predel)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">120–400 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Neinvazivna liposukcija s Sonic Shaper Prestige (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">90 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Vodena vadba -->
+      <section
+        id="vodena-vadba"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Vodena vadba
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Individualna vadba pod nadzorom osebne trenerke — z vibracijsko
+              ploščo in kolesom Power Plate.
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">1 vadba</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">20 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">1× tedensko (4 obiski / mesec)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">72 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">2× tedensko (8 obiskov / mesec)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">125 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Dobro počutje -->
+      <section
+        id="dobro-pocutje"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Dobro počutje
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Hiperbarična kisikova terapija s komoro OXY, terapevtska
+              medicinska hipnoza in terapije za splošno počutje.
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Hiperbarična kisikova terapija (OXY, 60 min)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">70 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Hiperbarična kisikova terapija (paket 5 terapij)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">300 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Hiperbarična kisikova terapija (paket 10 terapij)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">500 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Terapevtska medicinska hipnoza (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">60 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Magnetna refleksoterapija stopal (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">30 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Sprostitvena nega obraza (90 min)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">75 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Nega obraza -->
+      <section
+        id="nega-obraza"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Nega obraza
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Pomlajevalna in specializirana nega z analizo kože (estetska 3D
+              fotografija) in personalizirano kozmetiko.
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Pomlajevalna nega obraza (90 min)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">95 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Specializirana nega obraza (90 min; čiščenje, akne, suha koža, kuperoza)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">60 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Anti age nega (gubice, starostne pege, zmanjšan tonus; 90 min)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">80 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Microneedling Dermapen 4 — pomlajevanje obraza in vratu (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">100 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Microneedling Dermapen 4 + PRP — lastni rastni faktorji (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">200 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Magnetne terapije -->
+      <section
+        id="magnetne-terapije"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Magnetne terapije
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Terapije s Tesla Care, Tesla Stym in Magneto Stym Iskra Medical —
+              TESLA ON (erektilna disfunkcija, kronični prostatitis), TESLA ONA
+              (poporodna regeneracija, prolaps maternice), TESLA STOL
+              (inkontinenca) in TESLA SACRUM (bolečine v križu, rehabilitacija).
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Ena terapija</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">60 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Paket 15 terapij</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">350 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Obnovitvena terapija</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">30 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Laserske terapije -->
+      <section
+        id="laserske-terapije"
+        class="mx-auto max-w-[80rem] px-6 py-16 md:px-8 md:py-20"
+      >
+        <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h2 class="font-fraunces text-3xl leading-tight text-forest sm:text-4xl">
+              Laserske terapije
+            </h2>
+            <p class="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+              Z laserskima sistemoma SP Dynamis Pro in StarWalker MaQX (Fotona)
+              — pomlajevanje, odstranjevanje dlak in pigmentacij, zdravljenje
+              žilic, brazgotin in las.
+            </p>
+          </div>
+
+          <ul class="lg:col-span-8">
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">4D pomlajevanje kože — obraz</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">320 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">4D pomlajevanje kože — obraz, vrat in podbradek</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">580 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">FRACRevive pomlajevanje — obraz</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">320 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Smootheye — pomlajevanje predela okoli oči</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">120 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Vectorlift — nekirurški privzdig vek</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">180 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Liplase — polnost in volumen ustnic</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">95 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Nightlase — smrčanje in apneja v spanju</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">100 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Hairestart — stimulacija rasti las (1 terapija)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">100 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Trajno odstranjevanje dlak — 1 terapija (predel XS–XXL)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">30–250 €</span>
+            </li>
+            <li class="flex flex-col gap-y-1 border-b border-hairline py-3 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <span class="max-w-[70ch] text-[15px] leading-relaxed text-forest sm:text-[17px]">Trajno odstranjevanje dlak — paket 5+1 (odvisno od predela)</span>
+              <span class="whitespace-nowrap tabular-nums text-[15px] font-medium text-forest sm:text-[17px]">150–1.200 €</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="mx-auto flex max-w-[80rem] justify-center px-6 md:px-8" aria-hidden="true">
+        <span class="h-px w-24 bg-hairline"></span>
+      </div>
+
+      <!-- Opombe -->
+      <section
+        class="mx-auto max-w-[80rem] px-6 py-20 md:px-8 md:py-24"
+      >
+        <div class="mx-auto max-w-[72ch]">
+          <p class="text-[15px] leading-relaxed text-muted sm:text-[17px]">
+            Vse terapije in programi so prilagojeni posameznikovim željam,
+            potrebam in zmožnostim. Izvaja jih medicinsko in kozmetično
+            izobraženo osebje z CE certificiranimi napravami proizvajalcev
+            Fotona, Iskra Medical, Dermapen, OxyHelp Industry in Performance
+            Health Systems, kar zagotavlja maksimalno varnost in učinkovitost
+            za uporabnika.
+          </p>
+          <p class="mt-6 text-[15px] leading-relaxed text-muted sm:text-[17px]">
+            Poln cenik vseh storitev je na voljo v ambulanti ali na
+            <a
+              href="mailto:info@klanmedic.si"
+              class="text-forest transition-colors hover:text-muted"
+              >info@klanmedic.si</a
+            >.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-hairline">
+      <div class="mx-auto max-w-[80rem] px-6 py-12 md:px-8 md:py-16">
+        <div class="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
+          <div class="col-span-2 sm:col-span-1">
+            <a
+              href="index.html#home"
+              class="flex items-center gap-2 font-fraunces text-xl text-forest"
+            >
+              <span class="uppercase">Klanmedic</span>
+              <img
+                src="./src/images/logotip_klanmedic_obris.svg"
+                alt=""
+                class="block h-[0.72em] w-auto"
+              />
+            </a>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">
+              Zasebna klinika v [mesto] — splošna medicina, specialistični
+              pregledi in estetska oskrba.
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Navigacija
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li><a href="index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
+              <li><a href="index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
+              <li><a href="index.html#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
+              <li><a href="narocanje.html" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+              <li><a href="urnik.html" class="text-forest transition-colors hover:text-muted">Urnik</a></li>
+              <li><a href="cenik.html" class="text-forest transition-colors hover:text-muted">Cenik</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Kontakt
+            </p>
+            <ul class="mt-4 space-y-2.5 text-[15px]">
+              <li class="text-muted">[mesto], Slovenija</li>
+              <li>
+                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                >
+              </li>
+              <li>
+                <a href="mailto:info@klanmedic.si" class="text-forest transition-colors hover:text-muted"
+                  >info@klanmedic.si</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1">
+            <p class="text-sm font-medium uppercase tracking-wide text-muted">
+              Urnik
+            </p>
+            <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
+              <dt class="text-muted">Pon–Pet</dt>
+              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Sob–Ned</dt>
+              <dd class="text-muted">zaprto</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="mt-12 border-t border-hairline pt-6 text-sm text-muted">
+          © <span x-data x-text="new Date().getFullYear()"></span> Klanmedic.
+          Vse pravice pridržane.
+        </div>
+      </div>
+    </footer>
+
+    <script src="./src/js/main.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </body>
+</html>

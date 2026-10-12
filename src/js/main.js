@@ -1,4 +1,30 @@
 document.addEventListener("alpine:init", () => {
+  // The intro plays only on a session's first visit to the top of the
+  // landing page. Returning visits (sessionStorage flag) and deep links
+  // to any anchor other than #home land directly on the hero.
+  const INTRO_SEEN_KEY = "klanmedic-intro-seen";
+
+  const isIntroSeen = () => {
+    try {
+      return window.sessionStorage.getItem(INTRO_SEEN_KEY) === "1";
+    } catch {
+      return false;
+    }
+  };
+
+  const markIntroSeen = () => {
+    try {
+      window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    } catch {
+      // Private browsing etc. — the intro replaying is the safe fallback.
+    }
+  };
+
+  const isDeepLink = () => {
+    const hash = window.location.hash;
+    return hash !== "" && hash !== "#home";
+  };
+
   Alpine.store("intro", {
     entered: false,
     ready: false,
@@ -16,13 +42,15 @@ document.addEventListener("alpine:init", () => {
       const reduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (reduced) {
+      const skip = reduced || isIntroSeen() || isDeepLink();
+      if (skip) {
         this.progress = 1;
         this.entered = true;
         this.$store.intro.entered = true;
         this.$store.intro.ready = true;
         this.navVisible = true;
-        return;
+        markIntroSeen();
+        if (reduced) return;
       }
       this.measureBigText();
       this.onScroll();
@@ -85,6 +113,7 @@ document.addEventListener("alpine:init", () => {
       if (this.entered) return;
       this.entered = true;
       this.$store.intro.entered = true;
+      markIntroSeen();
       window.setTimeout(() => {
         this.$store.intro.ready = true;
         document.documentElement.classList.remove("overflow-hidden");
@@ -300,6 +329,7 @@ document.addEventListener("alpine:init", () => {
     items,
     selected: null,
     shown: false,
+    closing: false,
     reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     _root: null,
     _returnFocus: null,
@@ -435,7 +465,7 @@ document.addEventListener("alpine:init", () => {
       };
     },
     select(index) {
-      if (this.isOpen(index) || this._animating) return;
+      if (this.isOpen(index) || this._animating || this.closing) return;
       const card = this.cards()[index];
       if (!card) return;
       if (this.selected === null) this._returnFocus = document.activeElement;
@@ -456,22 +486,39 @@ document.addEventListener("alpine:init", () => {
         this.glideScroll(target);
       });
     },
+    // Close runs as the mirrored twin of the open crossfade: while the
+    // card is marked .is-closing, the expanded panel dissolves out
+    // (panel-hide) over the compact face that has returned beneath it;
+    // only after the dissolve does the layout flip back and the
+    // siblings glide home.
     close() {
-      if (this.selected === null || this._animating) return;
+      if (this.selected === null || this._animating || this.closing) return;
       const card = this.cards()[this.selected];
-      const finishFlip = this.planFlip(card);
-      this.selected = null;
-      const el = this._returnFocus;
-      this._returnFocus = null;
-      this.$nextTick(() => {
-        finishFlip?.();
-        if (el && document.contains(el)) el.focus({ preventScroll: true });
-        if (this._root) {
-          this.glideScroll(
-            window.scrollY + this._root.getBoundingClientRect().top - 88
-          );
-        }
-      });
+      if (!card) return;
+      const finish = () => {
+        this.closing = false;
+        card.classList.remove("is-closing");
+        const finishFlip = this.planFlip(card);
+        this.selected = null;
+        this.$nextTick(() => {
+          finishFlip?.();
+          const el = this._returnFocus;
+          this._returnFocus = null;
+          if (el && document.contains(el)) el.focus({ preventScroll: true });
+          if (this._root) {
+            this.glideScroll(
+              window.scrollY + this._root.getBoundingClientRect().top - 88
+            );
+          }
+        });
+      };
+      if (this.reduced) {
+        finish();
+        return;
+      }
+      this.closing = true;
+      card.classList.add("is-closing");
+      window.setTimeout(finish, 440);
     },
   }));
 });

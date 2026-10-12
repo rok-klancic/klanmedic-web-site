@@ -28,7 +28,7 @@
   <body class="min-h-screen bg-sage font-sans text-forest antialiased">
     <header
       class="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-sage/80 backdrop-blur"
-      x-data="{ open: false }"
+      x-data="{ open: false, servicesOpen: false }"
     >
       <nav
         class="mx-auto flex max-w-[80rem] items-center justify-between gap-3 px-6 py-5 sm:gap-6"
@@ -56,39 +56,172 @@
               >Domov</a
             >
           </li>
-          <li>
-            <a
-              href="../index.html#services"
-              class="text-[15px] text-forest transition-colors hover:text-muted"
-              >Storitve</a
+          <li
+            x-data="{ servicesOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); servicesOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => servicesOpen = false, 150) }"
+            @keydown.escape.window="servicesOpen = false"
+            @click.outside="servicesOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="../index.html#services"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Storitve</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="servicesOpen = !servicesOpen"
+                :aria-expanded="servicesOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-services-menu"
+                aria-label="Podmeni storitev"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="servicesOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-services-menu"
+              x-show="servicesOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
             >
+              <a
+                href="../storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Zobozdravstvo</a
+              >
+              <a
+                href="../storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Interna medicina</a
+              >
+              <a
+                href="../storitve/estetika.html"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Estetika</a
+              >
+            </div>
           </li>
           <li>
             <a
-              href="../index.html#narocanje"
+              href="../narocanje.html"
               class="text-[15px] text-forest transition-colors hover:text-muted"
               >Naročanje</a
             >
           </li>
           <li>
             <a
-              href="../index.html#urnik"
+              href="../urnik.html"
               class="text-[15px] text-forest transition-colors hover:text-muted"
               >Urnik</a
             >
           </li>
-          <li>
-            <a
-              href="../index.html#cenik"
-              class="text-[15px] text-forest transition-colors hover:text-muted"
-              >Cenik</a
+          <li
+            x-data="{ cenikOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+            @mouseenter="if (hoverable) { clearTimeout(closeTimer); cenikOpen = true }"
+            @mouseleave="if (hoverable) { closeTimer = setTimeout(() => cenikOpen = false, 150) }"
+            @keydown.escape.window="cenikOpen = false"
+            @click.outside="cenikOpen = false"
+            class="relative"
+          >
+            <div class="flex items-center gap-0.5">
+              <a
+                href="../cenik.html"
+                class="text-[15px] text-forest transition-colors hover:text-muted"
+                >Cenik</a
+              >
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                @click="cenikOpen = !cenikOpen"
+                :aria-expanded="cenikOpen"
+                aria-haspopup="true"
+                aria-controls="desktop-cenik-menu"
+                aria-label="Podmeni cenik"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="cenikOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="desktop-cenik-menu"
+              x-show="cenikOpen"
+              x-transition.opacity.duration.150ms
+              x-cloak
+              class="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 border border-hairline bg-surface p-1.5 shadow-lg shadow-forest/15"
             >
+              <a
+                href="../cenik.html#oblikovanje-telesa"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Oblikovanje telesa</a
+              >
+              <a
+                href="../cenik.html#vodena-vadba"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Vodena vadba</a
+              >
+              <a
+                href="../cenik.html#dobro-pocutje"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Dobro počutje</a
+              >
+              <a
+                href="../cenik.html#nega-obraza"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Nega obraza</a
+              >
+              <a
+                href="../cenik.html#magnetne-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Magnetne terapije</a
+              >
+              <a
+                href="../cenik.html#laserske-terapije"
+                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-sage"
+                >Laserske terapije</a
+              >
+            </div>
           </li>
         </ul>
 
         <div class="flex items-center gap-2 sm:gap-3">
           <a
-            href="../index.html#narocanje-cta"
+            href="../narocanje.html"
             class="inline-flex whitespace-nowrap items-center rounded-md bg-forest px-3 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted sm:px-5 sm:text-[15px]"
             >Naročite se</a
           >
@@ -118,7 +251,7 @@
           <button
             type="button"
             class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
-            @click="open = !open"
+            @click="open = !open; if (!open) servicesOpen = false"
             :aria-expanded="open"
             aria-controls="mobile-menu"
             aria-label="Meni"
@@ -157,29 +290,85 @@
           >
         </li>
         <li>
-          <a
-            href="../index.html#services"
-            class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-            >Storitve</a
+          <button
+            type="button"
+            class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+            @click.stop="servicesOpen = !servicesOpen"
+            :aria-expanded="servicesOpen"
+            aria-controls="mobile-services-menu"
           >
+            Storitve
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="transition-transform duration-200"
+              :class="servicesOpen ? 'rotate-180' : ''"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          <ul
+            id="mobile-services-menu"
+            x-show="servicesOpen"
+            x-cloak
+            class="ml-3 mt-1 space-y-1 border-l border-hairline pl-2"
+          >
+            <li>
+              <a
+                href="../index.html#services"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Vse storitve</a
+              >
+            </li>
+            <li>
+              <a
+                href="../storitve/zobozdravstvo.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Zobozdravstvo</a
+              >
+            </li>
+            <li>
+              <a
+                href="../storitve/interna-medicina.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Interna medicina</a
+              >
+            </li>
+            <li>
+              <a
+                href="../storitve/estetika.html"
+                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                >Estetika</a
+              >
+            </li>
+          </ul>
         </li>
         <li>
           <a
-            href="../index.html#narocanje"
+            href="../narocanje.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Naročanje</a
           >
         </li>
         <li>
           <a
-            href="../index.html#urnik"
+            href="../urnik.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Urnik</a
           >
         </li>
         <li>
           <a
-            href="../index.html#cenik"
+            href="../cenik.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Cenik</a
           >
@@ -205,7 +394,7 @@
                 Internistična obravnava
               </p>
               <h1
-                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule sm:text-5xl md:text-6xl"
+                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule signature-rule--center sm:text-5xl md:text-6xl"
               >
                 Interna medicina
               </h1>
@@ -430,7 +619,7 @@
                         class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-hairline pt-6"
                       >
                         <a
-                          href="../index.html#narocanje-cta"
+                          href="../narocanje.html"
                           class="inline-flex items-center rounded-md bg-forest px-5 py-2.5 text-[15px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted"
                           >Naročite se na pregled</a
                         >
@@ -481,7 +670,9 @@
               <li><a href="../index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
               <li><a href="../index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
               <li><a href="../index.html#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
-              <li><a href="../index.html#narocanje" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+              <li><a href="../narocanje.html" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+              <li><a href="../urnik.html" class="text-forest transition-colors hover:text-muted">Urnik</a></li>
+              <li><a href="../cenik.html" class="text-forest transition-colors hover:text-muted">Cenik</a></li>
             </ul>
           </div>
 

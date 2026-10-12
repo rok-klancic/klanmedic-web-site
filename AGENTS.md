@@ -92,3 +92,7 @@ The repo is mid-rewrite. `git status` currently shows many files
 "fix" it by reverting unless explicitly asked.
 </content>
 </invoke>
+
+## Language of communication
+
+Regardless in which language of the website you are working on, in the chat interface, always communicate in english.
