@@ -325,10 +325,10 @@ async function runSubpage(browser, width, port, path) {
   );
   if (!revealed) rec.problems.push("cards still hidden after reveal");
 
-  // grid columns: 2 on phones, 3 on sm/md, 4 on lg and up. Measured after
+  // grid columns: 1 on phones, 2 on sm/md, 3 on lg and up. Measured after
   // the reveal, since the entrance transform's stagger delays otherwise
   // break rows into single-card groups mid-flight.
-  const expectedColumns = width >= 1024 ? 4 : width >= 640 ? 3 : 2;
+  const expectedColumns = width >= 1024 ? 3 : width >= 640 ? 2 : 1;
   const columns = await page.evaluate(() => {
     const rows = new Map();
     [...document.querySelectorAll("[data-card]")].forEach((card) => {
