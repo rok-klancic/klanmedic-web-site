@@ -54,6 +54,13 @@ const SUBPAGES = [
 const SUBPAGE_WIDTHS = [375, 1440];
 const SUBPAGE_CARD_COUNT = 5;
 
+// Active-page markers in the header: aria-current="page" on the current
+// item (desktop + mobile markup are both in the DOM; the breadcrumb also
+// carries aria-current but sits outside <header>). The landing marks
+// Domov twice; a storitve page marks its parent (Storitve) twice and its
+// own row in the submenu twice; an info page marks its own item twice.
+const EXPECTED_CURRENT_MARKERS = { landing: 2, subpage: 4, info: 2 };
+
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css",
@@ -125,6 +132,7 @@ const JS = {
       return href;
     }
   }).filter(Boolean),
+  currentMarkers: () => document.querySelectorAll("header [aria-current='page']").length,
 };
 
 async function runWidth(browser, width, port) {
@@ -163,6 +171,11 @@ async function runWidth(browser, width, port) {
     rec.problems.push(`desktop nav visibility wrong (visible=${h.desktopNavVisible})`);
   if (h.searchVisible !== (width >= 640))
     rec.problems.push(`search button visibility wrong (visible=${h.searchVisible})`);
+
+  // active-page markers
+  const markers = await page.evaluate(JS.currentMarkers);
+  if (markers !== EXPECTED_CURRENT_MARKERS.landing)
+    rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.landing} aria-current markers on the landing, got ${markers}`);
 
   // service tiles: banner + 2 half tiles on phones
   const tiles = await page.evaluate(JS.tiles);
@@ -262,6 +275,11 @@ async function runSubpage(browser, width, port, path) {
 
   await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: "networkidle" });
   await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-hero.png`) });
+
+  // active-page markers
+  const markers = await page.evaluate(JS.currentMarkers);
+  if (markers !== EXPECTED_CURRENT_MARKERS.subpage)
+    rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.subpage} aria-current markers, got ${markers}`);
 
   // overflow at top
   let st = await page.evaluate(JS.state);
@@ -402,6 +420,11 @@ async function runInfoPage(browser, width, port, path) {
 
   await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: "networkidle" });
   await page.screenshot({ path: resolve(SHOTS, `${width}-${name}.png`) });
+
+  // active-page markers
+  const markers = await page.evaluate(JS.currentMarkers);
+  if (markers !== EXPECTED_CURRENT_MARKERS.info)
+    rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.info} aria-current markers, got ${markers}`);
 
   // overflow at top
   let st = await page.evaluate(JS.state);
