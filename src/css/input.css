@@ -2,6 +2,8 @@
 
 @theme {
   --color-sage: #F4F1EA;
+  --color-sage-lighter: #F8F5EE;
+  --color-sage-lightest: #FCFAF5;
   --color-surface: #FAFAF7;
   --color-forest: #3F4543;
   --color-sand: #B58A62;
