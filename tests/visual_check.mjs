@@ -14,10 +14,12 @@
 //   - Fraunces/Manrope fonts actually load
 //   - no console errors/warnings, no failed (>=400) requests
 //   - dead anchors match EXPECTED_DEAD_ANCHORS (see below)
-//   - service subpages (storitve/*.html): full-bleed hero image, cards
-//     reveal on scroll, card expands into a full-width inline panel
-//     top-aligned with the viewport, other cards stay clickable, close
-//     button returns to the grid
+//   - service subpages (storitve/*.html and storitve/estetika/*.html):
+//     full-bleed hero image, cards reveal on scroll, card expands into a
+//     full-width inline panel top-aligned with the viewport, other cards
+//     stay clickable, close button returns to the grid
+//   - Estetika hub (storitve/estetika.html): 8 plain link-cards, each one
+//     leading to a detail page with expandable cards
 //   - info pages (narocanje.html, urnik.html, cenik.html): light smoke —
 //     full-bleed hero image, no overflow, fonts load
 // Screenshots for manual review are (over)written to tests/screenshots/.
@@ -44,15 +46,57 @@ const WIDTHS = [375, 640, 768, 1024, 1440];
 // at real pages, so the landing page has no intentionally dead anchors.
 const EXPECTED_DEAD_ANCHORS = [].sort();
 
-// Service subpages expandable-card checks. Items per page must match the
-// x-data="subservices([...])" array in each file.
+// Service detail pages. Expandable pages declare card counts; the
+// intro-only page provides its expected paragraph and has no cards.
 const SUBPAGES = [
-  "storitve/zobozdravstvo.html",
-  "storitve/interna-medicina.html",
-  "storitve/estetika.html",
+  { path: "storitve/zobozdravstvo.html", cards: 5 },
+  { path: "storitve/interna-medicina.html", cards: 5 },
+  { path: "storitve/estetika/oblikovanje-telesa.html", cards: 4 },
+  { path: "storitve/estetika/ambulanta-debelost.html", cards: 5 },
+  { path: "storitve/estetika/nega-koze.html", cards: 6 },
+  {
+    path: "storitve/estetika/lasje.html",
+    cards: 0,
+    intro: [
+      "Izvajamo terapije pri zmanjšanju kvalitete las, povečanem izpadanju las in plešavosti.",
+      "Izvedemo analizo las in lasišča ter individualno izberemo terapijo.",
+      "Uporabljamo lasersko stimulacijo rasti las in pomlajevanje lasišča HaiRestart z laserjem SP Dynamis Fotona, stimulacijo rasti z microneedlingom Dermapen 4 in eksosomi MG-EXO-GROW in stimulacijo rasti las in pomlajevanje lasišča s PRP – lastnimi rastnimi faktorji.",
+      "Terapije lahko kombiniramo z LED terapijo z medicinsko certificirano napravo Dermalux TriWave.",
+    ].join(" "),
+  },
+  { path: "storitve/estetika/laserske-terapije.html", cards: 12 },
+  {
+    path: "storitve/estetika/magnetne-terapije.html",
+    cards: 0,
+    intro: [
+      "Pri funkcionalni magnetni stimulaciji na stolu Magneto Stym stimuliramo mišice medeničnega dna in hrbta pri urinski in fekalni inkontinenci, rehabilitaciji mišic medeničnega dna po operaciji, prolapsu medeničnih organov, hemoroidih, kroničnem prostatitisu, poporodni regeneraciji in krepitvi mišic medeničnega dna.",
+      "Pri terapiji sedimo oblečeni na stolu ter se osredotočimo na povečanje vzdržljivosti in moči mišic medeničnega dna in hrbta.",
+    ].join(" "),
+  },
+  {
+    path: "storitve/estetika/hiperbaricna-terapija.html",
+    cards: 0,
+    intro: [
+      "Pri terapiji dihamo 90–100 % kisik na povišanem tlaku.",
+      "Zaradi povišanega tlaka se v krvi raztopi veliko večja količina kisika, ki tako lahko doseže vse celice in tkiva, tudi slabše prekrvavljene.",
+      "S terapijo s hiperbarično kisikovo komoro OXY izboljšamo celične procese, sproščanje rastnih faktorjev in endorfinov.",
+      "Hiperbarično kisikovo terapijo priporočamo pri stresu in izgorelosti, za splošno izboljšanje počutja, pri slabem spancu in utrujenosti, glavobolih in migrenah, za lajšanje bolečin, regeneracijo po poškodbah in operacijah ter pospešitev celjenja ran.",
+    ].join(" "),
+  },
+  {
+    path: "storitve/estetika/fotobiomodulacija.html",
+    cards: 0,
+    intro: [
+      "Fotobiomodulacija je terapija, pri kateri uporabljamo svetlobo točno določenih valovnih dolžin za povečano produkcijo energije (ATP) v mitohondrijih celic.",
+      "Uporabljamo medicinsko certificirane naprave Dermalux TriWave in laser SP Dynamis Fotona.",
+      "Terapijo priporočamo za lajšanje sklepno-mišičnih bolečin, celjenje ran, sindrom pekočih ust, nevralgije, izpadanje las in vnetja ustne sluznice pri onkološkem zdravljenju.",
+    ].join(" "),
+  },
 ];
+// The Estetika hub is a link-card page: no expandable cards, each card
+// navigates to a deeper page.
+const HUB = { path: "storitve/estetika.html" };
 const SUBPAGE_WIDTHS = [375, 1440];
-const SUBPAGE_CARD_COUNT = 5;
 
 // Active-page markers in the header: aria-current="page" on the current
 // item (desktop + mobile markup are both in the DOM; the breadcrumb also
@@ -257,11 +301,14 @@ async function runWidth(browser, width, port) {
   return rec;
 }
 
-async function runSubpage(browser, width, port, path) {
+async function runSubpage(browser, width, port, path, cardCount, intro = null) {
   const height = width < 800 ? 812 : 900;
   const context = await browser.newContext({ viewport: { width, height } });
   const page = await context.newPage();
-  const name = path.replace("storitve/", "").replace(".html", "");
+  const name = path
+    .replace("storitve/", "")
+    .replace(/\.html$/, "")
+    .replace("/", "--");
   const rec = { width, subpage: name, problems: [] };
 
   page.on("console", (m) => {
@@ -304,9 +351,30 @@ async function runSubpage(browser, width, port, path) {
     rec.problems.push(`fonts not loaded: ${JSON.stringify(fonts)}`);
 
   // card grid renders the expected number of cards
-  const cardCount = await page.locator("[data-card]").count();
-  if (cardCount !== SUBPAGE_CARD_COUNT)
-    rec.problems.push(`expected ${SUBPAGE_CARD_COUNT} subservice cards, got ${cardCount}`);
+  const cards = await page.locator("[data-card]").count();
+  if (cards !== cardCount)
+    rec.problems.push(`expected ${cardCount} subservice cards, got ${cards}`);
+
+  if (intro !== null) {
+    const paragraph = page.locator("#storitve > div > p");
+    const paragraphCount = await paragraph.count();
+    if (paragraphCount !== 1)
+      rec.problems.push(`expected one intro paragraph, got ${paragraphCount}`);
+    const actualIntro = (await paragraph.textContent())?.replace(/\s+/g, " ").trim() ?? "";
+    if (actualIntro !== intro) rec.problems.push("intro paragraph does not match expected copy");
+    const gridCount = await page.locator(".sub-grid").count();
+    if (gridCount !== 0) rec.problems.push(`expected no card grid, got ${gridCount}`);
+
+    await page.locator("#storitve").screenshot({ path: resolve(SHOTS, `${width}-${name}-intro.png`) });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    st = await page.evaluate(JS.state);
+    if (st.scrollWidth > st.innerWidth)
+      rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
+
+    await context.close();
+    return rec;
+  }
 
   // cards reveal once scrolled into view
   await page.locator("[data-card]").first().scrollIntoViewIfNeeded();
@@ -379,8 +447,11 @@ async function runSubpage(browser, width, port, path) {
 
   await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-expanded.png`) });
 
-  // other cards stay clickable while one is expanded
-  await page.locator("[data-card] > button:visible").nth(1).click();
+  // other cards stay clickable while one is expanded. (The open card's
+  // own hit button goes display:none, so the visible-match list shrinks
+  // by one — last() works at every card count, nth(1) would not on
+  // two-card pages.)
+  await page.locator("[data-card] > button:visible").last().click();
   await page.waitForTimeout(1500);
   open = await page.locator(".sub-panel:visible").count();
   if (open !== 1) rec.problems.push(`switching to another card failed (${open} visible panels)`);
@@ -397,6 +468,83 @@ async function runSubpage(browser, width, port, path) {
   st = await page.evaluate(JS.state);
   if (st.scrollWidth > st.innerWidth)
     rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  await context.close();
+  return rec;
+}
+
+// The Estetika hub: 8 plain link-cards (no expandable panels), every card
+// leads to a detail page that does have expandable cards.
+async function runHub(browser, width, port, path) {
+  const height = width < 800 ? 812 : 900;
+  const context = await browser.newContext({ viewport: { width, height } });
+  const page = await context.newPage();
+  const name = path
+    .replace("storitve/", "")
+    .replace(/\.html$/, "")
+    .replace("/", "--");
+  const rec = { width, subpage: name, problems: [] };
+
+  page.on("console", (m) => {
+    if (m.type() === "error" || m.type() === "warning")
+      rec.problems.push(`console ${m.type()}: ${m.text().slice(0, 150)}`);
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) rec.problems.push(`http ${r.status()}: ${r.url().slice(-90)}`);
+  });
+  page.on("requestfailed", (r) => rec.problems.push(`request failed: ${r.url().slice(-90)}`));
+
+  await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: "networkidle" });
+  await page.screenshot({ path: resolve(SHOTS, `${width}-${name}-hero.png`) });
+
+  // active-page markers (hub counts as a storitve page)
+  const markers = await page.evaluate(JS.currentMarkers);
+  if (markers !== EXPECTED_CURRENT_MARKERS.subpage)
+    rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.subpage} aria-current markers, got ${markers}`);
+
+  // overflow at top
+  let st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at top: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  // hero image is full-bleed and actually loaded
+  const hero = await page.evaluate(() => {
+    const img = document.querySelector("main section img");
+    const box = img?.getBoundingClientRect();
+    return {
+      loaded: !!img && img.complete && img.naturalWidth > 0,
+      width: box ? Math.round(box.width) : 0,
+    };
+  });
+  if (!hero.loaded) rec.problems.push("hero image not loaded");
+  if (hero.width !== width) rec.problems.push(`hero image not full-bleed (width=${hero.width})`);
+
+  // fonts
+  const fonts = await page.evaluate(JS.fonts);
+  if (!fonts.fraunces || !fonts.manrope)
+    rec.problems.push(`fonts not loaded: ${JSON.stringify(fonts)}`);
+
+  // exactly 8 link cards, none of them expandable
+  const linkCards = await page.locator("#storitve a").count();
+  if (linkCards !== 8) rec.problems.push(`expected 8 hub link cards, got ${linkCards}`);
+  const dataCards = await page.locator("#storitve [data-card]").count();
+  if (dataCards !== 0)
+    rec.problems.push(`hub must not use expandable cards (found ${dataCards})`);
+
+  // overflow at bottom
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(500);
+  st = await page.evaluate(JS.state);
+  if (st.scrollWidth > st.innerWidth)
+    rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
+
+  // following the first card must land on a detail page with expandable cards
+  await page.locator("#storitve a").first().click();
+  await page.waitForURL((url) => url.pathname.includes("/estetika/"), { timeout: 10000 });
+  await page.waitForTimeout(400);
+  const detailCards = await page.locator("[data-card]").count();
+  if (detailCards < 1)
+    rec.problems.push("clicked hub card leads to a page without expandable cards");
 
   await context.close();
   return rec;
@@ -469,11 +617,15 @@ async function main() {
       process.stdout.write(`--- landing ${width}px ---\n`);
       results.push(await runWidth(browser, width, port));
     }
-    for (const path of SUBPAGES) {
+    for (const { path, cards: cardCount, intro } of SUBPAGES) {
       for (const width of SUBPAGE_WIDTHS) {
         process.stdout.write(`--- ${path} ${width}px ---\n`);
-        results.push(await runSubpage(browser, width, port, path));
+        results.push(await runSubpage(browser, width, port, path, cardCount, intro));
       }
+    }
+    for (const width of SUBPAGE_WIDTHS) {
+      process.stdout.write(`--- ${HUB.path} (hub) ${width}px ---\n`);
+      results.push(await runHub(browser, width, port, HUB.path));
     }
     const INFO_PAGES = ["narocanje.html", "urnik.html", "cenik.html"];
     for (const path of INFO_PAGES) {

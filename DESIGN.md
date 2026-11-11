@@ -8,7 +8,7 @@ Six tokens. Sage carries the page; warm off-white holds cards; deep forest is th
 
 | Token | Role | Hex |
 | --- | --- | --- |
-| sage | Page background | `#F4F1EA` |
+| sage | Page background (lightened from the original `#F4F1EA` to the Lightest `#FCFAF5`) | `#FCFAF5` |
 | surface | Cards, elevated surfaces (warm off-white) | `#FAFAF7` |
 | forest | Primary: text, buttons, links, primary rules | `#3F4543` |
 | sand | Accent — signature rule, underline accent, single hover wash only | `#B58A62` |
@@ -21,6 +21,7 @@ Rules:
 - Borders are always 1px and always `border`. No other border weights or colors.
 - Surfaces are warm off-white, not pure `#FFFFFF` — already decided in interview.
 - The current code's `blue-600` / `slate-*` baseline is fully replaced. Nothing from the old Tailwind defaults survives.
+- Image cards and subpage heroes use the light treatment, not a dark scrim: cards carry a `bg-surface/85` overlay (easing to `/70` on hover) masked from the bottom with `linear-gradient(to top, black 40%, transparent 55%)`, with copy in `text-forest` over it; subpage heroes carry a full-bleed image under `bg-sage/80` with headline in `text-forest` and meta in `text-muted`. The old `bg-forest/65` dark-scrim treatment is retired.
 
 ## Type
 

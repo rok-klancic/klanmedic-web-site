@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sage: #F4F1EA;
-  --color-sage-lighter: #F8F5EE;
-  --color-sage-lightest: #FCFAF5;
+  --color-sage: #FCFAF5;
   --color-surface: #FAFAF7;
   --color-forest: #3F4543;
   --color-sand: #B58A62;
@@ -121,24 +119,28 @@
 }
 
 /*
- * Close choreography — the mirrored twin of the open crossfade. While
- * the card is marked .is-closing (before the FLIP runs), the face
- * returns sharp and fully opaque *beneath* the panel, and the panel
- * dissolves out on top of it. Only then does main.js flip the layout
- * back and let the siblings glide home.
+ * Close choreography: the card and its siblings FLIP back immediately.
+ * Keep the expanded panel visible and out of flow during that flight, so
+ * it can dissolve over the compact face that is returning underneath.
  */
+[data-card].is-closing .sub-panel {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
 [data-card].is-closing .card-face {
   opacity: 1;
   filter: blur(0);
-  transition: none;
   z-index: 0;
 }
 
 [data-card].is-closing .panel-inner {
   position: relative;
-  z-index: 20;
   background: var(--color-surface);
-  animation: panel-hide 420ms ease forwards;
+  animation: panel-hide 450ms ease forwards;
 }
 
 @keyframes panel-hide {

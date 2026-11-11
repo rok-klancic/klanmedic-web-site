@@ -39,7 +39,7 @@
   >
     <header
       class="fixed inset-x-0 top-0 z-50 border-b border-hairline"
-      x-data="{ open: false, servicesOpen: false }"
+      x-data="{ open: false, servicesOpen: false, estetikaOpen: false }"
       x-show="$store.intro.ready"
       x-cloak
     >
@@ -143,21 +143,97 @@
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Interna medicina</a
               >
-              <a
-                href="./storitve/estetika.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika</a
+              <div
+                x-data="{ open: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+                @mouseenter="if (hoverable) { clearTimeout(closeTimer); open = true }"
+                @mouseleave="if (hoverable) { closeTimer = setTimeout(() => open = false, 150) }"
+                @keydown.escape.window="open = false"
+                @click.outside="open = false"
+                class="relative"
               >
-              <a
-                href="./storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lighter</a
-              >
-              <a
-                href="./storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <div class="flex items-center">
+                  <a
+                    href="./storitve/estetika.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Estetika</a
+                  >
+                  <button
+                    type="button"
+                    class="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                    @click="open = !open"
+                    :aria-expanded="open"
+                    aria-haspopup="true"
+                    aria-controls="desktop-estetika-menu"
+                    aria-label="Podmeni estetike"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="transition-transform duration-200"
+                      :class="open ? 'rotate-90' : ''"
+                    >
+                      <path d="m9 6 6 6-6 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div
+                  id="desktop-estetika-menu"
+                  x-show="open"
+                  x-transition.opacity.duration.150ms
+                  x-cloak
+                  class="absolute left-full top-0 z-50 w-64 rounded-2xl bg-sage/80 p-1.5 backdrop-blur"
+                >
+                  <a
+                    href="./storitve/estetika/oblikovanje-telesa.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+                  <a
+                    href="./storitve/estetika/ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+                  <a
+                    href="./storitve/estetika/nega-koze.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+                  <a
+                    href="./storitve/estetika/lasje.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+                  <a
+                    href="./storitve/estetika/laserske-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+                  <a
+                    href="./storitve/estetika/magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+                  <a
+                    href="./storitve/estetika/hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+                  <a
+                    href="./storitve/estetika/fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </div>
+              </div>
             </div>
           </li>
           <li>
@@ -289,7 +365,7 @@
           <button
             type="button"
             class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
-            @click="open = !open; if (!open) servicesOpen = false"
+            @click="open = !open; if (!open) { servicesOpen = false; estetikaOpen = false }"
             :aria-expanded="open"
             aria-controls="mobile-menu"
             aria-label="Meni"
@@ -386,25 +462,95 @@
               >
             </li>
             <li>
-              <a
-                href="./storitve/estetika.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika</a
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                @click.stop="estetikaOpen = !estetikaOpen"
+                :aria-expanded="estetikaOpen"
+                aria-controls="mobile-estetika-menu"
               >
-            </li>
-            <li>
-              <a
-                href="./storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lighter</a
+                Estetika
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="estetikaOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <ul
+                id="mobile-estetika-menu"
+                x-show="estetikaOpen"
+                x-cloak
+                class="ml-6 mt-1 space-y-1 border-l border-hairline pl-2"
               >
-            </li>
-            <li>
-              <a
-                href="./storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <li>
+                  <a
+                    href="./storitve/estetika/oblikovanje-telesa.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/nega-koze.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/lasje.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/laserske-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./storitve/estetika/fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
@@ -589,45 +735,45 @@
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:gap-6">
           <a
             href="./storitve/zobozdravstvo.html"
-            class="group relative col-span-2 aspect-[16/9] overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage sm:col-span-1 sm:aspect-square"
+            class="group relative col-span-2 aspect-[16/9] overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage sm:col-span-1 sm:aspect-square"
           >
             <img
               src="./src/images/zobo.jpg"
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50 backdrop-blur-[2px]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-surface sm:inset-x-6 sm:text-2xl lg:text-3xl">
+            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
+            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
               Zobozdravstvo
             </h3>
           </a>
 
           <a
             href="./storitve/interna-medicina.html"
-            class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+            class="group relative aspect-square overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
             <img
               src="./src/images/gastro.png"
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50 backdrop-blur-[2px]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-surface sm:inset-x-6 sm:text-2xl lg:text-3xl">
+            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
+            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
               Interna medicina
             </h3>
           </a>
 
           <a
             href="./storitve/estetika.html"
-            class="group relative aspect-square overflow-hidden rounded-2xl bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
+            class="group relative aspect-square overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
             <img
               src="./src/images/estetika.png"
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50 backdrop-blur-[2px]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-surface sm:inset-x-6 sm:text-2xl lg:text-3xl">
+            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
+            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
               Estetika
             </h3>
           </a>
@@ -805,7 +951,7 @@
           </p>
           <p class="mt-6 text-[15px] leading-relaxed text-muted sm:text-[17px]">
             Vse terapije in programi iz programov Estetike, Fizioterapije,
-            Magnetne terapije in Ambulante za zdravljenje debelosti so
+            Magnetne terapije in Zdravljenja debelosti so
             prilagojeni posameznikovim željam, potrebam in zmožnostim. Izvaja
             jih medicinsko izobraženo osebje z vrhunskimi aparati Iskra
             Medical, Dermapen, OxyHelp Industry in Fotona, ki so CE

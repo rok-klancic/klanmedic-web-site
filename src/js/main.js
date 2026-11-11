@@ -486,39 +486,37 @@ document.addEventListener("alpine:init", () => {
         this.glideScroll(target);
       });
     },
-    // Close runs as the mirrored twin of the open crossfade: while the
-    // card is marked .is-closing, the expanded panel dissolves out
-    // (panel-hide) over the compact face that has returned beneath it;
-    // only after the dissolve does the layout flip back and the
-    // siblings glide home.
+    // Close uses the same FLIP as open, in reverse. Keep the expanded
+    // panel visible but out of flow while the grid returns to its compact
+    // layout, so it can crossfade over the compact face during the flight.
     close() {
       if (this.selected === null || this._animating || this.closing) return;
       const card = this.cards()[this.selected];
       if (!card) return;
-      const finish = () => {
-        this.closing = false;
-        card.classList.remove("is-closing");
-        const finishFlip = this.planFlip(card);
-        this.selected = null;
-        this.$nextTick(() => {
-          finishFlip?.();
-          const el = this._returnFocus;
-          this._returnFocus = null;
-          if (el && document.contains(el)) el.focus({ preventScroll: true });
-          if (this._root) {
-            this.glideScroll(
-              window.scrollY + this._root.getBoundingClientRect().top - 88
-            );
-          }
-        });
-      };
-      if (this.reduced) {
-        finish();
-        return;
+      const finishFlip = this.planFlip(card);
+      if (!this.reduced) {
+        this.closing = true;
+        card.classList.add("is-closing");
       }
-      this.closing = true;
-      card.classList.add("is-closing");
-      window.setTimeout(finish, 440);
+      this.selected = null;
+      this.$nextTick(() => {
+        finishFlip?.();
+        const el = this._returnFocus;
+        this._returnFocus = null;
+        if (el && document.contains(el)) el.focus({ preventScroll: true });
+        if (this._root) {
+          this.glideScroll(
+            window.scrollY + this._root.getBoundingClientRect().top - 88
+          );
+        }
+        if (!this.reduced) {
+          // Keep in sync with the close crossfade in input.css.
+          window.setTimeout(() => {
+            this.closing = false;
+            card.classList.remove("is-closing");
+          }, 450);
+        }
+      });
     },
   }));
 });

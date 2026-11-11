@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Estetika - Lightest | Klanmedic</title>
+    <title>Oblikovanje telesa | Klanmedic</title>
     <meta
       name="description"
-      content="Estetske storitve v Klanmedicu — nega kože, pomlajevanje, laserske terapije, oblikovanje postave in hiperbarična kisikova terapija."
+      content="Oblikovanje telesa v Klanmedicu — zmanjševanje maščobe, povečanje tonusa kože in mišične mase, zmanjševanje strij in celulita ter vodena vadba."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../src/css/output.css" />
+    <link rel="stylesheet" href="../../src/css/output.css" />
 
     <style>
       [x-cloak] {
@@ -25,18 +25,18 @@
     </style>
   </head>
 
-  <body class="min-h-screen bg-sage-lightest font-sans text-forest antialiased">
+  <body class="min-h-screen bg-sage font-sans text-forest antialiased">
     <header
       class="fixed inset-x-0 top-0 z-50 border-b border-hairline"
-      x-data="{ open: false, servicesOpen: false }"
+      x-data="{ open: false, servicesOpen: false, estetikaOpen: false }"
     >
       <!-- The blur lives on this layer, not on <header> itself: an
            element with backdrop-filter is a backdrop root, so menus
            nested inside a blurred header can never blur the page behind
            them. Keeping the menus out of that root lets their own
-           bg-sage-lightest/80 backdrop-blur behave exactly like the navbar's. -->
+           bg-sage/80 backdrop-blur behave exactly like the navbar's. -->
       <div
-        class="pointer-events-none absolute inset-0 bg-sage-lightest/80 backdrop-blur"
+        class="pointer-events-none absolute inset-0 bg-sage/80 backdrop-blur"
         aria-hidden="true"
       ></div>
 
@@ -44,14 +44,14 @@
         class="relative mx-auto flex max-w-[80rem] items-center justify-between gap-3 px-6 py-5 sm:gap-6"
       >
         <a
-          href="../index.html#home"
+          href="../../index.html#home"
           class="flex shrink-0 items-center gap-2 font-fraunces text-xl text-forest sm:text-[28px]"
         >
           <span class="overflow-hidden whitespace-nowrap uppercase"
             >KLANMEDIC</span
           >
           <img
-            src="../src/images/logotip_klanmedic_obris.svg"
+            src="../../src/images/logotip_klanmedic_obris.svg"
             alt=""
             class="block h-[0.72em] w-auto"
           />
@@ -61,11 +61,12 @@
         <ul class="hidden items-center gap-8 lg:flex">
           <li>
             <a
-              href="../index.html#home"
+              href="../../index.html#home"
               class="relative inline-block text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100"
               >Domov</a
             >
           </li>
+
           <li
             x-data="{ servicesOpen: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
             @mouseenter="if (hoverable) { clearTimeout(closeTimer); servicesOpen = true }"
@@ -76,12 +77,11 @@
           >
             <div class="flex items-center gap-0.5">
               <a
-                href="../index.html#services"
-                aria-current="page"
-                class="relative inline-block font-semibold text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100 aria-[current=page]:after:scale-x-100"
+                href="../../index.html#services"
+                class="relative inline-block text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100"
                 >Storitve</a
               >
-              <button
+                            <button
                 type="button"
                 class="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
                 @click="servicesOpen = !servicesOpen"
@@ -102,9 +102,9 @@
                   stroke-linejoin="round"
                   aria-hidden="true"
                   class="transition-transform duration-200"
-                  :class="servicesOpen ? 'rotate-180' : ''"
+                  :class="servicesOpen ? 'rotate-90' : ''"
                 >
-                  <path d="m6 9 6 6 6-6" />
+                  <path d="m9 6 6 6-6 6" />
                 </svg>
               </button>
             </div>
@@ -114,46 +114,129 @@
               x-show="servicesOpen"
               x-transition.opacity.duration.150ms
               x-cloak
-              class="absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 rounded-2xl bg-sage-lightest/80 p-1.5 backdrop-blur"
+              class="absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 rounded-2xl bg-sage/80 p-1.5 backdrop-blur"
             >
               <a
-                href="../storitve/zobozdravstvo.html"
+                href="../zobozdravstvo.html"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Zobozdravstvo</a
               >
               <a
-                href="../storitve/interna-medicina.html"
+                href="../interna-medicina.html"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Interna medicina</a
               >
-              <a
-                href="../storitve/estetika.html"
-                aria-current="page"
-                class="block rounded-md px-3 py-2 font-semibold text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika</a
+              <div
+                x-data="{ open: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+                @mouseenter="if (hoverable) { clearTimeout(closeTimer); open = true }"
+                @mouseleave="if (hoverable) { closeTimer = setTimeout(() => open = false, 150) }"
+                @keydown.escape.window="open = false"
+                @click.outside="open = false"
+                class="relative"
               >
-              <a
-                href="../storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lighter</a
-              >
-              <a
-                href="../storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <div class="flex items-center">
+                  <a
+                    href="../estetika.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Estetika</a
+                  >
+                                    <button
+                    type="button"
+                    class="inline-flex mr-3 h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                    @click="open = !open"
+                    :aria-expanded="open"
+                    aria-haspopup="true"
+                    aria-controls="desktop-estetika-menu"
+                    aria-label="Podmeni estetike"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="transition-transform duration-200"
+                      :class="open ? 'rotate-90' : ''"
+                    >
+                      <path d="m9 6 6 6-6 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div
+                  id="desktop-estetika-menu"
+                  x-show="open"
+                  x-transition.opacity.duration.150ms
+                  x-cloak
+                  class="absolute left-full top-0 z-50 w-64 rounded-2xl bg-sage/80 p-1.5 backdrop-blur"
+                >
+                  <a
+                    href="./oblikovanje-telesa.html"
+                    aria-current="page"
+                    class="block rounded-md px-3 py-2 text-[15px] font-semibold text-forest transition-colors hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+
+                  <a
+                    href="./ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+
+                  <a
+                    href="./nega-koze.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+
+                  <a
+                    href="./lasje.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+
+                  <a
+                    href="./laserske-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+
+                  <a
+                    href="./magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+
+                  <a
+                    href="./hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+
+                  <a
+                    href="./fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </div>
+              </div>
             </div>
           </li>
           <li>
             <a
-              href="../narocanje.html"
+              href="../../narocanje.html"
               class="relative inline-block text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100"
               >Naročanje</a
             >
           </li>
           <li>
             <a
-              href="../urnik.html"
+              href="../../urnik.html"
               class="relative inline-block text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100"
               >Urnik</a
             >
@@ -168,7 +251,7 @@
           >
             <div class="flex items-center gap-0.5">
               <a
-                href="../cenik.html"
+                href="../../cenik.html"
                 class="relative inline-block text-[15px] text-forest transition-colors hover:text-muted focus-visible:text-muted focus:outline-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100"
                 >Cenik</a
               >
@@ -205,35 +288,41 @@
               x-show="cenikOpen"
               x-transition.opacity.duration.150ms
               x-cloak
-              class="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 rounded-2xl bg-sage-lightest/80 p-1.5 backdrop-blur"
+              class="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 rounded-2xl bg-sage/80 p-1.5 backdrop-blur"
             >
+
               <a
-                href="../cenik.html#oblikovanje-telesa"
+                href="../../cenik.html#oblikovanje-telesa"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Oblikovanje telesa</a
               >
+
               <a
-                href="../cenik.html#vodena-vadba"
+                href="../../cenik.html#vodena-vadba"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Vodena vadba</a
               >
+
               <a
-                href="../cenik.html#dobro-pocutje"
+                href="../../cenik.html#dobro-pocutje"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Dobro počutje</a
               >
+
               <a
-                href="../cenik.html#nega-obraza"
+                href="../../cenik.html#nega-obraza"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Nega obraza</a
               >
+
               <a
-                href="../cenik.html#magnetne-terapije"
+                href="../../cenik.html#magnetne-terapije"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Magnetne terapije</a
               >
+
               <a
-                href="../cenik.html#laserske-terapije"
+                href="../../cenik.html#laserske-terapije"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Laserske terapije</a
               >
@@ -243,7 +332,7 @@
 
         <div class="flex items-center gap-2 sm:gap-3">
           <a
-            href="../narocanje.html"
+            href="../../narocanje.html"
             class="inline-flex whitespace-nowrap items-center rounded-md bg-forest px-3 py-2 text-[14px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted sm:px-5 sm:text-[15px]"
             >Naročite se</a
           >
@@ -273,7 +362,7 @@
           <button
             type="button"
             class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
-            @click="open = !open; if (!open) servicesOpen = false"
+            @click="open = !open; if (!open) { servicesOpen = false; estetikaOpen = false }"
             :aria-expanded="open"
             aria-controls="mobile-menu"
             aria-label="Meni"
@@ -298,7 +387,7 @@
 
       <ul
         id="mobile-menu"
-        class="relative space-y-1 border-t border-hairline bg-sage-lightest/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        class="relative space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
         x-show="open"
         x-transition.opacity
         @click="open = false"
@@ -306,7 +395,7 @@
       >
         <li>
           <a
-            href="../index.html#home"
+            href="../../index.html#home"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Domov</a
           >
@@ -318,12 +407,8 @@
             @click.stop="servicesOpen = !servicesOpen"
             :aria-expanded="servicesOpen"
             aria-controls="mobile-services-menu"
-            aria-current="page"
           >
-            <span
-              class="relative inline-block font-semibold after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-forest after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100 aria-[current=page]:after:scale-x-100"
-              >Storitve</span
-            >
+            Storitve
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -350,66 +435,144 @@
           >
             <li>
               <a
-                href="../index.html#services"
+                href="../../index.html#services"
                 class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
                 >Vse storitve</a
               >
             </li>
             <li>
               <a
-                href="../storitve/zobozdravstvo.html"
+                href="../zobozdravstvo.html"
                 class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
                 >Zobozdravstvo</a
               >
             </li>
             <li>
               <a
-                href="../storitve/interna-medicina.html"
+                href="../interna-medicina.html"
                 class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
                 >Interna medicina</a
               >
             </li>
+
             <li>
-              <a
-                href="../storitve/estetika.html"
-                aria-current="page"
-                class="block rounded-md px-3 py-2.5 font-semibold text-forest hover:bg-surface/60"
-                >Estetika</a
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                @click.stop="estetikaOpen = !estetikaOpen"
+                :aria-expanded="estetikaOpen"
+                aria-controls="mobile-estetika-menu"
               >
-            </li>
-            <li>
-              <a
-                href="../storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lighter</a
+                Estetika
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="estetikaOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <ul
+                id="mobile-estetika-menu"
+                x-show="estetikaOpen"
+                x-cloak
+                class="ml-6 mt-1 space-y-1 border-l border-hairline pl-2"
               >
-            </li>
-            <li>
-              <a
-                href="../storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <li>
+                  <a
+                    href="./oblikovanje-telesa.html"
+                    aria-current="page"
+                    class="block rounded-md px-3 py-2.5 font-semibold text-forest hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./nega-koze.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./lasje.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./laserske-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    href="./fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
         <li>
           <a
-            href="../narocanje.html"
+            href="../../narocanje.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Naročanje</a
           >
         </li>
         <li>
           <a
-            href="../urnik.html"
+            href="../../urnik.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Urnik</a
           >
         </li>
         <li>
           <a
-            href="../cenik.html"
+            href="../../cenik.html"
             class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
             >Cenik</a
           >
@@ -419,30 +582,26 @@
 
     <main class="overflow-x-clip">
       <!-- Hero -->
-      <section class="relative isolate overflow-hidden bg-forest">
+      <section class="relative isolate overflow-hidden bg-sage">
         <div class="relative h-[62svh] min-h-[440px] max-h-[760px] md:h-[70svh]">
           <img
-            src="../src/images/estetika.png"
+            src="../../src/images/estetika.png"
             alt=""
             class="absolute inset-0 h-full w-full object-cover"
           />
-          <div class="absolute inset-0 bg-forest/65" aria-hidden="true"></div>
+          <div class="absolute inset-0 bg-sage/80" aria-hidden="true"></div>
           <div
             class="relative mx-auto flex h-full max-w-[80rem] items-center justify-center px-6 md:px-8"
           >
             <div class="max-w-[60ch] text-center">
-              <p class="text-sm font-medium uppercase tracking-wide text-surface/80">
+              <p class="text-sm font-medium uppercase tracking-wide text-muted">
                 Estetska obravnava
               </p>
               <h1
-                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule signature-rule--center sm:text-5xl md:text-6xl"
+                class="mt-4 font-fraunces text-4xl leading-tight text-forest signature-rule signature-rule--center sm:text-5xl md:text-6xl"
               >
-                Estetika - Lightest
+                Oblikovanje telesa
               </h1>
-              <p class="mt-8 text-[15px] leading-relaxed text-surface/90 sm:text-[17px]">
-                Medicinsko vodene estetske storitve z vrhunskimi, CE certificiranimi
-                aparati — nežno, varno in učinkovito.
-              </p>
             </div>
           </div>
         </div>
@@ -451,13 +610,15 @@
       <!-- Breadcrumb -->
       <div class="mx-auto max-w-[80rem] px-6 pt-8 md:px-8">
         <nav aria-label="Pot po strani" class="text-[15px] text-muted">
-          <a href="../index.html" class="transition-colors hover:text-forest">Domov</a>
+          <a href="../../index.html" class="transition-colors hover:text-forest">Domov</a>
           <span aria-hidden="true"> / </span>
-          <a href="../index.html#services" class="transition-colors hover:text-forest"
+          <a href="../../index.html#services" class="transition-colors hover:text-forest"
             >Storitve</a
           >
           <span aria-hidden="true"> / </span>
-          <span class="text-forest" aria-current="page">Estetika - Lightest</span>
+          <a href="../estetika.html" class="transition-colors hover:text-forest">Estetika</a>
+          <span aria-hidden="true"> / </span>
+          <span class="text-forest" aria-current="page">Oblikovanje telesa</span>
         </nav>
       </div>
 
@@ -472,78 +633,7 @@
         </h2>
 
         <div
-          x-data="subservices([
-            {
-              slug: 'medicinska-nega-koze',
-              img: '../src/images/estetika.png',
-              title: 'Medicinska nega kože',
-              short: 'Globinsko čiščenje in nega, prilagojena vaši koži.',
-              long: 'Stanje kože najprej ocenimo, nato izberemo ustrezen postopek — od globinskega čiščenja do intenzivne hidratacije in zaščite. Uporabljamo dermokozmetiko in CE certificirane aparature, postopke pa izvaja medicinsko izobraženo osebje.',
-              bullets: [
-                'Ocena stanja kože pred postopkom',
-                'Globinsko čiščenje in hidratacija',
-                'Nasveti za domačo nego',
-                'Priporočila nadaljnjih tretmajev',
-              ],
-              meta: 'Trajanje: približno 60 minut',
-            },
-            {
-              slug: 'pomlajevanje-koze',
-              img: '../src/images/estetika.png',
-              title: 'Pomlajevanje kože',
-              short: 'Nežni tretmaji za sijočo in napeto kožo.',
-              long: 'Sodobne metode pomlajevanja ne zahtevajo operacije. Z mikronidlami ali lasersko tehnologijo spodbudimo naravno obnovo kolagena — rezultat je postopen, naraven in dolgotrajen.',
-              bullets: [
-                'Mikronidlanje z aparatom Dermapen',
-                'Lasersko pomlajevanje s sistemom Fotona',
-                'Spodbujanje obnove kolagena brez operacije',
-                'Individualen načrt tretmajev',
-              ],
-              meta: 'Trajanje: 45–90 minut na tretma',
-            },
-            {
-              slug: 'laserske-terapije',
-              img: '../src/images/estetika.png',
-              title: 'Laserske terapije',
-              short: 'Učinkovito zdravljenje različnih kožnih sprememb.',
-              long: 'Lasersko tehnologijo uporabljamo za obnavljanje kože in odstranjevanje neželenih sprememb. Vsak tretma je predhodno načrtovan, da je varen in učinkovit prav za vaš tip kože.',
-              bullets: [
-                'Posvet in ocena kožne spremembe',
-                'Tretmaji prilagojeni tipu kože',
-                'Kratka okrevanja po posegu',
-                'Nadzor rezultatov na kontrolah',
-              ],
-              meta: 'Trajanje: 20–60 minut na tretma',
-            },
-            {
-              slug: 'oblikovanje-postave',
-              img: '../src/images/estetika.png',
-              title: 'Oblikovanje postave',
-              short: 'Program za telesno težo in postavo pod nadzorom.',
-              long: 'Oblikovanje postave ni dieta — je program. Zdravniški nadzor, prilagojena prehrana, vadba in po potrebi aparaturno modeliranje telesa povežemo v načrt, ki prinaša dolgoročne rezultate.',
-              bullets: [
-                'Začetna merjenja in določitev ciljev',
-                'Prehranski in vadbeni načrt',
-                'Aparaturno modeliranje telesa',
-                'Redne kontrole napredka',
-              ],
-              meta: 'Program traja 8–12 tednov',
-            },
-            {
-              slug: 'hiperbaricna-terapija',
-              img: '../src/images/estetika.png',
-              title: 'Hiperbarična kisikova terapija',
-              short: 'Terapija s čistim kisikom pod povečanim tlakom.',
-              long: 'V hiperbarični komori telo sprejme več kisika, kar pospeši celjenje, zmanjša vnetje in izboljša splošno počutje. Terapijo priporočimo po posvetu, poteka pa pod nadzorom usposobljenega osebja.',
-              bullets: [
-                'Posvet in ocena primernosti',
-                'Seje v komori OxyHelp',
-                'Pospešeno celjenje in regeneracija',
-                'Strokovni nadzor med sejo',
-              ],
-              meta: 'Trajanje seje: približno 60 minut',
-            },
-          ])"
+          x-data='subservices([{"slug":"zmanjsanje-mascobe","img":"../../src/images/estetika.png","title":"Zmanjšanje maščobe","long":"Za zmanjševanje maščobe na posameznem predelu telesa uporabljamo ultrazvočno razbijanje maščobnih celic z aparaturo Sonic Shaper Iskra Medical ter lasersko razbijanje maščobnih celic ter učvrstitev kože TightSculpting z laserjem SP Dynamis Fotona. S personalizirano kombinacijo terapij lahko zmanjšamo trdovratne maščobne obloge na področjih trebuha, stegen, kolen, rok in podbradka.","bullets":[],"meta":""},{"slug":"tonus-koze-in-misic","img":"../../src/images/estetika.png","title":"Povečanje tonusa kože in mišične mase","long":"Za dodajanje definicije in povečanje mišične mase uporabljamo funkcionalno magnetno stimulacijo mišic z aparaturo Tesla Former Iskra Medical. Za učvrstitev kože uporabljamo radiofrekvenčno terapijo Cryo Derm proizvajalca Iskra Medical in lasersko terapijo z laserjem SP Dynamis Fotona.","bullets":[],"meta":""},{"slug":"strije-in-celulit","img":"../../src/images/estetika.png","title":"Zmanjševanje strij in celulita","long":"Za zmanjševanje videza strij in izboljšanja videza kože uporabljamo lasersko terapijo z SP Dynamis Fotona. Za zmanjševanje videza celulita uporabljamo kombinacijo ultrazvočnega razbijanja maščobnih celic Sonic Shaper, radiofrekvenčne terapije Cryo Derm in laserske terapije TightSculpting.","bullets":[],"meta":""},{"slug":"vodena-vadba","img":"../../src/images/estetika.png","title":"Vodena vadba","long":"Vodene vadbe izvajamo individualno s trenerko na vibracijski plošči Power Plate PRO7 HC in vibracijskem kolesu Power Plate REV. Napravi omogočata učinkovitejše izvajanje vadbe na osnovi vibracijske stimulacije v več smereh. Povečani so mišična aktivacija, kardiovaskularna bremenitev in poraba kalorij. Vadba omogoča intenzivno in učinkovito izvajanje vadbe za moč tudi z lastno težo ter je tako primerna tudi pri osebah z omejitvami pri gibanju in dvigovanju bremen.","bullets":[],"meta":""}])'
           x-ref="grid"
           @keydown.escape.window="selected !== null && close()"
           class="sub-grid mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 md:mt-12 md:gap-6 lg:grid-cols-3"
@@ -567,20 +657,16 @@
                   class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div
-                  class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50 backdrop-blur-[2px]"
+                  class="absolute inset-0 bg-surface/85 group-hover:bg-surface/70 transition-colors duration-500 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"
                   aria-hidden="true"
                 ></div>
                 <span class="absolute inset-x-0 bottom-0 block p-5 sm:p-6">
                   <span
-                    class="block font-fraunces text-xl leading-tight text-surface sm:text-2xl"
+                    class="block font-fraunces text-xl leading-tight text-forest sm:text-2xl"
                     x-text="item.title"
                   ></span>
                   <span
-                    class="mt-2 block text-[15px] leading-relaxed text-surface/85 line-clamp-2 sm:line-clamp-3 sm:text-[17px]"
-                    x-text="item.short"
-                  ></span>
-                  <span
-                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-surface"
+                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-forest"
                   >
                     Preberi več
                     <svg
@@ -639,10 +725,14 @@
                         x-text="item.title"
                       ></h3>
                       <p
+                        x-show="item.long"
                         class="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-forest sm:text-[17px]"
                         x-text="item.long"
                       ></p>
-                      <ul class="mt-6 space-y-3">
+                      <ul
+                        x-show="item.bullets.length"
+                        class="mt-6 space-y-3"
+                      >
                         <template x-for="bullet in item.bullets" :key="bullet">
                           <li
                             class="flex items-start gap-3 text-[15px] leading-relaxed text-muted sm:text-[17px]"
@@ -655,12 +745,16 @@
                           </li>
                         </template>
                       </ul>
-                      <p class="mt-6 text-sm text-muted" x-text="item.meta"></p>
+                      <p
+                        x-show="item.meta"
+                        class="mt-6 text-sm text-muted"
+                        x-text="item.meta"
+                      ></p>
                       <div
                         class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-hairline pt-6"
                       >
                         <a
-                          href="../narocanje.html"
+                          href="../../narocanje.html"
                           class="inline-flex items-center rounded-md bg-forest px-5 py-2.5 text-[15px] font-medium text-surface transition-colors hover:bg-muted hover:text-surface hover:ring-1 hover:ring-muted"
                           >Naročite se na pregled</a
                         >
@@ -687,12 +781,12 @@
         <div class="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
           <div class="col-span-2 sm:col-span-1">
             <a
-              href="../index.html#home"
+              href="../../index.html#home"
               class="flex items-center gap-2 font-fraunces text-xl text-forest"
             >
               <span class="uppercase">Klanmedic</span>
               <img
-                src="../src/images/logotip_klanmedic_obris.svg"
+                src="../../src/images/logotip_klanmedic_obris.svg"
                 alt=""
                 class="block h-[0.72em] w-auto"
               />
@@ -708,12 +802,11 @@
               Navigacija
             </p>
             <ul class="mt-4 space-y-2.5 text-[15px]">
-              <li><a href="../index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
-              <li><a href="../index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
-              <li><a href="../index.html#team" class="text-forest transition-colors hover:text-muted">Ekipa</a></li>
-              <li><a href="../narocanje.html" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
-              <li><a href="../urnik.html" class="text-forest transition-colors hover:text-muted">Urnik</a></li>
-              <li><a href="../cenik.html" class="text-forest transition-colors hover:text-muted">Cenik</a></li>
+              <li><a href="../../index.html#home" class="text-forest transition-colors hover:text-muted">Domov</a></li>
+              <li><a href="../../index.html#services" class="text-forest transition-colors hover:text-muted">Storitve</a></li>
+              <li><a href="../estetika.html" class="text-forest transition-colors hover:text-muted">Estetika</a></li>
+              <li><a href="../../narocanje.html" class="text-forest transition-colors hover:text-muted">Naročanje</a></li>
+              <li><a href="../../cenik.html" class="text-forest transition-colors hover:text-muted">Cenik</a></li>
             </ul>
           </div>
 
@@ -756,7 +849,7 @@
       </div>
     </footer>
 
-    <script src="../src/js/main.js"></script>
+    <script src="../../src/js/main.js"></script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"

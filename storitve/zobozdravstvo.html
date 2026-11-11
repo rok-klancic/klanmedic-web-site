@@ -28,7 +28,7 @@
   <body class="min-h-screen bg-sage font-sans text-forest antialiased">
     <header
       class="fixed inset-x-0 top-0 z-50 border-b border-hairline"
-      x-data="{ open: false, servicesOpen: false }"
+      x-data="{ open: false, servicesOpen: false, estetikaOpen: false }"
     >
       <!-- The blur lives on this layer, not on <header> itself: an
            element with backdrop-filter is a backdrop root, so menus
@@ -127,21 +127,97 @@
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
                 >Interna medicina</a
               >
-              <a
-                href="../storitve/estetika.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika</a
+              <div
+                x-data="{ open: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
+                @mouseenter="if (hoverable) { clearTimeout(closeTimer); open = true }"
+                @mouseleave="if (hoverable) { closeTimer = setTimeout(() => open = false, 150) }"
+                @keydown.escape.window="open = false"
+                @click.outside="open = false"
+                class="relative"
               >
-              <a
-                href="../storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lighter</a
-              >
-              <a
-                href="../storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <div class="flex items-center">
+                  <a
+                    href="../storitve/estetika.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Estetika</a
+                  >
+                  <button
+                    type="button"
+                    class="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-md text-muted transition-colors hover:text-forest"
+                    @click="open = !open"
+                    :aria-expanded="open"
+                    aria-haspopup="true"
+                    aria-controls="desktop-estetika-menu"
+                    aria-label="Podmeni estetike"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="transition-transform duration-200"
+                      :class="open ? 'rotate-90' : ''"
+                    >
+                      <path d="m9 6 6 6-6 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div
+                  id="desktop-estetika-menu"
+                  x-show="open"
+                  x-transition.opacity.duration.150ms
+                  x-cloak
+                  class="absolute left-full top-0 z-50 w-64 rounded-2xl bg-sage/80 p-1.5 backdrop-blur"
+                >
+                  <a
+                    href="../storitve/estetika/oblikovanje-telesa.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+                  <a
+                    href="../storitve/estetika/ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+                  <a
+                    href="../storitve/estetika/nega-koze.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+                  <a
+                    href="../storitve/estetika/lasje.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+                  <a
+                    href="../storitve/estetika/laserske-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+                  <a
+                    href="../storitve/estetika/magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+                  <a
+                    href="../storitve/estetika/hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+                  <a
+                    href="../storitve/estetika/fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </div>
+              </div>
             </div>
           </li>
           <li>
@@ -273,7 +349,7 @@
           <button
             type="button"
             class="inline-flex items-center justify-center rounded-md p-2 text-forest transition-colors hover:bg-surface/60 lg:hidden"
-            @click="open = !open; if (!open) servicesOpen = false"
+            @click="open = !open; if (!open) { servicesOpen = false; estetikaOpen = false }"
             :aria-expanded="open"
             aria-controls="mobile-menu"
             aria-label="Meni"
@@ -371,25 +447,95 @@
               >
             </li>
             <li>
-              <a
-                href="../storitve/estetika.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika</a
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                @click.stop="estetikaOpen = !estetikaOpen"
+                :aria-expanded="estetikaOpen"
+                aria-controls="mobile-estetika-menu"
               >
-            </li>
-            <li>
-              <a
-                href="../storitve/estetika-lighter.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lighter</a
+                Estetika
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="transition-transform duration-200"
+                  :class="estetikaOpen ? 'rotate-180' : ''"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <ul
+                id="mobile-estetika-menu"
+                x-show="estetikaOpen"
+                x-cloak
+                class="ml-6 mt-1 space-y-1 border-l border-hairline pl-2"
               >
-            </li>
-            <li>
-              <a
-                href="../storitve/estetika-lightest.html"
-                class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Estetika - Lightest</a
-              >
+                <li>
+                  <a
+                    href="../storitve/estetika/oblikovanje-telesa.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Oblikovanje telesa</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/ambulanta-debelost.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Zdravljenje debelosti</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/nega-koze.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Nega in pomlajevanje kože</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/lasje.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Stimulacija rasti las</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/laserske-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Laserske terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/magnetne-terapije.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Magnetne terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/hiperbaricna-terapija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Hiperbarične kisikove terapije</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="../storitve/estetika/fotobiomodulacija.html"
+                    class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
+                    >Fotobiomodulacija (PBM)</a
+                  >
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
@@ -419,27 +565,27 @@
 
     <main class="overflow-x-clip">
       <!-- Hero -->
-      <section class="relative isolate overflow-hidden bg-forest">
+      <section class="relative isolate overflow-hidden bg-sage">
         <div class="relative h-[62svh] min-h-[440px] max-h-[760px] md:h-[70svh]">
           <img
             src="../src/images/zobo.jpg"
             alt=""
             class="absolute inset-0 h-full w-full object-cover"
           />
-          <div class="absolute inset-0 bg-forest/65" aria-hidden="true"></div>
+          <div class="absolute inset-0 bg-sage/80" aria-hidden="true"></div>
           <div
             class="relative mx-auto flex h-full max-w-[80rem] items-center justify-center px-6 md:px-8"
           >
             <div class="max-w-[60ch] text-center">
-              <p class="text-sm font-medium uppercase tracking-wide text-surface/80">
+              <p class="text-sm font-medium uppercase tracking-wide text-muted">
                 Dentalna obravnava
               </p>
               <h1
-                class="mt-4 font-fraunces text-4xl leading-tight text-surface signature-rule signature-rule--center sm:text-5xl md:text-6xl"
+                class="mt-4 font-fraunces text-4xl leading-tight text-forest signature-rule signature-rule--center sm:text-5xl md:text-6xl"
               >
                 Zobozdravstvo
               </h1>
-              <p class="mt-8 text-[15px] leading-relaxed text-surface/90 sm:text-[17px]">
+              <p class="mt-8 text-[15px] leading-relaxed text-muted sm:text-[17px]">
                 Celovita zobozdravstvena obravnava — od preventivnih pregledov do
                 estetskih rešitev. Vse pod strehom ene klinike.
               </p>
@@ -477,7 +623,6 @@
               slug: 'preventivni-pregled',
               img: '../src/images/zobo.jpg',
               title: 'Preventivni pregled',
-              short: 'Temeljit pregled zob in dlesni ter osebni načrt nege.',
               long: 'Redni preventivni pregledi so temelj zdravih zob. Pri pregledu ocenimo stanje zob, dlesni in sluznice, po potrebi opravimo rentgensko slikanje in vam pripravimo jasen načrt obravnave — brez naglice in brez nepotrebnih posegov.',
               bullets: [
                 'Pregled zob, dlesni in mehkih tkiv',
@@ -491,7 +636,6 @@
               slug: 'estetske-restavracije',
               img: '../src/images/zobo.jpg',
               title: 'Estetske restavracije',
-              short: 'Kompozitni vložki in beljenje za naraven, svetel nasmeh.',
               long: 'Poškodovane, razbarvane ali nepravilno oblikovane zobe povrnemo v naraven videz. Delamo s kakovostnimi materiali, ki se od naravne sklenine ločijo le pod mikroskopom.',
               bullets: [
                 'Kompozitna polnila in preoblikovanje zob',
@@ -505,7 +649,6 @@
               slug: 'implantologija',
               img: '../src/images/zobo.jpg',
               title: 'Implantologija',
-              short: 'Manjkajoče zobe trajno nadomestimo z implantati.',
               long: 'Implantat je umetni koren iz titanija, na katerega namestimo krono, most ali protezo. Obnovitev poteka v več korakih — od načrtovanja do zaključne krone — vedno z natančnim načrtom in kontrolnimi pregledi.',
               bullets: [
                 '3D načrtovanje vstavitve',
@@ -519,7 +662,6 @@
               slug: 'ortodontija',
               img: '../src/images/zobo.jpg',
               title: 'Ortodontija',
-              short: 'Poravnava zob za otroke in odrasle.',
               long: 'Nepravilno razporejeni zobi vplivajo na ugriz, govor in samozavest. Za vsakega pacienta izberemo najustrežnejšo tehniko — od klasičnih aparatov do prosojnih ščitk — in obravnavo spremljamo skozi celoten potek.',
               bullets: [
                 'Pregled in ocena ugriza',
@@ -533,7 +675,6 @@
               slug: 'endodontija',
               img: '../src/images/zobo.jpg',
               title: 'Endodontija',
-              short: 'Zdravljenje zobnega živca brez bolečin.',
               long: 'Ko vnetje doseže zobni živec, je cilj zob rešiti in ne odstraniti. Z ojačano optiko očistimo in zapremo kanale ter zob povrnemo v polno funkcijo.',
               bullets: [
                 'Diagnostika vnetja zobnega živca',
@@ -567,20 +708,16 @@
                   class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div
-                  class="absolute inset-0 bg-forest/65 transition-colors duration-500 group-hover:bg-forest/50 backdrop-blur-[2px]"
+                  class="absolute inset-0 bg-surface/85 group-hover:bg-surface/70 transition-colors duration-500 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"
                   aria-hidden="true"
                 ></div>
                 <span class="absolute inset-x-0 bottom-0 block p-5 sm:p-6">
                   <span
-                    class="block font-fraunces text-xl leading-tight text-surface sm:text-2xl"
+                    class="block font-fraunces text-xl leading-tight text-forest sm:text-2xl"
                     x-text="item.title"
                   ></span>
                   <span
-                    class="mt-2 block text-[15px] leading-relaxed text-surface/85 line-clamp-2 sm:line-clamp-3 sm:text-[17px]"
-                    x-text="item.short"
-                  ></span>
-                  <span
-                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-surface"
+                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-forest"
                   >
                     Preberi več
                     <svg
