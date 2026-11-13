@@ -1,9 +1,9 @@
 # AGENTS.md
 
-Klanmedic static marketing site (Slovenian, `lang="sl"`). Single-page HTML using
-Tailwind CSS v4 and Alpine.js, both loaded as plain assets. No framework, no
-bundler, no linter, no typecheck, no CI. A single Playwright visual smoke test
-lives in `tests/`.
+Klanmedic static marketing site (Slovenian, `lang="sl"`). Multi-page static HTML
+using Tailwind CSS v4 and Alpine.js, both loaded as plain assets. No framework,
+no bundler, no linter, no typecheck, no CI. A single Playwright visual smoke
+test lives in `tests/`.
 
 ## Commands
 
@@ -19,17 +19,29 @@ Open `index.html` directly in a browser, or serve the repo root with any static
 server (e.g. `npx serve .`). Opening via `file://` works for everything except
 features that need a real HTTP origin.
 
-`src/css/output.css` is a build artifact and is gitignored — never edit it by
-hand; change `src/css/input.css` and re-run the build/watch script.
+`src/css/output.css` is a build artifact — never edit it by hand; change
+`src/css/input.css` and re-run the build/watch script. It is tracked in git (its
+`.gitignore` line is commented out), so commit the rebuilt file with CSS changes.
 
 ## Project layout
 
-- `index.html` — the only page. Sections: `#home`, `#services`, `#contact`.
+- `index.html` — landing page. Sections: `#home`, `#o-kliniki`, `#services`,
+  `#why-us`, `#team`, `#narocanje-cta`.
+- `narocanje.html`, `urnik.html`, `cenik.html` — info pages.
+- `storitve/zobozdravstvo.html`, `storitve/interna-medicina.html` — service
+  pages with expandable subservice cards.
+- `storitve/estetika.html` — hub of link-cards; detail pages live in
+  `storitve/estetika/*.html`.
+- `intro-2.html` — experimental intro, not linked from the nav.
+- The header/nav markup is duplicated in every page; a nav change must be
+  applied to all of them. Asset paths depend on depth (`./src/`, `../src/`,
+  `../../src/`).
 - `src/css/input.css` — Tailwind entry; uses Tailwind v4 CSS-first config via
   `@import "tailwindcss";` and a `@theme { ... }` block. There is intentionally
   no `tailwind.config.js`.
-- `src/js/main.js` — Alpine `alpine:init` hook; currently registers a single
-  component, `counter`, used by the `#services` section.
+- `src/js/main.js` — Alpine `alpine:init` hook; registers the `intro` store and
+  the `heroIntro`, `heroIntro2`, `teamShowcase` and `subservices(items)`
+  components.
 - `artifacts/sketches/` — design references (`.excalidraw` + exported `.png`)
   for the landing page. Not deployed.
 
@@ -55,8 +67,9 @@ Non-negotiables (full detail in `DESIGN.md`):
   pure `#FFFFFF` surfaces — use `#FAFAF7` for cards.
 - Type is Fraunces (display) + Manrope (body). No Inter, no system fallbacks
   as the visible choice.
-- Container is `max-w-[80rem]`; hero is a 7/5 split; sections separated by 1px
-  hairlines in `border`, not by extra whitespace alone.
+- Container is `max-w-[80rem]`; hero is a 5/7 split (copy 5 cols, image 7);
+  sections separated by 1px hairlines in `border-hairline`, not by extra
+  whitespace alone.
 - Sand is rationed: signature rule under the hero, plus at most two section
   titles per page. Never as a button fill, never as a badge fill.
 - Buttons are `bg-forest text-surface` resting; hover reveals a `bg-muted`
@@ -76,22 +89,9 @@ implementation to match the spec — not the other way around.
 ## Conventions
 
 - UI copy is Slovenian. Match existing tone; do not translate to English.
-- Keep markup in `index.html`; only factor out into separate files if a second
-  page is added (the previous `wine-bar.html` was removed in the current
-  rewrite).
 - `tests/visual_check.mjs` is the only test; keep it a single plain Playwright
-  script (no test framework). When a page that anchors point to is added,
-  remove it from `EXPECTED_DEAD_ANCHORS` in that file.
-
-## Working tree
-
-The repo is mid-rewrite. `git status` currently shows many files
-(`script.js`, `styles.css`, `wine-bar.html`, `CNAME`, `README.md`,
-`GOOGLE_SEARCH_SETUP.md`) deleted and the new `src/`, `package.json`,
-`package-lock.json` untracked. That is expected during this transition — do not
-"fix" it by reverting unless explicitly asked.
-</content>
-</invoke>
+  script (no test framework). When you add a subpage, add it to `SUBPAGES` in
+  that file. `EXPECTED_DEAD_ANCHORS` is currently empty; keep it accurate.
 
 ## Language of communication
 

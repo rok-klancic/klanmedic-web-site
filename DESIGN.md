@@ -21,7 +21,7 @@ Rules:
 - Borders are always 1px and always `border`. No other border weights or colors.
 - Surfaces are warm off-white, not pure `#FFFFFF` — already decided in interview.
 - The current code's `blue-600` / `slate-*` baseline is fully replaced. Nothing from the old Tailwind defaults survives.
-- Image cards and subpage heroes use the light treatment, not a dark scrim: cards carry a `bg-surface/85` overlay (easing to `/70` on hover) masked from the bottom with `linear-gradient(to top, black 40%, transparent 55%)`, with copy in `text-forest` over it; subpage heroes carry a full-bleed image under `bg-sage/80` with headline in `text-forest` and meta in `text-muted`. The old `bg-forest/65` dark-scrim treatment is retired.
+- Image cards and subpage heroes use the light treatment, not a dark scrim: image cards use a bottom-anchored `surface` caption scrim with a long, soft feather into the image (85% strength, easing to 70% on hover), and copy in `text-forest`. Titles share a fixed top anchor within each card grid: 75% from the top for cards with an action label ("Preberi več"), 85% for title-only cards (the landing-page service tiles). Subpage heroes carry a full-bleed image under `bg-sage/80` with headline in `text-forest` and meta in `text-muted`. The old full-card haze and `bg-forest/65` dark-scrim treatment are retired.
 
 ## Type
 

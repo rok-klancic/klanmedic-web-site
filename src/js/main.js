@@ -489,6 +489,8 @@ document.addEventListener("alpine:init", () => {
     // Close uses the same FLIP as open, in reverse. Keep the expanded
     // panel visible but out of flow while the grid returns to its compact
     // layout, so it can crossfade over the compact face during the flight.
+    // The page then glides so the closed card is centered in the area
+    // below the fixed header.
     close() {
       if (this.selected === null || this._animating || this.closing) return;
       const card = this.cards()[this.selected];
@@ -500,15 +502,20 @@ document.addEventListener("alpine:init", () => {
       }
       this.selected = null;
       this.$nextTick(() => {
+        // Measure before finishFlip() applies its inversion transforms, so
+        // the rect is the card's final compact layout box.
+        const rect = card.getBoundingClientRect();
+        const header = 88; // fixed header height, same offset select() uses
+        const target =
+          window.scrollY +
+          rect.top +
+          rect.height / 2 -
+          (header + (window.innerHeight - header) / 2);
         finishFlip?.();
         const el = this._returnFocus;
         this._returnFocus = null;
         if (el && document.contains(el)) el.focus({ preventScroll: true });
-        if (this._root) {
-          this.glideScroll(
-            window.scrollY + this._root.getBoundingClientRect().top - 88
-          );
-        }
+        this.glideScroll(target);
         if (!this.reduced) {
           // Keep in sync with the close crossfade in input.css.
           window.setTimeout(() => {

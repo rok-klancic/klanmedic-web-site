@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interna medicina | Klanmedic</title>
+    <title>Gastroenterologija | Klanmedic</title>
     <meta
       name="description"
-      content="Interna medicina v Klanmedicu — gastroenterološki pregledi, ultrazvok abdomna, kardiologija, preiskave ščitnice in preventivni pregledi."
+      content="Gastroenterologija v Klanmedicu — gastroskopija, kolonoskopija, ultrazvočna preiskava trebuha, anoskopija, sedacija in laboratorijska testiranja."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -125,7 +125,7 @@
                 href="../storitve/interna-medicina.html"
                 aria-current="page"
                 class="block rounded-md px-3 py-2 font-semibold text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Interna medicina</a
+                >Gastroenterologija</a
               >
               <div
                 x-data="{ open: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
@@ -443,7 +443,7 @@
                 href="../storitve/interna-medicina.html"
                 aria-current="page"
                 class="block rounded-md px-3 py-2.5 font-semibold text-forest hover:bg-surface/60"
-                >Interna medicina</a
+                >Gastroenterologija</a
               >
             </li>
             <li>
@@ -578,16 +578,17 @@
           >
             <div class="max-w-[60ch] text-center">
               <p class="text-sm font-medium uppercase tracking-wide text-muted">
-                Internistična obravnava
+                Gastroenterološka obravnava
               </p>
               <h1
                 class="mt-4 font-fraunces text-4xl leading-tight text-forest signature-rule signature-rule--center sm:text-5xl md:text-6xl"
               >
-                Interna medicina
+                Gastroenterologija
               </h1>
               <p class="mt-8 text-[15px] leading-relaxed text-muted sm:text-[17px]">
-                Specialistični pregledi in diagnostika, ki poiščejo vzrok — ne le
-                simptom. Z jasnim izvidom in načrtom.
+                Ambulanta je namenjena odkrivanju in zdravljenju bolezni trebuha
+                (želodca, črevesja, hemoroidov, analnega srbeža, žolčnika in
+                žolčnih kamnov ter trebušne slinavke).
               </p>
             </div>
           </div>
@@ -603,7 +604,7 @@
             >Storitve</a
           >
           <span aria-hidden="true"> / </span>
-          <span class="text-forest" aria-current="page">Interna medicina</span>
+          <span class="text-forest" aria-current="page">Gastroenterologija</span>
         </nav>
       </div>
 
@@ -620,69 +621,57 @@
         <div
           x-data="subservices([
             {
-              slug: 'gastroenteroloski-pregled',
+              slug: 'gastroskopija',
               img: '../src/images/gastro.png',
-              title: 'Gastroenterološki pregled',
-              long: 'Prebavne težave — od zgage do napihnjenosti — obravnavamo celostno. Specialist opravi podroben razgovor, klinični pregled in po potrebi predlaga nadaljnjo diagnostiko, kot je gastroskopija ali kolonoskopija.',
-              bullets: [
-                'Podroben razgovor in klinični pregled',
-                'Gastroskopija in kolonoskopija',
-                'Izvid z jasnim načrtom zdravljenja',
-                'Sodelovanje z osebnim zdravnikom',
-              ],
-              meta: 'Trajanje: približno 45 minut',
+              title: 'Nazalna in klasična gastroskopija',
+              long: 'Gastroskopija je preiskava, pri kateri pregledamo sluznico požiralnika, želodca in dvanajstnika. Izvajamo klasično gastroskopijo, pri kateri aparat uvajamo skozi usta, ter transnazalno gastroskopijo, pri kateri tanek aparat uvajamo skozi nos. Ta je za pacienta prijaznejša in lažja, saj povzroča manj draženja. Med preiskavo odvzamemo vzorce za določitev bakterije Helicobacter pylori ter ugotavljanje celiakije.',
+              bullets: [],
+              meta: '',
             },
             {
-              slug: 'ultrazvok-abdomna',
+              slug: 'kolonoskopija',
               img: '../src/images/gastro.png',
-              title: 'Ultrazvočna preiskava abdomna',
-              long: 'Ultrazvok abdomna je hitra in neboleča preiskava jeter, žolčnika, trebušne slinavke, vranice in ledvic. Omogoča zgodnje odkrivanje sprememb in je pogosto prvi korak v nadaljnji diagnostiki.',
-              bullets: [
-                'Preiskava brez bolečin in sevanja',
-                'Ocena jeter, žolčnika in ledvic',
-                'Takojšnji izvid preiskave',
-                'Po potrebi nadaljnja diagnostika',
-              ],
-              meta: 'Trajanje: približno 20 minut',
+              title: 'Kolonoskopija',
+              long: 'Kolonoskopija je preiskava, ki omogoča natančen pregled sluznice spodnjega dela prebavil – debelega črevesa in končnega dela tankega črevesa. Uporabljamo tehnologijo CAD EYE, ki z umetno inteligenco (AI) olajša odkrivanje in karakterizacijo polipov.',
+              bullets: [],
+              meta: '',
             },
             {
-              slug: 'kardiolski-pregled',
+              slug: 'ultrazvocna-preiskava-trebuha',
               img: '../src/images/gastro.png',
-              title: 'Kardiološki pregled',
-              long: 'Srčno-žilnemu zdravju se ne smemo prepustiti naključju. Pregled vključuje meritve krvnega tlaka, EKG in oceno tveganj; ugotovitve razložimo razumljivo in se dogovorimo za nadaljnje korake.',
-              bullets: [
-                'Merjenje krvnega tlaka in EKG',
-                'Ocena tveganja za srčno-žilne bolezni',
-                'Svetovanje o življenjskem slogu',
-                'Po potrebi dopolnilne preiskave',
-              ],
-              meta: 'Trajanje: približno 45 minut',
+              title: 'Ultrazvočna preiskava trebuha',
+              long: 'Ultrazvočno preiskavo uporabljamo pri ugotavljanju bolezenskih sprememb v trebušni votlini. Izvajamo tudi oceno togosti in zamaščenosti jeter.',
+              bullets: [],
+              meta: '',
             },
             {
-              slug: 'pregled-scitnice',
+              slug: 'anoskopija',
               img: '../src/images/gastro.png',
-              title: 'Pregled ščitnice',
-              long: 'Utrujenost, nihanje telesne teže in razpoloženja so lahko znaki motnje ščitnice. Delovanje ščitnice preverimo s hormonskimi preiskavami in ultrazvokom ter ugotovitve povežemo v jasen zaključek.',
-              bullets: [
-                'Hormonske preiskave krvi',
-                'Ultrazvok ščitnice',
-                'Ocena vozlov in sprememb',
-                'Načrt zdravljenja in nadzora',
-              ],
-              meta: 'Trajanje: približno 30 minut',
+              title: 'Anoskopija',
+              long: 'Anoskopija je pregled analnega kanala in začetnega dela rektuma.',
+              bullets: [],
+              meta: '',
             },
             {
-              slug: 'preventivni-internisticni-pregled',
+              slug: 'sedacija',
               img: '../src/images/gastro.png',
-              title: 'Preventivni internistični pregled',
-              long: 'Preventivni pregled združi razgovor, fizični pregled in osnovne laboratorijske preiskave. Dobite celovito sliko svojega zdravstvenega stanja in konkretne nasvete, kaj — in predvsem zakaj — izboljšati.',
+              title: 'Sedacija',
+              long: 'Sedacija je postopek, pri katerem pacientu med posegom dovajamo protibolečinsko terapijo. V primeru uporabe propofola poseg izvaja in nadzira anesteziolog.',
+              bullets: [],
+              meta: '',
+            },
+            {
+              slug: 'testiranja',
+              img: '../src/images/gastro.png',
+              title: 'Testiranja',
+              long: '',
               bullets: [
-                'Razgovor o zdravstveni zgodovini',
-                'Fizični pregled in meritve',
-                'Osnovne laboratorijske preiskave',
-                'Povzetek ugotovitev z nasveti',
+                'Dihalni test za določitev bakterije Helicobacter pylori',
+                'Krvni test za določitev celiakije',
+                'Testiranje blata na prisotnost kalprotektina',
+                'Biokemična analiza krvi',
               ],
-              meta: 'Trajanje: približno 60 minut',
+              meta: '',
             },
           ])"
           x-ref="grid"
@@ -693,6 +682,7 @@
           <template x-for="(item, i) in items" :key="item.slug">
             <article
               data-card
+              data-image-card
               class="group card-reveal relative overflow-hidden rounded-2xl bg-surface"
               :class="isOpen(i) ? 'col-span-full is-open' : ''"
             >
@@ -708,16 +698,16 @@
                   class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div
-                  class="absolute inset-0 bg-surface/85 group-hover:bg-surface/70 transition-colors duration-500 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"
+                  class="image-card-overlay"
                   aria-hidden="true"
                 ></div>
-                <span class="absolute inset-x-0 bottom-0 block p-5 sm:p-6">
+                <span class="image-card-caption">
                   <span
-                    class="block font-fraunces text-xl leading-tight text-forest sm:text-2xl"
+                    class="image-card-title font-fraunces text-xl leading-tight text-forest sm:text-2xl"
                     x-text="item.title"
                   ></span>
                   <span
-                    class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-forest"
+                    class="image-card-action inline-flex items-center gap-1.5 text-[15px] font-medium text-forest"
                   >
                     Preberi več
                     <svg
@@ -776,10 +766,11 @@
                         x-text="item.title"
                       ></h3>
                       <p
+                        x-show="item.long"
                         class="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-forest sm:text-[17px]"
                         x-text="item.long"
                       ></p>
-                      <ul class="mt-6 space-y-3">
+                      <ul x-show="item.bullets.length" class="mt-6 space-y-3">
                         <template x-for="bullet in item.bullets" :key="bullet">
                           <li
                             class="flex items-start gap-3 text-[15px] leading-relaxed text-muted sm:text-[17px]"
@@ -792,7 +783,11 @@
                           </li>
                         </template>
                       </ul>
-                      <p class="mt-6 text-sm text-muted" x-text="item.meta"></p>
+                      <p
+                        x-show="item.meta"
+                        class="mt-6 text-sm text-muted"
+                        x-text="item.meta"
+                      ></p>
                       <div
                         class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-hairline pt-6"
                       >

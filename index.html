@@ -141,7 +141,7 @@
               <a
                 href="./storitve/interna-medicina.html"
                 class="block rounded-md px-3 py-2 text-[15px] text-forest transition-colors hover:bg-surface/60"
-                >Interna medicina</a
+                >Gastroenterologija</a
               >
               <div
                 x-data="{ open: false, closeTimer: null, hoverable: window.matchMedia('(hover: hover)').matches }"
@@ -458,7 +458,7 @@
               <a
                 href="./storitve/interna-medicina.html"
                 class="block rounded-md px-3 py-2.5 text-forest hover:bg-surface/60"
-                >Interna medicina</a
+                >Gastroenterologija</a
               >
             </li>
             <li>
@@ -734,6 +734,7 @@
 
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:gap-6">
           <a
+            data-image-card
             href="./storitve/zobozdravstvo.html"
             class="group relative col-span-2 aspect-[16/9] overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage sm:col-span-1 sm:aspect-square"
           >
@@ -742,13 +743,16 @@
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
-              Zobozdravstvo
-            </h3>
+            <div class="image-card-overlay" aria-hidden="true"></div>
+            <div class="image-card-caption image-card-caption--title-only">
+              <h3 class="image-card-title font-fraunces text-xl leading-tight text-forest sm:text-2xl lg:text-3xl">
+                Zobozdravstvo
+              </h3>
+            </div>
           </a>
 
           <a
+            data-image-card
             href="./storitve/interna-medicina.html"
             class="group relative aspect-square overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
@@ -757,13 +761,16 @@
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
-              Interna medicina
-            </h3>
+            <div class="image-card-overlay" aria-hidden="true"></div>
+            <div class="image-card-caption image-card-caption--title-only">
+              <h3 class="image-card-title font-fraunces text-xl leading-tight text-forest sm:text-2xl lg:text-3xl">
+                Gastro<wbr />enterologija
+              </h3>
+            </div>
           </a>
 
           <a
+            data-image-card
             href="./storitve/estetika.html"
             class="group relative aspect-square overflow-hidden rounded-2xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-sage"
           >
@@ -772,10 +779,12 @@
               alt=""
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-surface/85 transition-colors duration-500 group-hover:bg-surface/70 backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(to_top,black_40%,transparent_55%)] [mask-image:linear-gradient(to_top,black_40%,transparent_55%)]"></div>
-            <h3 class="absolute inset-x-4 bottom-6 font-fraunces text-xl leading-tight text-forest sm:inset-x-6 sm:text-2xl lg:text-3xl">
-              Estetika
-            </h3>
+            <div class="image-card-overlay" aria-hidden="true"></div>
+            <div class="image-card-caption image-card-caption--title-only">
+              <h3 class="image-card-title font-fraunces text-xl leading-tight text-forest sm:text-2xl lg:text-3xl">
+                Estetika
+              </h3>
+            </div>
           </a>
         </div>
       </section>

@@ -46,11 +46,15 @@ const WIDTHS = [375, 640, 768, 1024, 1440];
 // at real pages, so the landing page has no intentionally dead anchors.
 const EXPECTED_DEAD_ANCHORS = [].sort();
 
-// Service detail pages. Expandable pages declare card counts; the
-// intro-only page provides its expected paragraph and has no cards.
+// Service detail pages. Expandable pages declare card counts; pages with a
+// hero lead can also provide its expected copy. Intro-only pages have no cards.
 const SUBPAGES = [
   { path: "storitve/zobozdravstvo.html", cards: 5 },
-  { path: "storitve/interna-medicina.html", cards: 5 },
+  {
+    path: "storitve/interna-medicina.html",
+    cards: 6,
+    lead: "Ambulanta je namenjena odkrivanju in zdravljenju bolezni trebuha (želodca, črevesja, hemoroidov, analnega srbeža, žolčnika in žolčnih kamnov ter trebušne slinavke).",
+  },
   { path: "storitve/estetika/oblikovanje-telesa.html", cards: 4 },
   { path: "storitve/estetika/ambulanta-debelost.html", cards: 5 },
   { path: "storitve/estetika/nega-koze.html", cards: 6 },
@@ -100,10 +104,15 @@ const SUBPAGE_WIDTHS = [375, 1440];
 
 // Active-page markers in the header: aria-current="page" on the current
 // item (desktop + mobile markup are both in the DOM; the breadcrumb also
-// carries aria-current but sits outside <header>). The landing marks
-// Domov twice; a storitve page marks its parent (Storitve) twice and its
-// own row in the submenu twice; an info page marks its own item twice.
-const EXPECTED_CURRENT_MARKERS = { landing: 2, subpage: 4, info: 2 };
+// carries aria-current but sits outside <header>). Top-level service pages
+// mark both Storitve and their submenu item; nested Estetika pages mark
+// only their leaf item. Landing and info pages each mark their own item.
+const EXPECTED_CURRENT_MARKERS = {
+  landing: 2,
+  subpage: 4,
+  nestedSubpage: 2,
+  info: 2,
+};
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -164,6 +173,14 @@ const JS = {
     return { text: h.textContent.trim(), clipped: h.scrollWidth > box + 1 };
   }),
   tiles: () => [...document.querySelectorAll("#services a")].map((a) => Math.round(a.getBoundingClientRect().width)),
+  cardTitleOffsets: () => [...document.querySelectorAll("[data-image-card]")]
+    .map((card) => {
+      const title = card.querySelector(".image-card-title");
+      return title
+        ? Math.round(title.getBoundingClientRect().top - card.getBoundingClientRect().top)
+        : null;
+    })
+    .filter((offset) => offset !== null),
   fonts: async () => {
     await document.fonts.ready;
     return { fraunces: document.fonts.check("16px Fraunces"), manrope: document.fonts.check("16px Manrope") };
@@ -178,6 +195,13 @@ const JS = {
   }).filter(Boolean),
   currentMarkers: () => document.querySelectorAll("header [aria-current='page']").length,
 };
+
+function checkCardTitleAlignment(rec, offsets, label) {
+  if (offsets.length < 2) return;
+  const spread = Math.max(...offsets) - Math.min(...offsets);
+  if (spread > 2)
+    rec.problems.push(`${label} card titles start at different positions (spread=${spread}px)`);
+}
 
 async function runWidth(browser, width, port) {
   const height = width < 800 ? 812 : 900;
@@ -228,6 +252,8 @@ async function runWidth(browser, width, port) {
     rec.problems.push(`caption clipped: "${c.text}"`);
   if (width === 375 && !(tiles[0] > 300 && Math.abs(tiles[1] - tiles[2]) <= 1 && tiles[1] < tiles[0] / 2))
     rec.problems.push(`service tile pattern wrong: [${tiles}]`);
+  if (width >= 640)
+    checkCardTitleAlignment(rec, await page.evaluate(JS.cardTitleOffsets), "landing");
 
   // mobile menu
   if (width < 1024) {
@@ -301,7 +327,7 @@ async function runWidth(browser, width, port) {
   return rec;
 }
 
-async function runSubpage(browser, width, port, path, cardCount, intro = null) {
+async function runSubpage(browser, width, port, path, cardCount, intro = null, lead = null) {
   const height = width < 800 ? 812 : 900;
   const context = await browser.newContext({ viewport: { width, height } });
   const page = await context.newPage();
@@ -325,8 +351,11 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null) {
 
   // active-page markers
   const markers = await page.evaluate(JS.currentMarkers);
-  if (markers !== EXPECTED_CURRENT_MARKERS.subpage)
-    rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.subpage} aria-current markers, got ${markers}`);
+  const expectedMarkers = path.startsWith("storitve/estetika/")
+    ? EXPECTED_CURRENT_MARKERS.nestedSubpage
+    : EXPECTED_CURRENT_MARKERS.subpage;
+  if (markers !== expectedMarkers)
+    rec.problems.push(`expected ${expectedMarkers} aria-current markers, got ${markers}`);
 
   // overflow at top
   let st = await page.evaluate(JS.state);
@@ -344,6 +373,13 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null) {
   });
   if (!hero.loaded) rec.problems.push("hero image not loaded");
   if (hero.width !== width) rec.problems.push(`hero image not full-bleed (width=${hero.width})`);
+
+  if (lead !== null) {
+    const actualLead = (await page.locator("main section h1 + p").textContent())
+      ?.replace(/\s+/g, " ")
+      .trim() ?? "";
+    if (actualLead !== lead) rec.problems.push("hero intro paragraph does not match expected copy");
+  }
 
   // fonts
   const fonts = await page.evaluate(JS.fonts);
@@ -376,8 +412,12 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null) {
     return rec;
   }
 
-  // cards reveal once scrolled into view
-  await page.locator("[data-card]").first().scrollIntoViewIfNeeded();
+  // Reveal observes the whole grid with a 15% intersection threshold. Aim
+  // at its middle so tall, one-column grids cross that threshold on phones.
+  await page
+    .locator("[data-card]")
+    .nth(Math.floor(cards / 2))
+    .scrollIntoViewIfNeeded();
   await page
     .waitForFunction(
       () => document.querySelector(".sub-grid")?.classList.contains("cards-in"),
@@ -392,6 +432,7 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null) {
     )
   );
   if (!revealed) rec.problems.push("cards still hidden after reveal");
+  checkCardTitleAlignment(rec, await page.evaluate(JS.cardTitleOffsets), name);
 
   // grid columns: 1 on phones, 2 on sm/md, 3 on lg and up. Measured after
   // the reveal, since the entrance transform's stagger delays otherwise
@@ -462,6 +503,20 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null) {
   open = await page.locator(".sub-panel:visible").count();
   if (open !== 0) rec.problems.push(`panel did not close (${open} visible panels)`);
 
+  // the closed card (the last one) is centered in the area below the fixed
+  // header — unless the page bottom stops the scroll short of that
+  const centerOffset = await page.evaluate(() => {
+    const cards = [...document.querySelectorAll("[data-card]")];
+    const rect = cards[cards.length - 1].getBoundingClientRect();
+    const atBottom =
+      window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2;
+    const atTop = window.scrollY <= 1;
+    if (atBottom || atTop) return null;
+    return Math.round(rect.top + rect.height / 2 - (88 + (window.innerHeight - 88) / 2));
+  });
+  if (centerOffset !== null && Math.abs(centerOffset) > 60)
+    rec.problems.push(`closed card not centered (off by ${centerOffset}px)`);
+
   // overflow at bottom
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.waitForTimeout(500);
@@ -527,6 +582,7 @@ async function runHub(browser, width, port, path) {
   // exactly 8 link cards, none of them expandable
   const linkCards = await page.locator("#storitve a").count();
   if (linkCards !== 8) rec.problems.push(`expected 8 hub link cards, got ${linkCards}`);
+  checkCardTitleAlignment(rec, await page.evaluate(JS.cardTitleOffsets), name);
   const dataCards = await page.locator("#storitve [data-card]").count();
   if (dataCards !== 0)
     rec.problems.push(`hub must not use expandable cards (found ${dataCards})`);
@@ -617,10 +673,10 @@ async function main() {
       process.stdout.write(`--- landing ${width}px ---\n`);
       results.push(await runWidth(browser, width, port));
     }
-    for (const { path, cards: cardCount, intro } of SUBPAGES) {
+    for (const { path, cards: cardCount, intro, lead } of SUBPAGES) {
       for (const width of SUBPAGE_WIDTHS) {
         process.stdout.write(`--- ${path} ${width}px ---\n`);
-        results.push(await runSubpage(browser, width, port, path, cardCount, intro));
+        results.push(await runSubpage(browser, width, port, path, cardCount, intro, lead));
       }
     }
     for (const width of SUBPAGE_WIDTHS) {
