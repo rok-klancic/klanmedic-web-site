@@ -277,16 +277,37 @@ async function runWidth(browser, width, port) {
     if (await page.locator("#mobile-menu").isVisible())
       rec.problems.push("mobile menu did not close after link tap");
   } else {
-    // desktop services submenu opens on hover and closes when the
-    // pointer leaves (plus a short close delay)
-    await page.hover("button[aria-label='Podmeni storitev']");
-    await page.waitForTimeout(300);
-    if (!(await page.locator("#desktop-services-menu").isVisible()))
-      rec.problems.push("desktop services submenu did not open on hover");
-    await page.mouse.move(10, 400);
-    await page.waitForTimeout(400);
-    if (await page.locator("#desktop-services-menu").isVisible())
-      rec.problems.push("desktop services submenu did not close after hover leaves");
+    // desktop submenus are a full-width panel inside the header: it opens
+    // on hover, the header grows taller, and it closes after the pointer
+    // leaves (150ms delay + 300ms height transition)
+    const headerHeight = () => page.evaluate(() => document.querySelector("header").getBoundingClientRect().height);
+    const closedHeight = await headerHeight();
+    for (const [label, menu, shot] of [
+      ["Podmeni storitev", "#desktop-services-menu", "submenu"],
+      ["Podmeni cenik", "#desktop-cenik-menu", "submenu-cenik"],
+    ]) {
+      await page.hover(`button[aria-label='${label}']`);
+      await page.waitForTimeout(600);
+      if (!(await page.locator(menu).isVisible()))
+        rec.problems.push(`desktop submenu ${menu} did not open on hover`);
+      if ((await headerHeight()) < closedHeight + 100)
+        rec.problems.push(`header did not extend for ${menu}`);
+      await page.screenshot({ path: resolve(SHOTS, `${width}-${shot}.png`) });
+      if (menu === "#desktop-services-menu") {
+        // Estetika starts collapsed and expands on hover of its row
+        if (await page.locator("#desktop-estetika-menu").isVisible())
+          rec.problems.push("Estetika subpages should start collapsed");
+        await page.hover("#desktop-services-menu button[aria-label='Podmeni estetike']");
+        await page.waitForTimeout(400);
+        if (!(await page.locator("#desktop-estetika-menu").isVisible()))
+          rec.problems.push("Estetika subpages did not open on hover");
+        await page.screenshot({ path: resolve(SHOTS, `${width}-submenu-estetika.png`) });
+      }
+      await page.mouse.move(10, 700);
+      await page.waitForTimeout(700);
+      if ((await page.locator(menu).isVisible()) || (await headerHeight()) > closedHeight + 1)
+        rec.problems.push(`desktop submenu ${menu} did not close after hover leaves`);
+    }
   }
 
   // services screenshot

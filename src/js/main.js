@@ -31,6 +31,44 @@ document.addEventListener("alpine:init", () => {
     compact: false,
   });
 
+  // Site header: mobile menu state (open / servicesOpen / estetikaOpen) plus
+  // the desktop mega-menu. `desk` is the panel that is open, `shown` is the
+  // panel whose content stays rendered, so the content doesn't vanish while
+  // the header is still sliding shut.
+  Alpine.data("siteHeader", () => ({
+    open: false,
+    servicesOpen: false,
+    estetikaOpen: false,
+    desk: null,
+    shown: null,
+    deskEst: false, // Estetika subpages expanded inside the services panel
+    closeTimer: null,
+    hoverable: window.matchMedia("(hover: hover)").matches,
+
+    openDesk(key) {
+      clearTimeout(this.closeTimer);
+      // switching panels (or reopening) always starts with Estetika collapsed
+      if (this.desk !== key) this.deskEst = false;
+      this.desk = this.shown = key;
+    },
+    toggleDesk(key) {
+      if (this.desk === key) this.closeDesk();
+      else this.openDesk(key);
+    },
+    closeDesk() {
+      clearTimeout(this.closeTimer);
+      this.desk = null;
+      this.deskEst = false;
+    },
+    toggleEst() {
+      this.deskEst = !this.deskEst;
+    },
+    closeDeskSoon() {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = setTimeout(() => this.closeDesk(), 150);
+    },
+  }));
+
   Alpine.data("heroIntro", () => ({
     progress: 0,
     clicked: false,
