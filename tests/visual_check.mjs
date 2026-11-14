@@ -49,7 +49,7 @@ const EXPECTED_DEAD_ANCHORS = [].sort();
 // Service detail pages. Expandable pages declare card counts; pages with a
 // hero lead can also provide its expected copy. Intro-only pages have no cards.
 const SUBPAGES = [
-  { path: "storitve/zobozdravstvo.html", cards: 5 },
+  { path: "storitve/zobozdravstvo.html", cards: 7 },
   {
     path: "storitve/interna-medicina.html",
     cards: 6,

@@ -6,7 +6,7 @@
     <title>Zobozdravstvo | Klanmedic</title>
     <meta
       name="description"
-      content="Zobozdravstvo v Klanmedicu — preventivni pregledi, estetske restavracije, implantologija, ortodontija in endodontija."
+      content="Zobozdravstvo v Klanmedicu — estetsko zobozdravstvo, implantologija, ortodontija (Invisalign), endodontija, zobna protetika in preventiva."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -620,69 +620,78 @@
         <div
           x-data="subservices([
             {
-              slug: 'preventivni-pregled',
+              slug: 'estetsko-zobozdravstvo',
               img: '../src/images/zobo.jpg',
-              title: 'Preventivni pregled',
-              long: 'Redni preventivni pregledi so temelj zdravih zob. Pri pregledu ocenimo stanje zob, dlesni in sluznice, po potrebi opravimo rentgensko slikanje in vam pripravimo jasen načrt obravnave — brez naglice in brez nepotrebnih posegov.',
+              title: 'Estetsko zobozdravstvo',
+              long: '',
               bullets: [
-                'Pregled zob, dlesni in mehkih tkiv',
-                'Rentgenska diagnostika po potrebi',
-                'Osebni načrt nege in nadaljnjih korakov',
-                'Svetovanje o domači ustni higieni',
+                'Beljenje zob (klasično in lasersko)',
+                'Keramične fasete',
+                'Polne keramične prevleke',
               ],
-              meta: 'Trajanje: približno 30 minut',
-            },
-            {
-              slug: 'estetske-restavracije',
-              img: '../src/images/zobo.jpg',
-              title: 'Estetske restavracije',
-              long: 'Poškodovane, razbarvane ali nepravilno oblikovane zobe povrnemo v naraven videz. Delamo s kakovostnimi materiali, ki se od naravne sklenine ločijo le pod mikroskopom.',
-              bullets: [
-                'Kompozitna polnila in preoblikovanje zob',
-                'Profesionalno beljenje zob',
-                'Keramične fasete na prednjih zobih',
-                'Popravilo in zamenjava starih plomb',
-              ],
-              meta: 'Trajanje: 45–90 minut na obisk',
+              meta: '',
             },
             {
               slug: 'implantologija',
               img: '../src/images/zobo.jpg',
               title: 'Implantologija',
-              long: 'Implantat je umetni koren iz titanija, na katerega namestimo krono, most ali protezo. Obnovitev poteka v več korakih — od načrtovanja do zaključne krone — vedno z natančnim načrtom in kontrolnimi pregledi.',
-              bullets: [
-                '3D načrtovanje vstavitve',
-                'Vstavljanje implantata v lokalni anesteziji',
-                'Nadomestek: krona, most ali proteza',
-                'Redne kontrolne preglede',
-              ],
-              meta: 'Več obiskov v obdobju 3–6 mesecev',
+              long: 'Z vsadki nadomeščamo posamezne ali več manjkajočih zob. Z njimi oskrbimo tudi v celoti brezzobe čeljusti. V primerih, ko imamo na voljo malo kosti, izvajamo tudi dvig sinusnega dna. Uporabljamo sistem Advan. Po vsaditvi na implantatih izdelamo ustrezne fiksne ali snemne protetične nadomestke.',
+              bullets: [],
+              meta: '',
             },
             {
               slug: 'ortodontija',
               img: '../src/images/zobo.jpg',
               title: 'Ortodontija',
-              long: 'Nepravilno razporejeni zobi vplivajo na ugriz, govor in samozavest. Za vsakega pacienta izberemo najustrežnejšo tehniko — od klasičnih aparatov do prosojnih ščitk — in obravnavo spremljamo skozi celoten potek.',
-              bullets: [
-                'Pregled in ocena ugriza',
-                'Fiksni aparati in prosojne ščitke',
-                'Retencija po zaključku obravnave',
-                'Sodelovanje z ortodontskim specialistom',
-              ],
-              meta: 'Obravnava traja 12–24 mesecev',
+              long: 'Uporabljamo sistem Invisalign. Če želite popoln nasmeh, je Invisalign prava izbira za premik zob v idealen položaj. Invisalign opornice so udobne, snemljive, skoraj nevidne in ne vplivajo na vaše vsakodnevno življenje. Vzdrževanje ustne higiene z zobno ščetko in nitko poteka normalno. Pred jedjo pa jih enostavno odstranite. Pred začetkom zdravljenja naredimo 3D posnetek vaših zob in plan terapij.',
+              bullets: [],
+              meta: '',
             },
             {
               slug: 'endodontija',
               img: '../src/images/zobo.jpg',
               title: 'Endodontija',
-              long: 'Ko vnetje doseže zobni živec, je cilj zob rešiti in ne odstraniti. Z ojačano optiko očistimo in zapremo kanale ter zob povrnemo v polno funkcijo.',
+              long: 'Vse posege izvajamo z mikroskopom, sistemom za strojno širjenje kanalov in UZ irigacijo.',
+              bullets: [],
+              meta: '',
+            },
+            {
+              slug: 'zobna-protetika',
+              img: '../src/images/zobo.jpg',
+              title: 'Zobna protetika',
+              long: 'Opremljeni smo s 3D intraoralnim skenerjem 3Shape TRIOS 3.',
               bullets: [
-                'Diagnostika vnetja zobnega živca',
-                'Čiščenje in plombiranje kanalov',
-                'Zaključna restavracija zoba',
-                'Kontrola uspešnosti zdravljenja',
+                'Snemna',
+                'Fiksna',
+                'Na vsadkih',
               ],
-              meta: 'Trajanje: 60–90 minut na sejo',
+              meta: '',
+            },
+            {
+              slug: 'preventivno-zobozdravstvo',
+              img: '../src/images/zobo.jpg',
+              title: 'Preventivno zobozdravstvo',
+              long: '',
+              bullets: [
+                'Odstranjevanje trdih in mehkih zobnih oblog',
+                'Peskanje',
+                'Kiretaža žepkov ob zobeh in vsadkih',
+                'Laserska dezinfekcija',
+              ],
+              meta: '',
+            },
+            {
+              slug: 'a-prf-centrifuga',
+              img: '../src/images/zobo.jpg',
+              title: 'A-PRF centrifuga',
+              long: 'PRF – s trombociti bogati fibrinski čepi so bogat vir rastnih faktorjev in celic, ki vplivajo na celjenje in obnovo tkiv. Omogočajo:',
+              bullets: [
+                'Hitrejše ustavljanje krvavitve',
+                'Boljše in hitrejše celjenje rane',
+                'Preprečevanje vnetja',
+                'Znatno večji volumen kosti (izrednega pomena pri implantologiji)',
+              ],
+              meta: '',
             },
           ])"
           x-ref="grid"
@@ -777,10 +786,11 @@
                         x-text="item.title"
                       ></h3>
                       <p
+                        x-show="item.long"
                         class="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-forest sm:text-[17px]"
                         x-text="item.long"
                       ></p>
-                      <ul class="mt-6 space-y-3">
+                      <ul x-show="item.bullets.length" class="mt-6 space-y-3">
                         <template x-for="bullet in item.bullets" :key="bullet">
                           <li
                             class="flex items-start gap-3 text-[15px] leading-relaxed text-muted sm:text-[17px]"
@@ -793,7 +803,11 @@
                           </li>
                         </template>
                       </ul>
-                      <p class="mt-6 text-sm text-muted" x-text="item.meta"></p>
+                      <p
+                        x-show="item.meta"
+                        class="mt-6 text-sm text-muted"
+                        x-text="item.meta"
+                      ></p>
                       <div
                         class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-hairline pt-6"
                       >
