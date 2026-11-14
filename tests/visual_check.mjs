@@ -412,6 +412,15 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null, l
   if (cards !== cardCount)
     rec.problems.push(`expected ${cardCount} subservice cards, got ${cards}`);
 
+  // Estetika detail pages link back to the hub at the top and the bottom
+  if (path.startsWith("storitve/estetika/")) {
+    const backLinks = await page
+      .locator('a[href="../estetika.html"]:visible', { hasText: "Nazaj na Estetiko" })
+      .count();
+    if (backLinks !== 2)
+      rec.problems.push(`expected 2 "Nazaj na Estetiko" links (top + bottom), got ${backLinks}`);
+  }
+
   if (intro !== null) {
     const paragraph = page.locator("#storitve > div > p");
     const paragraphCount = await paragraph.count();
@@ -518,8 +527,30 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null, l
   open = await page.locator(".sub-panel:visible").count();
   if (open !== 1) rec.problems.push(`switching to another card failed (${open} visible panels)`);
 
-  // clear button returns to the normal card view
-  await page.getByRole("button", { name: "Nazaj na vse storitve" }).click();
+  // the X close button stays pinned below the header while a panel taller
+  // than the viewport scrolls, and never leaves the panel
+  const stickyProblem = await page.evaluate(async () => {
+    const panel = [...document.querySelectorAll(".sub-panel")].find(
+      (p) => getComputedStyle(p).display !== "none"
+    );
+    const x = panel?.querySelector('button[aria-label="Zapri"]');
+    if (!panel || !x) return "close X button not found in the open panel";
+    const pr = panel.getBoundingClientRect();
+    const scrollable = pr.height - window.innerHeight;
+    if (scrollable < 120) return null; // panel fits the viewport: nothing to pin
+    window.scrollTo(0, window.scrollY + Math.min(scrollable / 2, pr.height / 2));
+    await new Promise((r) => setTimeout(r, 300));
+    const top = x.getBoundingClientRect().top;
+    const pr2 = panel.getBoundingClientRect();
+    const xr = x.getBoundingClientRect();
+    if (top < 90 || top > 120) return `close X not pinned below the header (top=${Math.round(top)}px)`;
+    if (xr.bottom > pr2.bottom + 1) return "close X left the bottom of its panel";
+    return null;
+  });
+  if (stickyProblem) rec.problems.push(stickyProblem);
+
+  // the X button returns to the normal card view
+  await page.getByRole("button", { name: "Zapri", exact: true }).click();
   await page.waitForTimeout(1500);
   open = await page.locator(".sub-panel:visible").count();
   if (open !== 0) rec.problems.push(`panel did not close (${open} visible panels)`);

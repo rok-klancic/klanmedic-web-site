@@ -537,9 +537,11 @@
         </div>
       </section>
 
-      <!-- Breadcrumb -->
-      <div class="mx-auto max-w-[80rem] px-6 pt-8 md:px-8">
-        <nav aria-label="Pot po strani" class="text-[15px] text-muted">
+      <!-- Breadcrumb + back link (phones show only the back link) -->
+      <div
+        class="mx-auto flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 pt-8 md:px-8"
+      >
+        <nav aria-label="Pot po strani" class="hidden text-[15px] text-muted md:block">
           <a href="../../index.html" class="transition-colors hover:text-forest">Domov</a>
           <span aria-hidden="true"> / </span>
           <a href="../../index.html#services" class="transition-colors hover:text-forest"
@@ -550,6 +552,12 @@
           <span aria-hidden="true"> / </span>
           <span class="text-forest" aria-current="page">Hiperbarične kisikove terapije</span>
         </nav>
+        <a
+            href="../estetika.html"
+            class="inline-flex items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-forest"
+          >
+            <span aria-hidden="true">&larr;</span> Nazaj na Estetiko
+          </a>
       </div>
 
       <!-- Intro -->
@@ -561,6 +569,15 @@
           <p class="text-[15px] leading-relaxed text-forest sm:text-[17px]">
             Pri terapiji dihamo 90–100 % kisik na povišanem tlaku. Zaradi povišanega tlaka se v krvi raztopi veliko večja količina kisika, ki tako lahko doseže vse celice in tkiva, tudi slabše prekrvavljene. S terapijo s hiperbarično kisikovo komoro OXY izboljšamo celične procese, sproščanje rastnih faktorjev in endorfinov. Hiperbarično kisikovo terapijo priporočamo pri stresu in izgorelosti, za splošno izboljšanje počutja, pri slabem spancu in utrujenosti, glavobolih in migrenah, za lajšanje bolečin, regeneracijo po poškodbah in operacijah ter pospešitev celjenja ran.
           </p>
+
+          <div class="mt-12 border-t border-hairline pt-6 md:mt-16">
+            <a
+              href="../estetika.html"
+              class="inline-flex items-center gap-2 text-[15px] font-medium text-muted transition-colors hover:text-forest"
+            >
+              <span aria-hidden="true">&larr;</span> Nazaj na Estetiko
+            </a>
+          </div>
         </div>
       </section>
     </main>
