@@ -49,7 +49,7 @@ Condensed from `DESIGN.md` (the source of truth). If the code disagrees, fix the
 - Subpages use the same container, grid, hairlines and type scale. No page-specific layouts unless the content demands it.
 
 ## Image cards and subpage heroes (light treatment only)
-- Image cards: use `.image-card-overlay` (a bottom `surface` scrim, 85% opacity, 70% on hover) and `.image-card-caption`, with `text-forest` copy. Titles keep a fixed top anchor within a grid: 75% from the top with an action label (`.image-card-caption`), 85% for title-only cards (`.image-card-caption--title-only`).
+- Image cards: use `.image-card-overlay` (a bottom `surface` scrim, 85% opacity, 70% on hover, plus a backdrop blur of 4px masked by the same gradient) and `.image-card-caption`, with `text-forest` copy. Titles keep a fixed top anchor within a grid: 75% from the top with an action label (`.image-card-caption`), 85% for title-only cards (`.image-card-caption--title-only`).
 - Subpage hero: full-bleed image under `bg-sage/80`, headline in `text-forest`, meta in `text-muted`, sand rule under the H1.
 - The dark scrim (`bg-forest/65`) and the full-card haze are retired. Do not reintroduce them.
 
