@@ -338,7 +338,7 @@
 
       <ul
         id="mobile-menu"
-        class="relative space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        class="relative max-h-[calc(100dvh-5.5rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
         x-show="open"
         x-transition.opacity
         @click="open = false"
@@ -602,26 +602,26 @@
             x-cloak
           >
             <div
-              class="relative grid w-full grid-cols-1 items-center sm:grid-cols-12 sm:gap-x-6 md:gap-x-10"
+              class="relative grid w-full grid-cols-1 items-center sm:grid-cols-12 sm:gap-x-6 md:gap-x-10 lg:grid-rows-[1fr_auto_auto_1fr]"
             >
               <div
-                class="sm:col-span-12 lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:pr-6"
+                class="sm:col-span-12 lg:col-start-1 lg:col-span-5 lg:row-start-2 lg:pr-6"
               >
                 <h1
                   class="font-fraunces text-[44px] leading-[1.05] tracking-[-0.01em] text-forest text-balance signature-rule sm:text-6xl md:text-7xl lg:text-[88px]"
                 >
-                  Pozornost, ki jo zaslužite.
+                  Zdravje. Lepota. Vitalnost.
                 </h1>
               </div>
 
-              <div class="sm:col-start-1 sm:col-span-5 sm:row-start-2">
+              <div class="sm:col-start-1 sm:col-span-5 sm:row-start-2 lg:row-start-3">
                 <p
-                  class="mt-10 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px] md:mt-12"
+                  class="mt-10 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px] md:mt-12 lg:mt-8"
                 >
-                  Klanmedic je zasebna klinika v [mesto], kjer združujemo
-                  splošno medicino, specialistične preglede in estetsko
-                  oskrbo. Sprejemamo nove paciente — za nujne primere smo
-                  dosegljivi isti dan.
+                  Klanmedic je sodoben medicinski center, ki združuje estetsko
+                  medicino, zobozdravstvo in gastroenterologijo. S celostnim
+                  pristopom povezujemo skrb za zdravje, lepoto in vitalnost ter
+                  ustvarjamo prostor, kjer je v ospredju vaše dobro počutje.
                 </p>
 
                 <div class="mt-10 flex flex-col items-start gap-4 md:mt-12">
@@ -633,7 +633,7 @@
                 </div>
               </div>
 
-              <div class="hidden sm:col-start-6 sm:col-span-7 sm:row-start-2 sm:block sm:pl-2 lg:row-start-1 lg:row-span-2">
+              <div class="hidden sm:col-start-6 sm:col-span-7 sm:row-start-2 sm:block sm:pl-2 lg:row-start-1 lg:row-span-4">
                 <img
                   src="./src/images/hero.png"
                   alt=""
@@ -663,7 +663,7 @@
               Storitve
             </p>
             <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
-              Izberite svojo pot do dobrega počutja.
+              Preverite, kaj ponujamo.
             </h2>
           </div>
         </div>
@@ -740,37 +740,18 @@
             Zakaj Klanmedic
           </p>
           <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
-            Zdravje, ki se začne s posluhom.
+            Zažarite od znotraj navzven.
           </h2>
-        </div>
-
-        <div class="mx-auto mt-10 max-w-5xl rounded-2xl px-6 py-8 md:mt-12 md:px-12 md:py-10">
-          <div class="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-5 md:gap-10">
-            <div>
-              <h3 class="font-fraunces text-xl leading-tight text-forest sm:text-2xl">
-                Celostna obravnava
-              </h3>
-              <p class="mt-3 text-[15px] leading-relaxed text-muted sm:text-[17px]">
-                Na enem mestu povezujemo splošno medicino, specialiste in estetiko.
-              </p>
-            </div>
-            <div>
-              <h3 class="font-fraunces text-xl leading-tight text-forest sm:text-2xl">
-                Človeški pristop
-              </h3>
-              <p class="mt-3 text-[15px] leading-relaxed text-muted sm:text-[17px]">
-                Vsakemu pacientu namenimo čas, pozornost in jasen načrt obravnave.
-              </p>
-            </div>
-            <div>
-              <h3 class="font-fraunces text-xl leading-tight text-forest sm:text-2xl">
-                Ko vas potrebujemo
-              </h3>
-              <p class="mt-3 text-[15px] leading-relaxed text-muted sm:text-[17px]">
-                Za nujne primere smo dosegljivi isti dan, brez nepotrebnega čakanja.
-              </p>
-            </div>
-          </div>
+          <p class="mx-auto mt-6 max-w-[72ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
+            V Klanmedicu združujemo različna področja medicine in celostno skrb
+            za vaše zdravje, lepoto in dobro počutje. Verjamemo v individualen
+            pristop, zato si za vsakega pacienta vzamemo čas, prisluhnemo
+            njegovim željam in potrebam ter zanj oblikujemo najprimernejši
+            načrt obravnave. Pri tem nas podpirajo sodobna medicinska oprema,
+            tudi naprave slovenskega razvoja in izdelave, ter predvsem
+            strokovno znanje naših zdravnikov. Ker sta vaše zdravje in varnost
+            na prvem mestu, vsakega pacienta vedno pregleda zdravnik.
+          </p>
         </div>
       </section>
 
@@ -785,13 +766,13 @@
         x-show="$store.intro.ready"
         x-cloak
       >
-        <div class="grid items-end gap-8 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+        <div class="mx-auto max-w-3xl text-center">
           <div>
             <p class="text-sm font-medium uppercase tracking-wide text-muted">
-              Spoznajte ekipo
+              Kdo smo?
             </p>
             <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
-              Ljudje, ki skrbijo za vas.
+              Spoznajte ekipo.
             </h2>
           </div>
         </div>
@@ -832,7 +813,7 @@
                  switch these columns to 3 so the column never gets taller
                  than the photo. -->
             <div
-              class="mx-auto mt-4 grid w-fit grid-cols-2 gap-x-6 gap-y-5 text-left md:mt-0 md:gap-x-8"
+              class="mx-auto mt-6 grid w-fit grid-cols-2 gap-x-6 gap-y-5 text-left md:mt-8 md:gap-x-8"
               x-ref="nameRow"
             >
               <template x-for="(person, index) in people" :key="`${person.id}-control`">
@@ -874,10 +855,10 @@
       >
         <div class="mx-auto max-w-3xl text-center">
           <p class="text-sm font-medium uppercase tracking-wide text-muted">
-            O Klanmedicu
+            O nas
           </p>
           <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
-            Praktične informacije.
+            Že 20 let soustvarjamo boljše počutje.
           </h2>
         </div>
 
@@ -917,16 +898,9 @@
         x-cloak
       >
         <div class="mx-auto max-w-3xl text-center">
-          <p class="text-sm font-medium uppercase tracking-wide text-muted">
-            Naročanje
-          </p>
-          <h2 class="mt-3 font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
+          <h2 class="font-fraunces text-4xl leading-tight text-forest sm:text-5xl">
             Pripravljeni za prvi korak?
           </h2>
-          <p class="mx-auto mt-5 max-w-[60ch] text-[15px] leading-relaxed text-muted sm:text-[17px]">
-            Pokličite nas ali oddajte zahtevo — za nujne primere smo
-            dosegljivi isti dan.
-          </p>
           <div class="mt-10 flex flex-col items-center gap-4">
             <a
               href="narocanje.html"
@@ -934,10 +908,10 @@
               >Naročite se na pregled</a
             >
             <a
-              href="tel:+38612345678"
+              href="tel:+38641442901"
               class="text-[15px] text-muted transition-colors hover:text-forest"
               >ali pokličite
-              <span class="whitespace-nowrap">01 234 5678</span></a
+              <span class="whitespace-nowrap">041 442 901</span></a
             >
           </div>
         </div>
@@ -964,8 +938,8 @@
               />
             </a>
             <p class="mt-4 text-[15px] leading-relaxed text-muted">
-              Zasebna klinika v [mesto] — splošna medicina, specialistični
-              pregledi in estetska oskrba.
+              Medicinski center v Šempetru pri Gorici. Estetska medicina,
+              zobozdravstvo in gastroenterologija.
             </p>
           </div>
 
@@ -988,10 +962,10 @@
               Kontakt
             </p>
             <ul class="mt-4 space-y-2.5 text-[15px]">
-              <li class="text-muted">[mesto], Slovenija</li>
+              <li class="text-muted">Šempeter pri Gorici, Slovenija</li>
               <li>
-                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
-                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                <a href="tel:+38641442901" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">041 442 901</span></a
                 >
               </li>
               <li>
@@ -1004,11 +978,13 @@
 
           <div class="col-span-2 sm:col-span-1">
             <p class="text-sm font-medium uppercase tracking-wide text-muted">
-              Urnik
+              Urnik naročanja
             </p>
             <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
-              <dt class="text-muted">Pon–Pet</dt>
-              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Pon, sre</dt>
+              <dd class="text-forest">12:00–20:00</dd>
+              <dt class="text-muted">Tor, čet, pet</dt>
+              <dd class="text-forest">8:00–15:00</dd>
               <dt class="text-muted">Sob–Ned</dt>
               <dd class="text-muted">zaprto</dd>
             </dl>

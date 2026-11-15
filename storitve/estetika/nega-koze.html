@@ -320,7 +320,7 @@
 
       <ul
         id="mobile-menu"
-        class="relative space-y-1 border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
+        class="relative max-h-[calc(100dvh-5.5rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-hairline bg-sage/95 px-6 pb-6 pt-4 backdrop-blur lg:hidden"
         x-show="open"
         x-transition.opacity
         @click="open = false"
@@ -758,8 +758,8 @@
               />
             </a>
             <p class="mt-4 text-[15px] leading-relaxed text-muted">
-              Zasebna klinika v [mesto] — splošna medicina, specialistični
-              pregledi in estetska oskrba.
+              Medicinski center v Šempetru pri Gorici. Estetska medicina,
+              zobozdravstvo in gastroenterologija.
             </p>
           </div>
 
@@ -781,10 +781,10 @@
               Kontakt
             </p>
             <ul class="mt-4 space-y-2.5 text-[15px]">
-              <li class="text-muted">[mesto], Slovenija</li>
+              <li class="text-muted">Šempeter pri Gorici, Slovenija</li>
               <li>
-                <a href="tel:+38612345678" class="text-forest transition-colors hover:text-muted"
-                  ><span class="whitespace-nowrap">01 234 5678</span></a
+                <a href="tel:+38641442901" class="text-forest transition-colors hover:text-muted"
+                  ><span class="whitespace-nowrap">041 442 901</span></a
                 >
               </li>
               <li>
@@ -797,11 +797,13 @@
 
           <div class="col-span-2 sm:col-span-1">
             <p class="text-sm font-medium uppercase tracking-wide text-muted">
-              Urnik
+              Urnik naročanja
             </p>
             <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[15px]">
-              <dt class="text-muted">Pon–Pet</dt>
-              <dd class="text-forest">8:00–16:00</dd>
+              <dt class="text-muted">Pon, sre</dt>
+              <dd class="text-forest">12:00–20:00</dd>
+              <dt class="text-muted">Tor, čet, pet</dt>
+              <dd class="text-forest">8:00–15:00</dd>
               <dt class="text-muted">Sob–Ned</dt>
               <dd class="text-muted">zaprto</dd>
             </dl>
