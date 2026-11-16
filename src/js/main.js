@@ -38,6 +38,7 @@ document.addEventListener("alpine:init", () => {
     entered: false,
     ready: false,
     compact: false,
+    hasIntro: false, // true on the landing page, where heroIntro gates the header
   });
 
   // ---- Site search ------------------------------------------------------
@@ -141,6 +142,27 @@ document.addEventListener("alpine:init", () => {
       this.$watch("query", () => {
         this.active = 0;
       });
+
+      // Collapse the logo wordmark once the page is scrolled. Runs on every
+      // page; on the landing page it waits until the intro has finished.
+      let ticking = false;
+      const syncCompact = () => {
+        ticking = false;
+        const intro = this.$store.intro;
+        if (!intro.hasIntro || intro.ready) {
+          intro.compact = window.scrollY > 0;
+        }
+      };
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(syncCompact);
+        },
+        { passive: true }
+      );
+      syncCompact();
     },
     // indexReady is read so the list is recomputed once the index arrives.
     get results() {
@@ -254,6 +276,7 @@ document.addEventListener("alpine:init", () => {
     bigTextSize: 160,
     _ticking: false,
     init() {
+      this.$store.intro.hasIntro = true;
       const reduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
@@ -296,12 +319,8 @@ document.addEventListener("alpine:init", () => {
       this.bigTextSize = parseFloat(getComputedStyle(el).fontSize);
     },
     onScroll() {
-      if (this.entered) {
-        if (this.$store.intro.ready) {
-          this.$store.intro.compact = window.scrollY > 0;
-        }
-        return;
-      }
+      // Once entered, siteHeader owns the logo's compact state.
+      if (this.entered) return;
       this.measureBigText();
       const section = this.$refs.heroSection;
       if (!section) return;
