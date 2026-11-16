@@ -22,6 +22,12 @@
 //     leading to a detail page with expandable cards
 //   - info pages (narocanje.html, urnik.html, cenik.html): light smoke —
 //     full-bleed hero image, no overflow, fonts load
+//   - header search: icon visible at every width; the drop panel opens and
+//     takes focus, finds entries with/without diacritics, arrow keys move the
+//     highlight, Escape closes and returns focus; following a result opens the
+//     right card and scrolls it to just below the header (another page, same
+//     page); service pages open and scroll to the card named in a #sub-<slug>
+//     URL
 // Screenshots for manual review are (over)written to tests/screenshots/.
 //
 // Requires internet (Google Fonts + Alpine CDN). Exit code 1 on any failure.
@@ -155,6 +161,20 @@ function startServer() {
 
 const JS = {
   state: () => ({ scrollWidth: document.documentElement.scrollWidth, innerWidth: window.innerWidth }),
+  // The closed search panel is collapsed to zero height and `inert`; Playwright's
+  // isVisible() would still call its clipped input visible.
+  searchPanelOpen: () => {
+    const panel = document.querySelector("#search-panel");
+    return !panel.inert && panel.getBoundingClientRect().height > 0;
+  },
+  // Viewport top of the open subservice panel (null if none is open). After a
+  // card is opened by a link it should sit just below the 80px fixed header.
+  openPanelTop: () => {
+    const panel = [...document.querySelectorAll(".sub-panel")].find(
+      (p) => getComputedStyle(p).display !== "none"
+    );
+    return panel ? Math.round(panel.getBoundingClientRect().top) : null;
+  },
   header: () => {
     const span = document.querySelector("header nav a span");
     const cta = document.querySelector("header nav > div > a[href*='narocanje']");
@@ -237,8 +257,60 @@ async function runWidth(browser, width, port) {
     rec.problems.push(`burger visibility wrong (visible=${h.burgerVisible}, expected=${expectBurger})`);
   if (h.desktopNavVisible === expectBurger)
     rec.problems.push(`desktop nav visibility wrong (visible=${h.desktopNavVisible})`);
-  if (h.searchVisible !== (width >= 640))
-    rec.problems.push(`search button visibility wrong (visible=${h.searchVisible})`);
+  if (!h.searchVisible)
+    rec.problems.push("search button is hidden (it is shown at every width)");
+
+  // search drop panel: opens from the header icon, finds entries by words
+  // with or without diacritics, moves with the arrow keys, closes with Esc
+  const headerHeight = () => page.evaluate(() => document.querySelector("header").getBoundingClientRect().height);
+  const searchClosedHeight = await headerHeight();
+  await page.click("button[aria-label='Iskanje']");
+  await page.waitForTimeout(500);
+  if (!(await page.evaluate(JS.searchPanelOpen)))
+    rec.problems.push("search panel did not open");
+  else {
+    if (!(await page.evaluate(() => document.activeElement?.getAttribute("role") === "combobox")))
+      rec.problems.push("search input is not focused after opening");
+    if ((await headerHeight()) < searchClosedHeight + 40)
+      rec.problems.push("header did not extend for the search panel");
+
+    const options = page.locator("#search-results [role='option']");
+    await page.fill("#search-panel input", "invisalign");
+    await page.waitForTimeout(200);
+    const firstTitle = await options.first().locator("span").first().textContent().catch(() => "");
+    if (firstTitle?.trim() !== "Ortodontija")
+      rec.problems.push(`search "invisalign": first result is "${firstTitle?.trim()}", expected "Ortodontija"`);
+
+    await page.fill("#search-panel input", "ciscenje");
+    await page.waitForTimeout(200);
+    if ((await options.count()) < 1)
+      rec.problems.push('search "ciscenje" (no diacritics) found nothing');
+
+    await page.fill("#search-panel input", "zzzzqq");
+    await page.waitForTimeout(200);
+    if (!(await page.getByText("Ni zadetkov.", { exact: false }).isVisible()))
+      rec.problems.push("search shows no empty-state message");
+
+    await page.fill("#search-panel input", "laser");
+    await page.waitForTimeout(200);
+    await page.keyboard.press("ArrowDown");
+    const selected = await page.evaluate(() => document.querySelector("#search-results [aria-selected='true']")?.id);
+    if (selected !== "search-option-1")
+      rec.problems.push(`arrow down did not move the highlight (selected=${selected})`);
+    st = await page.evaluate(JS.state);
+    if (st.scrollWidth > st.innerWidth)
+      rec.problems.push(`horizontal overflow with search open: ${st.scrollWidth} > ${st.innerWidth}`);
+    await page.screenshot({ path: resolve(SHOTS, `${width}-search.png`) });
+
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(600);
+    if (await page.evaluate(JS.searchPanelOpen))
+      rec.problems.push("search panel did not close on Escape");
+    if (await page.evaluate(() => document.activeElement?.getAttribute("aria-label") !== "Iskanje"))
+      rec.problems.push("focus did not return to the search icon after Escape");
+    if (Math.abs((await headerHeight()) - searchClosedHeight) > 1)
+      rec.problems.push("header height did not return after closing search");
+  }
 
   // active-page markers
   const markers = await page.evaluate(JS.currentMarkers);
@@ -576,6 +648,22 @@ async function runSubpage(browser, width, port, path, cardCount, intro = null, l
   if (st.scrollWidth > st.innerWidth)
     rec.problems.push(`horizontal overflow at bottom: ${st.scrollWidth} > ${st.innerWidth}`);
 
+  // deep link: opening the page at #sub-<slug> expands that card (this is how
+  // search results reach a card). A fresh page, so it is a real load rather
+  // than a hash change.
+  const lastId = await page.locator(".sub-panel").last().getAttribute("id");
+  const deep = await context.newPage();
+  await deep.goto(`http://127.0.0.1:${port}/${path}#${lastId}`, { waitUntil: "networkidle" });
+  await deep.waitForTimeout(2500);
+  const deepOpen = deep.locator(".sub-panel:visible");
+  if ((await deepOpen.count()) !== 1 || (await deepOpen.first().getAttribute("id")) !== lastId)
+    rec.problems.push(`deep link #${lastId} did not open its card (${await deepOpen.count()} open panels)`);
+  else {
+    const deepTop = await deep.evaluate(JS.openPanelTop);
+    if (deepTop === null || deepTop < 80 || deepTop > 130)
+      rec.problems.push(`deep link #${lastId} opened its card but did not scroll to it (panel top=${deepTop}px)`);
+  }
+
   await context.close();
   return rec;
 }
@@ -715,6 +803,69 @@ async function runInfoPage(browser, width, port, path) {
   return rec;
 }
 
+// Following search results: a card result on another page navigates there and
+// opens that card; a card result on the same page opens it without a reload.
+async function runSearchNav(browser, width, port) {
+  const height = width < 800 ? 812 : 900;
+  const context = await browser.newContext({ viewport: { width, height } });
+  const page = await context.newPage();
+  const rec = { width, subpage: "search-navigation", problems: [] };
+
+  page.on("console", (m) => {
+    if (m.type() === "error" || m.type() === "warning")
+      rec.problems.push(`console ${m.type()}: ${m.text().slice(0, 150)}`);
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) rec.problems.push(`http ${r.status()}: ${r.url().slice(-90)}`);
+  });
+  page.on("requestfailed", (r) => rec.problems.push(`request failed: ${r.url().slice(-90)}`));
+
+  const openPanels = () => page.locator(".sub-panel:visible");
+
+  await page.goto(`http://127.0.0.1:${port}/cenik.html`, { waitUntil: "networkidle" });
+  await page.click("button[aria-label='Iskanje']");
+  await page.fill("#search-panel input", "invisalign");
+  await page.waitForTimeout(300);
+  await page.locator("#search-results [role='option']").first().click();
+  try {
+    await page.waitForURL(
+      (url) => url.pathname.endsWith("/storitve/zobozdravstvo.html") && url.hash === "#sub-ortodontija",
+      { timeout: 10000 }
+    );
+  } catch {
+    rec.problems.push(`result click did not reach zobozdravstvo.html#sub-ortodontija (at ${page.url()})`);
+  }
+  await page.waitForFunction(() => window.Alpine, undefined, { timeout: 8000 });
+  await page.waitForTimeout(2500); // card flight (~0.9 s) + glide scroll (1 s)
+  if ((await openPanels().count()) !== 1)
+    rec.problems.push(`card did not open after following the result (${await openPanels().count()} panels)`);
+  else if ((await openPanels().first().getAttribute("aria-label")) !== "Ortodontija")
+    rec.problems.push("wrong card opened after following the result");
+  const landedTop = await page.evaluate(JS.openPanelTop);
+  if (landedTop === null || landedTop < 80 || landedTop > 130)
+    rec.problems.push(`page did not scroll to the card opened by the result (panel top=${landedTop}px, expected just below the header)`);
+  await page.screenshot({ path: resolve(SHOTS, `${width}-search-opened-card.png`) });
+
+  // same page: Enter on the first result switches to another card, no reload
+  await page.click("button[aria-label='Iskanje']");
+  await page.fill("#search-panel input", "implantologija");
+  await page.waitForTimeout(300);
+  await page.keyboard.press("Enter");
+  await page.waitForTimeout(2500);
+  if (await page.evaluate(JS.searchPanelOpen))
+    rec.problems.push("search panel stayed open after choosing a result");
+  if ((await openPanels().count()) !== 1)
+    rec.problems.push(`same-page result left ${await openPanels().count()} open panels`);
+  else if ((await openPanels().first().getAttribute("aria-label")) !== "Implantologija")
+    rec.problems.push("same-page result did not open the Implantologija card");
+  const switchedTop = await page.evaluate(JS.openPanelTop);
+  if (switchedTop === null || switchedTop < 80 || switchedTop > 130)
+    rec.problems.push(`page did not scroll to the card opened by the same-page result (panel top=${switchedTop}px)`);
+
+  await context.close();
+  return rec;
+}
+
 async function main() {
   mkdirSync(SHOTS, { recursive: true });
   const { server, port } = await startServer();
@@ -734,6 +885,10 @@ async function main() {
     for (const width of SUBPAGE_WIDTHS) {
       process.stdout.write(`--- ${HUB.path} (hub) ${width}px ---\n`);
       results.push(await runHub(browser, width, port, HUB.path));
+    }
+    for (const width of SUBPAGE_WIDTHS) {
+      process.stdout.write(`--- search navigation ${width}px ---\n`);
+      results.push(await runSearchNav(browser, width, port));
     }
     const INFO_PAGES = ["narocanje.html", "urnik.html", "cenik.html"];
     for (const path of INFO_PAGES) {

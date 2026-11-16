@@ -1,3 +1,12 @@
+// Path prefix from the current page back to the site root ("./", "../" or
+// "../../"), read from this script's own src. Must run synchronously: after
+// the page has loaded, document.currentScript is null.
+const SITE_ROOT =
+  (document.currentScript?.getAttribute("src") ?? "").replace(
+    /src\/js\/main\.js.*$/,
+    ""
+  ) || "./";
+
 document.addEventListener("alpine:init", () => {
   // The intro plays only on a session's first visit to the top of the
   // landing page. Returning visits (sessionStorage flag) and deep links
@@ -31,10 +40,87 @@ document.addEventListener("alpine:init", () => {
     compact: false,
   });
 
+  // ---- Site search ------------------------------------------------------
+  // The index lives in src/js/search-index.js (window.KLANMEDIC_SEARCH, edited
+  // by hand). It is loaded on the first click on the search icon, so pages
+  // that never search never download it. Matching ignores case and
+  // diacritics, and every typed word has to match somewhere in an entry.
+  const MAX_SEARCH_RESULTS = 8;
+
+  const normalize = (text) =>
+    text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "");
+
+  let searchIndex = null; // prepared entries, null until the file has loaded
+  let searchLoading = null; // in-flight load, shared by repeated clicks
+
+  const prepareIndex = (entries) =>
+    entries.map((entry) => ({
+      entry,
+      title: normalize(entry.title),
+      section: normalize(entry.section ?? ""),
+      extra: normalize(`${entry.keywords ?? ""} ${entry.syn ?? ""}`),
+      desc: normalize(entry.desc ?? ""),
+    }));
+
+  const loadSearchIndex = () => {
+    if (searchIndex) return Promise.resolve(searchIndex);
+    if (!searchLoading) {
+      searchLoading = new Promise((resolve, reject) => {
+        const finish = () => {
+          searchIndex = prepareIndex(window.KLANMEDIC_SEARCH ?? []);
+          resolve(searchIndex);
+        };
+        if (window.KLANMEDIC_SEARCH) return finish();
+        const script = document.createElement("script");
+        script.src = `${SITE_ROOT}src/js/search-index.js`;
+        script.onload = finish;
+        script.onerror = () => {
+          searchLoading = null; // allow a retry on the next open
+          script.remove();
+          reject(new Error("search index failed to load"));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return searchLoading;
+  };
+
+  // Ranking: each typed word scores in every field it appears in — title
+  // (starts with it / has it at a word start 30, otherwise contains it 20),
+  // section 12, keywords + synonyms 10, description 6 — so an entry that
+  // matches in several places outranks one that matches in one. Ties keep the
+  // order of the index file.
+  const searchEntries = (query) => {
+    const terms = normalize(query).split(/\s+/).filter(Boolean);
+    if (!terms.length || !searchIndex) return [];
+    const scored = [];
+    searchIndex.forEach((item, order) => {
+      let score = 0;
+      for (const term of terms) {
+        let termScore = 0;
+        if (item.title.startsWith(term) || item.title.includes(` ${term}`))
+          termScore += 30;
+        else if (item.title.includes(term)) termScore += 20;
+        if (item.section.includes(term)) termScore += 12;
+        if (item.extra.includes(term)) termScore += 10;
+        if (item.desc.includes(term)) termScore += 6;
+        if (!termScore) return; // a word that matches nowhere drops the entry
+        score += termScore;
+      }
+      scored.push({ entry: item.entry, score, order });
+    });
+    scored.sort((a, b) => b.score - a.score || a.order - b.order);
+    return scored.slice(0, MAX_SEARCH_RESULTS).map((item) => item.entry);
+  };
+
   // Site header: mobile menu state (open / servicesOpen / estetikaOpen) plus
   // the desktop mega-menu. `desk` is the panel that is open, `shown` is the
   // panel whose content stays rendered, so the content doesn't vanish while
-  // the header is still sliding shut.
+  // the header is still sliding shut. The search drop panel (searchOpen,
+  // query, active) lives here too, so the three can close one another.
   Alpine.data("siteHeader", () => ({
     open: false,
     servicesOpen: false,
@@ -44,9 +130,100 @@ document.addEventListener("alpine:init", () => {
     deskEst: false, // Estetika subpages expanded inside the services panel
     closeTimer: null,
     hoverable: window.matchMedia("(hover: hover)").matches,
+    searchOpen: false,
+    query: "",
+    active: 0, // highlighted result (keyboard / hover)
+    indexReady: false,
+    searchFailed: false,
+    siteRoot: SITE_ROOT,
+
+    init() {
+      this.$watch("query", () => {
+        this.active = 0;
+      });
+    },
+    // indexReady is read so the list is recomputed once the index arrives.
+    get results() {
+      return this.indexReady ? searchEntries(this.query) : [];
+    },
+    openSearch() {
+      this.closeDesk();
+      this.open = false;
+      this.servicesOpen = false;
+      this.estetikaOpen = false;
+      this.searchOpen = true;
+      this.searchFailed = false;
+      loadSearchIndex().then(
+        () => {
+          this.indexReady = true;
+        },
+        () => {
+          this.searchFailed = true;
+        }
+      );
+      this.$nextTick(() =>
+        this.$refs.searchInput?.focus({ preventScroll: true })
+      );
+    },
+    closeSearch(refocus = false) {
+      if (!this.searchOpen) return;
+      this.searchOpen = false;
+      this.query = "";
+      if (refocus) this.$refs.searchButton?.focus();
+    },
+    toggleSearch() {
+      if (this.searchOpen) this.closeSearch();
+      else this.openSearch();
+    },
+    moveActive(step) {
+      const count = this.results.length;
+      if (!count) return;
+      this.active = (this.active + step + count) % count;
+      this.$nextTick(() =>
+        document
+          .getElementById(`search-option-${this.active}`)
+          ?.scrollIntoView({ block: "nearest" })
+      );
+    },
+    goActive() {
+      const entry = this.results[this.active];
+      if (entry) this.go(null, entry);
+    },
+    // Follow a result. A different page navigates normally (the link's own
+    // click, or location for Enter). On the same page nothing would reload, so
+    // the hash is set by hand: that scrolls to section anchors, and the
+    // subservices component listens for hashchange to open a card.
+    go(event, entry) {
+      const target = new URL(SITE_ROOT + entry.url, window.location.href);
+      const here = window.location;
+      const samePage =
+        target.pathname === here.pathname && target.search === here.search;
+      if (!samePage) {
+        if (!event) here.href = target.href;
+        // Closing re-renders the list; let the navigation start first.
+        window.setTimeout(() => this.closeSearch(), 0);
+        return;
+      }
+      event?.preventDefault();
+      this.closeSearch();
+      if (target.hash && target.hash !== here.hash) {
+        here.hash = target.hash;
+      } else {
+        // Same hash again (e.g. the card was closed meanwhile): hashchange
+        // will not fire by itself, so re-run it and scroll manually.
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
+        const section = target.hash
+          ? document.querySelector(target.hash)
+          : null;
+        if (section && !target.hash.startsWith("#sub-"))
+          section.scrollIntoView();
+        else if (!target.hash) window.scrollTo(0, 0);
+      }
+    },
 
     openDesk(key) {
       clearTimeout(this.closeTimer);
+      this.closeSearch();
       // switching panels (or reopening) always starts with Estetika collapsed
       if (this.desk !== key) this.deskEst = false;
       this.desk = this.shown = key;
@@ -377,6 +554,15 @@ document.addEventListener("alpine:init", () => {
     _settleTimer: 0,
     init() {
       this._root = this.$el;
+      // A link to "#sub-<slug>" (search results, shared links) opens that
+      // card: on load, and whenever the hash changes on this page. The
+      // x-for cards render right after init, hence the deferred call. It is a
+      // timeout rather than $nextTick on purpose: select() queues its own
+      // $nextTick, and one queued from inside a $nextTick callback runs
+      // before Alpine has applied the state change, so the panel would still
+      // be hidden when select() measures where to scroll.
+      window.addEventListener("hashchange", () => this.openFromHash());
+      window.setTimeout(() => this.openFromHash(), 0);
       if (this.reduced) {
         this.shown = true;
         return;
@@ -391,6 +577,14 @@ document.addEventListener("alpine:init", () => {
         { threshold: 0.15 }
       );
       observer.observe(this.$el);
+    },
+    openFromHash() {
+      const match = /^#sub-(.+)$/.exec(window.location.hash);
+      if (!match) return;
+      const index = this.items.findIndex((item) => item.slug === match[1]);
+      if (index === -1) return;
+      this.shown = true; // do not wait for the scroll reveal
+      this.select(index);
     },
     isOpen(index) {
       return this.selected === index;
@@ -509,20 +703,31 @@ document.addEventListener("alpine:init", () => {
       if (this.selected === null) this._returnFocus = document.activeElement;
       const finishFlip = this.planFlip(card);
       this.selected = index;
-      this.$nextTick(() => {
+      const panel = card.querySelector(".sub-panel");
+      if (!panel) return;
+      const land = (framesLeft) => {
         if (this.selected !== index) return;
-        const panel = card.querySelector(".sub-panel");
-        if (!panel) return;
+        // Right after a page load (a search result or shared link) the
+        // x-show update can still be pending here. A hidden panel has no
+        // position to scroll to, so wait for it to be laid out.
+        if (panel.offsetParent === null && framesLeft > 0) {
+          window.requestAnimationFrame(() => land(framesLeft - 1));
+          return;
+        }
         panel.focus({ preventScroll: true });
         // Document-space target measured before the flight: transforms
         // and scroll never change layout coordinates, so the flight and
         // the glide can run together and still land top-aligned with the
-        // viewport, just below the fixed header.
-        const target =
-          panel.getBoundingClientRect().top + window.scrollY - 88;
+        // viewport, just below the fixed header. It is read from offsetTop
+        // (layout) rather than getBoundingClientRect(), which would include
+        // the card's reveal transform (translateY) while the cards are
+        // still fading in after a page load.
+        let top = 0;
+        for (let el = panel; el; el = el.offsetParent) top += el.offsetTop;
         finishFlip?.();
-        this.glideScroll(target);
-      });
+        this.glideScroll(top - 88);
+      };
+      this.$nextTick(() => land(10));
     },
     // Close uses the same FLIP as open, in reverse. Keep the expanded
     // panel visible but out of flow while the grid returns to its compact

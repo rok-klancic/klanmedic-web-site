@@ -22,7 +22,8 @@ Pages (the header/nav markup is **copied into every page**, so a nav change must
 
 Code:
 - `src/css/input.css` — Tailwind v4 CSS-first config (`@theme` tokens) plus shared component classes: `.signature-rule`, `.signature-rule--center`, `.image-card-overlay`, `.image-card-caption`, `.card-reveal`, the `[data-card]` crossfade/FLIP styles, and `.intro-*`. There is intentionally **no `tailwind.config.js`**. Add tokens to `@theme`.
-- `src/js/main.js` — everything lives in one `alpine:init` listener: store `intro`, components `heroIntro`, `heroIntro2`, `teamShowcase`, `subservices(items)`.
+- `src/js/main.js` — everything lives in one `alpine:init` listener: store `intro`, components `siteHeader` (menus + search), `heroIntro`, `heroIntro2`, `teamShowcase`, `subservices(items)`.
+- `src/js/search-index.js` — hand-maintained search index (`window.KLANMEDIC_SEARCH`), lazy-loaded by the header search icon. A JS file, not `.json`, so search works from `file://`. Field docs are at the top of the file.
 - `src/images/` — assets. `artifacts/` — design sketches, gitignored, not deployed.
 - `.opencode/`, `.agents/` — config for other agent tools. `AGENTS.md` and `DESIGN.md` are the human/other-tool originals of this file and of `.claude/rules/design.md`.
 
@@ -32,6 +33,7 @@ Code:
 - Keep the inline `<style>[x-cloak]{display:none!important}</style>` in every page `<head>`. The mobile nav needs it.
 - Asset paths depend on depth: `./src/…` (root), `../src/…` (`storitve/`), `../../src/…` (`storitve/estetika/`).
 - Each service page passes its card data inline: `x-data="subservices([...])"`. Keep the `[data-card]`, `.card-face`, `.sub-panel` and `.panel-inner` hooks, because the FLIP animation and its CSS depend on them.
+- **Search index:** when you add or rename a page, a `subservices` card or a cenik section, add or update its entry in `src/js/search-index.js`. Card entries link to `…#sub-<slug>`; `subservices` opens the card whose slug is in the URL hash, so keep slugs stable. Search is Slovenian; matching ignores diacritics.
 - Any new animation must respect `prefers-reduced-motion`, as the existing ones do.
 - Tests: `tests/visual_check.mjs` is the only test. Keep it a single plain Playwright script (no framework). When you add a subpage, add it to `SUBPAGES` there. `EXPECTED_DEAD_ANCHORS` is currently empty and should stay accurate.
 - Do not commit or push unless asked.

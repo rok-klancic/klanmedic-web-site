@@ -8,6 +8,12 @@ tile pattern, no clipped captions, team image swap, font loading, no console
 errors, no failed requests, and that dead anchors match the expected list in
 `tests/visual_check.mjs` (`EXPECTED_DEAD_ANCHORS`).
 
+It also exercises the header search: the panel opens from the icon at every
+width, finds entries (with and without diacritics), moves with the arrow keys
+and closes with Escape; following a result opens the right card, on another page
+and on the same page; and every service page opens the card named in a
+`#sub-<slug>` URL.
+
 Run it after layout/markup changes. Takes ~30 s.
 
 ## One-time setup

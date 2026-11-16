@@ -40,8 +40,14 @@ features that need a real HTTP origin.
   `@import "tailwindcss";` and a `@theme { ... }` block. There is intentionally
   no `tailwind.config.js`.
 - `src/js/main.js` — Alpine `alpine:init` hook; registers the `intro` store and
-  the `heroIntro`, `heroIntro2`, `teamShowcase` and `subservices(items)`
-  components.
+  the `siteHeader` (menus + search), `heroIntro`, `heroIntro2`, `teamShowcase`
+  and `subservices(items)` components.
+- `src/js/search-index.js` — hand-maintained search index
+  (`window.KLANMEDIC_SEARCH`), lazy-loaded when the header search icon is first
+  clicked. A JS file rather than `.json` so search works from `file://`. When
+  you add or rename a page, a `subservices` card or a cenik section, add or
+  update its entry here. Card entries link to `…#sub-<slug>`, which
+  `subservices` opens, so keep card slugs stable.
 - `artifacts/sketches/` — design references (`.excalidraw` + exported `.png`)
   for the landing page. Not deployed.
 
