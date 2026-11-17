@@ -868,78 +868,58 @@
 
         <article
           class="grid gap-x-10 gap-y-4 lg:grid-cols-12"
-          x-data="{ wait: 'zelo-hitro' }"
+          x-data="{
+            proc: 0,
+            procs: [
+              { short: 'Prvi pregled', name: 'Gastroenterološki prvi pregled', dates: ['Junij 2026', 'December 2026', 'Februar 2027'] },
+              { short: 'Gastroskopija', name: 'Gastroskopija (ezofagodastroduodenskopija — EGDSK)', dates: ['Januar 2027', 'Marec 2027', 'Julij 2027'] },
+              { short: 'Kolonoskopija', name: 'Kolonoskopija (razen v okviru SVIT)', dates: ['Julij 2026', 'Marec 2027', 'Julij 2027'] },
+              { short: 'UZ trebuha', name: 'UZ trebuha (abdomna)', dates: ['Januar 2027', 'Marec 2027', 'Julij 2027'] },
+            ],
+          }"
         >
           <h3 class="font-fraunces text-2xl leading-tight text-forest sm:text-3xl lg:col-span-4">
             Gastroenterološka ambulanta
           </h3>
           <div class="lg:col-span-8">
-            <!-- Mobile: tab buttons pick one waiting-time group, so the
-                 four-column table never needs a horizontal scroller. -->
+            <!-- Mobile: tab buttons pick one procedure, so the table only
+                 needs to list its three waiting-time groups. Buttons use short
+                 labels; the full procedure name is the table header. -->
             <div
               class="mt-6 flex flex-wrap gap-2 md:hidden"
               role="group"
-              aria-label="Izberi skupino čakalnih dob"
+              aria-label="Izberi postopek"
             >
-              <button
-                type="button"
-                class="rounded-md px-3.5 py-2 text-[15px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
-                :class="wait === 'zelo-hitro' ? 'bg-forest text-surface' : 'border border-hairline text-forest hover:bg-surface'"
-                @click="wait = 'zelo-hitro'"
-                :aria-pressed="wait === 'zelo-hitro'"
-                >Zelo hitro</button
-              >
-              <button
-                type="button"
-                class="rounded-md px-3.5 py-2 text-[15px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
-                :class="wait === 'hitro' ? 'bg-forest text-surface' : 'border border-hairline text-forest hover:bg-surface'"
-                @click="wait = 'hitro'"
-                :aria-pressed="wait === 'hitro'"
-                >Hitro</button
-              >
-              <button
-                type="button"
-                class="rounded-md px-3.5 py-2 text-[15px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
-                :class="wait === 'redno' ? 'bg-forest text-surface' : 'border border-hairline text-forest hover:bg-surface'"
-                @click="wait = 'redno'"
-                :aria-pressed="wait === 'redno'"
-                >Redno</button
-              >
+              <template x-for="(p, i) in procs" :key="p.short">
+                <button
+                  type="button"
+                  class="rounded-md px-3.5 py-2 text-[15px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
+                  :class="proc === i ? 'bg-forest text-surface' : 'border border-hairline text-forest hover:bg-surface'"
+                  @click="proc = i"
+                  :aria-pressed="proc === i"
+                  x-text="p.short"
+                ></button>
+              </template>
             </div>
 
             <table class="mt-6 w-full border-collapse text-left text-[15px] md:hidden">
               <thead>
                 <tr class="border-b border-hairline">
-                  <th scope="col" class="py-3 pr-4 text-sm font-medium uppercase tracking-wide text-muted">Postopek</th>
-                  <th scope="col" class="py-3 text-right text-sm font-medium uppercase tracking-wide text-muted" x-show="wait === 'zelo-hitro'" x-cloak>Zelo hitro</th>
-                  <th scope="col" class="py-3 text-right text-sm font-medium uppercase tracking-wide text-muted" x-show="wait === 'hitro'" x-cloak>Hitro</th>
-                  <th scope="col" class="py-3 text-right text-sm font-medium uppercase tracking-wide text-muted" x-show="wait === 'redno'" x-cloak>Redno</th>
+                  <th scope="colgroup" colspan="2" class="py-3 text-left font-medium text-forest" x-text="procs[proc].name"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="border-b border-hairline">
-                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Gastroenterološki prvi pregled</th>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'zelo-hitro'" x-cloak>Junij 2026</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'hitro'" x-cloak>December 2026</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'redno'" x-cloak>Februar 2027</td>
+                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Zelo hitro</th>
+                  <td class="whitespace-nowrap py-3 text-right text-forest" x-text="procs[proc].dates[0]"></td>
                 </tr>
                 <tr class="border-b border-hairline">
-                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Gastroskopija (ezofagodastroduodenskopija — EGDSK)</th>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'zelo-hitro'" x-cloak>Januar 2027</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'hitro'" x-cloak>Marec 2027</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'redno'" x-cloak>Julij 2027</td>
-                </tr>
-                <tr class="border-b border-hairline">
-                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Kolonoskopija (razen v okviru SVIT)</th>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'zelo-hitro'" x-cloak>Julij 2026</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'hitro'" x-cloak>Marec 2027</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'redno'" x-cloak>Julij 2027</td>
+                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Hitro</th>
+                  <td class="whitespace-nowrap py-3 text-right text-forest" x-text="procs[proc].dates[1]"></td>
                 </tr>
                 <tr class="border-b border-hairline last:border-0">
-                  <th scope="row" class="py-3 pr-4 font-normal text-forest">UZ trebuha (abdomna)</th>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'zelo-hitro'" x-cloak>Januar 2027</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'hitro'" x-cloak>Marec 2027</td>
-                  <td class="whitespace-nowrap py-3 text-right text-forest" x-show="wait === 'redno'" x-cloak>Julij 2027</td>
+                  <th scope="row" class="py-3 pr-4 font-normal text-forest">Redno</th>
+                  <td class="whitespace-nowrap py-3 text-right text-forest" x-text="procs[proc].dates[2]"></td>
                 </tr>
               </tbody>
             </table>
