@@ -249,7 +249,34 @@
   will-change: transform;
 }
 
+/* Cenik search (cenikSearch in main.js). Rows always carry the same side
+ * padding so highlighting never shifts the layout; matches get a tint, the
+ * current match a forest bar, and everything else dims while a search has
+ * matches. */
+[data-cenik-row] {
+  margin-inline: -0.5rem;
+  padding-inline: 0.5rem;
+  border-radius: 0.375rem;
+  transition: opacity 200ms ease, background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+main[data-searching] [data-cenik-row]:not([data-match]) {
+  opacity: 0.4;
+}
+
+[data-cenik-row][data-match] {
+  background-color: color-mix(in srgb, var(--color-forest) 6%, transparent);
+}
+
+[data-cenik-row][data-current] {
+  box-shadow: inset 2px 0 0 var(--color-forest);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  [data-cenik-row] {
+    transition: none;
+  }
   .card-reveal {
     opacity: 1;
     transform: none;

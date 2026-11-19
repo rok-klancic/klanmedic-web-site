@@ -117,6 +117,94 @@ document.addEventListener("alpine:init", () => {
     return scored.slice(0, MAX_SEARCH_RESULTS).map((item) => item.entry);
   };
 
+  // Cenik page search (cenik.html). Rows stay in place: the ones that match
+  // get `data-match`, the one being looked at gets `data-current`, and
+  // <main data-searching> dims the rest (styles in input.css). A row matches
+  // when every typed word is in its name or in its section's title, using
+  // the same case/diacritic-insensitive `normalize` as the header search.
+  Alpine.data("cenikSearch", () => ({
+    open: false, // search field shown in place of the jump links
+    query: "",
+    applied: false, // a non-empty query has been searched (query itself is debounced)
+    rows: [],
+    matches: [], // indexes into rows
+    current: -1, // position inside matches
+    timer: null,
+
+    init() {
+      this.rows = [...this.$root.querySelectorAll("[data-cenik-row]")].map(
+        (el) => {
+          const section = el.closest("[data-cenik-section]");
+          const title = section?.querySelector("h2")?.textContent ?? "";
+          const name = el.firstElementChild?.textContent ?? el.textContent;
+          return { el, hay: normalize(`${name} ${title}`) };
+        },
+      );
+      this.$watch("query", () => {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.search(), 250);
+      });
+    },
+
+    get status() {
+      if (!this.applied) return "";
+      if (!this.matches.length) return "Ni zadetkov";
+      return `${this.current + 1} / ${this.matches.length}`;
+    },
+
+    search() {
+      clearTimeout(this.timer);
+      this.timer = null;
+      const terms = normalize(this.query).split(/\s+/).filter(Boolean);
+      this.applied = terms.length > 0;
+      this.matches = [];
+      this.rows.forEach((row, i) => {
+        const hit = terms.length > 0 && terms.every((t) => row.hay.includes(t));
+        row.el.toggleAttribute("data-match", hit);
+        if (hit) this.matches.push(i);
+      });
+      this.$root.toggleAttribute("data-searching", this.matches.length > 0);
+      this.current = this.matches.length ? 0 : -1;
+      this.mark();
+    },
+
+    // Moves `data-current` to the current match and scrolls it to the middle
+    // of the viewport, clear of the sticky header and jump bar.
+    mark() {
+      this.rows.forEach((row) => row.el.removeAttribute("data-current"));
+      if (this.current < 0) return;
+      const el = this.rows[this.matches[this.current]].el;
+      el.setAttribute("data-current", "");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    },
+
+    // Enter right after typing applies the pending query instead of stepping.
+    step(delta) {
+      if (this.timer) return this.search();
+      if (!this.matches.length) return;
+      const n = this.matches.length;
+      this.current = (this.current + delta + n) % n;
+      this.mark();
+    },
+    next() { this.step(1); },
+    prev() { this.step(-1); },
+
+    openSearch() {
+      this.open = true;
+      this.$nextTick(() => this.$refs.searchInput.focus());
+    },
+
+    // Clears the highlights, swaps the jump links back in and returns focus
+    // to the search icon.
+    closeSearch() {
+      this.query = "";
+      this.search();
+      this.open = false;
+      this.$nextTick(() => this.$refs.searchToggle.focus());
+    },
+  }));
+
   // Site header: mobile menu state (open / servicesOpen / estetikaOpen) plus
   // the desktop mega-menu. `desk` is the panel that is open, `shown` is the
   // panel whose content stays rendered, so the content doesn't vanish while

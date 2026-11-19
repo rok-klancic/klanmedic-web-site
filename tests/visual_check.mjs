@@ -317,14 +317,15 @@ async function runWidth(browser, width, port) {
   if (markers !== EXPECTED_CURRENT_MARKERS.landing)
     rec.problems.push(`expected ${EXPECTED_CURRENT_MARKERS.landing} aria-current markers on the landing, got ${markers}`);
 
-  // service tiles: banner + 2 half tiles on phones
+  // service tiles: 3 full-width banners on phones (so "Gastroenterologija" fits at 20px)
   const tiles = await page.evaluate(JS.tiles);
   const captions = await page.evaluate(JS.captions);
   for (const c of captions.filter((c) => c.clipped))
     rec.problems.push(`caption clipped: "${c.text}"`);
-  if (width === 375 && !(tiles[0] > 300 && Math.abs(tiles[1] - tiles[2]) <= 1 && tiles[1] < tiles[0] / 2))
+  if (width === 375 && !(tiles.length === 3 && tiles.every((w) => w > 300 && Math.abs(w - tiles[0]) <= 1)))
     rec.problems.push(`service tile pattern wrong: [${tiles}]`);
-  if (width >= 640)
+  // below lg the first tile is a banner, so title offsets only line up in the 3-column row
+  if (width >= 1024)
     checkCardTitleAlignment(rec, await page.evaluate(JS.cardTitleOffsets), "landing");
 
   // mobile menu
@@ -791,6 +792,76 @@ async function runInfoPage(browser, width, port, path) {
   const fonts = await page.evaluate(JS.fonts);
   if (!fonts.fraunces || !fonts.manrope)
     rec.problems.push(`fonts not loaded: ${JSON.stringify(fonts)}`);
+
+  // cenik: in-page search (highlight + jump)
+  if (path === "cenik.html") {
+    const counter = () => page.evaluate(() => document.querySelector("#pregled [aria-live]")?.textContent.trim());
+    const currentRow = () =>
+      page.evaluate(() => {
+        const el = document.querySelector("[data-cenik-row][data-current]");
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return { text: el.textContent.trim().slice(0, 40), inView: r.top >= 0 && r.bottom <= window.innerHeight };
+      });
+
+    // the search is an icon in the jump bar's row; it opens in place of the links
+    const barRows = () =>
+      page.evaluate(() => {
+        const tops = [...document.querySelectorAll("#pregled nav a, #pregled button[aria-label='Iskanje po ceniku']")]
+          .filter((e) => e.getClientRects().length)
+          .map((e) => Math.round(e.getBoundingClientRect().top));
+        return { tops, h: document.querySelector("#pregled").getBoundingClientRect().height };
+      });
+    const bar = await barRows();
+    if (Math.max(...bar.tops) - Math.min(...bar.tops) > 24 || bar.h > 70)
+      rec.problems.push(`cenik bar: search icon is not on the jump links' line (tops ${bar.tops}, height ${bar.h})`);
+    if (await page.locator("#cenik-search").isVisible())
+      rec.problems.push("cenik search field is visible before the icon is clicked");
+    await page.click("#pregled button[aria-label='Iskanje po ceniku']");
+    await page
+      .waitForFunction(() => document.activeElement?.id === "cenik-search", null, { timeout: 2000 })
+      .catch(() => rec.problems.push("cenik search field is not focused after clicking the icon"));
+    await page.fill("#cenik-search", "laser");
+    await page.waitForTimeout(900); // debounce + smooth scroll
+    const count = Number((await counter())?.split("/")[1]);
+    if (!(count > 1)) rec.problems.push(`cenik search "laser": counter is "${await counter()}", expected 2+ matches`);
+    const first = await currentRow();
+    if (!first) rec.problems.push('cenik search "laser": no current row');
+    else if (!first.inView) rec.problems.push('cenik search "laser": current row is not in the viewport');
+    await page.screenshot({ path: resolve(SHOTS, `${width}-cenik-search.png`) });
+
+    await page.press("#cenik-search", "Enter");
+    await page.waitForTimeout(700);
+    const second = await currentRow();
+    if (!second || second.text === first?.text) rec.problems.push("cenik search: Enter did not move to the next match");
+
+    await page.fill("#cenik-search", "hiperbaricna"); // no diacritics in the query
+    await page.waitForTimeout(900);
+    if ((await counter()) !== "1 / 3")
+      rec.problems.push(`cenik search "hiperbaricna": counter is "${await counter()}", expected "1 / 3"`);
+
+    await page.fill("#cenik-search", "zzzzqq");
+    await page.waitForTimeout(500);
+    if ((await counter()) !== "Ni zadetkov") rec.problems.push("cenik search shows no empty-state message");
+    st = await page.evaluate(JS.state);
+    if (st.scrollWidth > st.innerWidth)
+      rec.problems.push(`cenik search: horizontal overflow: ${st.scrollWidth} > ${st.innerWidth}`);
+
+    await page.fill("#cenik-search", "laser");
+    await page.waitForTimeout(500);
+    await page.press("#cenik-search", "Escape");
+    const left = await page.evaluate(() => document.querySelectorAll("[data-match], [data-current], main[data-searching]").length);
+    if (left) rec.problems.push("cenik search: Escape did not clear the highlights");
+    await page
+      .locator("#cenik-search")
+      .waitFor({ state: "hidden", timeout: 2000 })
+      .catch(() => rec.problems.push("cenik search: Escape did not close the field"));
+    await page
+      .locator("#pregled nav")
+      .waitFor({ state: "visible", timeout: 2000 })
+      .catch(() => rec.problems.push("cenik search: jump links did not come back after closing"));
+    await page.evaluate(() => window.scrollTo(0, 0));
+  }
 
   // overflow at bottom
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
